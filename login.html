@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Kohsel English Portal</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/styles.css"> <!-- Path Fixed -->
+  <link rel="manifest" href="manifest.json"> <!-- Path Fixed -->
+  <link rel="icon" href="images/logo.png" type="image/png"> <!-- Path Fixed -->
   <style>
-    /* Hides the body until auth check is complete */
-    body { display: none; } 
+    /* body { display: none; } Removed for login page */
     .login-wrapper {
       display: flex;
       justify-content: center;
@@ -72,14 +71,13 @@
     }
   </style>
 </head>
-<body class="login-wrapper">
+<body class="login-wrapper" style="display: flex;"> <!-- Set display flex directly -->
 
   <main class="login-container">
-    <img src="/images/logo.png" alt="Kohsel Logo" class="login-logo">
+    <img src="images/logo.png" alt="Kohsel Logo" class="login-logo"> <!-- Path Fixed -->
     <h1>Kohsel English Portal</h1>
     <p>Please log in to access your learning materials.</p>
     
-    <!-- UPDATED: Form now uses email -->
     <form id="login-form" class="login-form">
       <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Password" required>
@@ -90,8 +88,8 @@
   </main>
 
   <!-- Load Firebase and the login script as modules -->
-  <script type="module" src="/js/firebase-init.js"></script>
-  <script type="module" src="/js/login-logic.js"></script>
+  <script type="module" src="js/firebase-init.js"></script> <!-- Path Fixed -->
+  <script type="module" src="js/login-logic.js"></script> <!-- Path Fixed -->
 </body>
 </html>
 

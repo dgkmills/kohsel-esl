@@ -18,13 +18,14 @@ import {
 
 // --- YOUR ACTION REQUIRED ---
 // Paste your Firebase config object here.
+// You get this from: Firebase Console > Project Settings > General > Your apps > Web app
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBpxxW0GeGM21IBgBsmWvUWW5ZChwNm8Hk",
+  authDomain: "kohsel-esl.firebaseapp.com",
+  projectId: "kohsel-esl",
+  storageBucket: "kohsel-esl.firebasestorage.app",
+  messagingSenderId: "458143607307",
+  appId: "1:458143607307:web:4bd36c1153031a53aa750e"
 };
 // ----------------------------
 

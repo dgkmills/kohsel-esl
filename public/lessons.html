@@ -44,26 +44,27 @@
     
     <div class="lesson-list">
       <h3>All Lessons</h3>
+      <!-- UPDATED: Links now match your exact PDF filenames -->
       <ul>
-        <li><a href="/lessons/1.pdf" target="_blank">Lesson 01 (.pdf)</a></li>
-        <li><a href="/lessons/2.pdf" target="_blank">Lesson 02 (.pdf)</a></li>
-        <li><a href="/lessons/3.pdf" target="_blank">Lesson 03 (.pdf)</a></li>
-        <li><a href="/lessons/4.pdf" target="_blank">Lesson 04 (.pdf)</a></li>
-        <li><a href="/lessons/5.pdf" target="_blank">Lesson 05 (.pdf)</a></li>
-        <li><a href="/lessons/6.pdf" target="_blank">Lesson 06 (.pdf)</a></li>
-        <li><a href="/lessons/7.pdf" target="_blank">Lesson 07 (.pdf)</a></li>
-        <li><a href="/lessons/8.pdf" target="_blank">Lesson 08 (.pdf)</a></li>
-        <li><a href="/lessons/9.pdf" target="_blank">Lesson 09 (.pdf)</a></li>
-        <li><a href="/lessons/10.pdf" target="_blank">Lesson 10 (.pdf)</a></li>
-        <li><a href="/lessons/11.pdf" target="_blank">Lesson 11 (.pdf)</a></li>
-        <li><a href="/lessons/12.pdf" target="_blank">Lesson 12 (.pdf)</a></li>
-        <li><a href="/lessons/13.pdf" target="_blank">Lesson 13 (.pdf)</a></li>
-        <li><a href="/lessons/14.pdf" target="_blank">Lesson 14 (.pdf)</a></li>
-        <li><a href="/lessons/15.pdf" target="_blank">Lesson 15 (.pdf)</a></li>
-        <li><a href="/lessons/16.pdf" target="_blank">Lesson 16 (.pdf)</a></li>
-        <li><a href="/lessons/17.pdf" target="_blank">Lesson 17 (.pdf)</a></li>
-        <li><a href="/lessons/18.pdf" target="_blank">Lesson 18 (.pdf)</a></li>
-        <li><a href="/lessons/19.pdf" target="_blank">Lesson 19 (.pdf)</a></li>
+        <li><a href="/lessons/Lesson 1_ Introduction and The Elevator Pitch (fixed).pdf" target="_blank">Lesson 01: Introduction and The Elevator Pitch</a></li>
+        <li><a href="/lessons/Lesson 2_ Short Vowel Sounds.pdf" target="_blank">Lesson 02: Short Vowel Sounds</a></li>
+        <li><a href="/lessons/Lesson 3_ Long Vowel Sounds.pdf" target="_blank">Lesson 03: Long Vowel Sounds</a></li>
+        <li><a href="/lessons/Lesson 4_ Consonant Sounds and Blends.pdf" target="_blank">Lesson 04: Consonant Sounds and Blends</a></li>
+        <li><a href="/lessons/Lesson 5_ More Consonant Sounds and Blends.pdf" target="_blank">Lesson 05: More Consonant Sounds and Blends</a></li>
+        <li><a href="/lessons/Lesson 6_ Correcting Consonant Sounds.pdf" target="_blank">Lesson 06: Correcting Consonant Sounds</a></li>
+        <li><a href="/lessons/Lesson 7_ Diphthongs and Advanced Vowels.pdf" target="_blank">Lesson 07: Diphthongs and Advanced Vowels</a></li>
+        <li><a href="/lessons/Lesson 8_ The _ED_ and _S_ Endings.pdf" target="_blank">Lesson 08: The _ED_ and _S_ Endings</a></li>
+        <li><a href="/lessons/Lesson 9_ Final Consonant Sounds.pdf" target="_blank">Lesson 09: Final Consonant Sounds</a></li>
+        <li><a href="/lessons/Lesson 10_ Linking Words and Sentences.pdf" target="_blank">Lesson 10: Linking Words and Sentences</a></li>
+        <li><a href="/lessons/Lesson 11_ Word and Sentence Stress.pdf" target="_blank">Lesson 11: Word and Sentence Stress</a></li>
+        <li><a href="/lessons/Lesson 12_ Unit 1 Review and Assessment.pdf" target="_blank">Lesson 12: Unit 1 Review and Assessment</a></li>
+        <li><a href="/lessons/Lesson 13_ Polite Greetings and Introductions.pdf" target="_blank">Lesson 13: Polite Greetings and Introductions</a></li>
+        <li><a href="/lessons/Lesson 14_ Giving and Receiving Information.pdf" target="_blank">Lesson 14: Giving and Receiving Information</a></li>
+        <li><a href="/lessons/Lesson 15_ The Elevator Pitch (Part 1).pdf" target="_blank">Lesson 15: The Elevator Pitch (Part 1)</a></li>
+        <li><a href="/lessons/Lesson 16_ The Elevator Pitch (Part 2).pdf" target="_blank">Lesson 16: The Elevator Pitch (Part 2)</a></li>
+        <!-- Lesson 17 is missing from your repo, so I've skipped it -->
+        <li><a href="/lessons/Lesson 18_ Professional Email Communication.pdf" target="_blank">Lesson 18: Professional Email Communication</a></li>
+        <li><a href="/lessons/Lesson 19_ Case Study 1.pdf" target="_blank">Lesson 19: Case Study 1</a></li>
       </ul>
     </div>
   </main>
@@ -74,10 +75,8 @@
 
   <script src="/js/app.js"></script>
   
-  <!-- UPDATED: Logout script now imports from firebase-init.js -->
   <script type="module">
-    // All imports come from our local file
-    import { auth, signOut } from './firebase-init.js';
+    import { auth, signOut } from './js/firebase-init.js';
 
     document.getElementById('logout-button').addEventListener('click', () => {
       signOut(auth).then(() => {
@@ -90,5 +89,4 @@
   </script>
 </body>
 </html>
-
 

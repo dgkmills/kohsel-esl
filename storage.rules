@@ -1,0 +1,18 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Allow users to read/write ONLY to their own folder
+    // (e.g., /<userId>/profile-pic.jpg)
+    // This rule MUST come first.
+    match /{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // By default, deny all other paths (including root)
+    // This "catch-all" rule must come LAST.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

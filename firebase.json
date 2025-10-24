@@ -1,0 +1,11 @@
+{
+  "firestore": {
+    "database": "(default)",
+    "location": "nam5",
+    "rules": "config/firestore.rules",
+    "indexes": "no"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

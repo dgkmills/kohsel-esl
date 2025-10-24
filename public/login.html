@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Kohsel English Portal</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/images/logo.png" type="image/png">
+  <style>
+    /* Hides the body until auth check is complete */
+    body { display: none; } 
+    .login-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f4f7f6;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .login-logo {
+      height: 50px;
+      margin-bottom: 10px;
+    }
+    .login-container h1 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .login-form input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .login-form button {
+      padding: 12px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .login-form button:hover {
+      background-color: #0056b3;
+    }
+    #error-message {
+      color: #D32F2F;
+      background-color: #FFEBEE;
+      border: 1px solid #D32F2F;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 15px;
+      display: none; /* Hidden by default */
+    }
+  </style>
+</head>
+<body class="login-wrapper">
+
+  <main class="login-container">
+    <img src="/images/logo.png" alt="Kohsel Logo" class="login-logo">
+    <h1>Kohsel English Portal</h1>
+    <p>Please log in to access your learning materials.</p>
+    
+    <!-- UPDATED: Form now uses email -->
+    <form id="login-form" class="login-form">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    
+    <div id="error-message"></div>
+  </main>
+
+  <!-- Load Firebase and the login script as modules -->
+  <script type="module" src="/js/firebase-init.js"></script>
+  <script type="module" src="/js/login-logic.js"></script>
+</body>
+</html>
+

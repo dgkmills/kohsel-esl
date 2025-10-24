@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Tools - Kohsel English</title>
+  
+  <!-- Firebase SDKs -->
+  <script type="module" src="/js/firebase-init.js"></script>
+  <script type="module" src="/js/protect.js"></script>
+  
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/images/logo.png" type="image/png">
+  
+  <style>
+    /* Hides the body until auth check is complete */
+    body { display: none; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="/images/logo.png" alt="Kohsel Logo">
+      <h1>English Portal</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/lessons.html">Lessons</a></li>
+        <li><a href="/videos.html">Videos</a></li>
+        <li><a href="/tools.html" class="active">Tools</a></li>
+        <li><button id="logout-button">Logout</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>English Practice Tools</h2>
+    <p>
+      Use these tools to practice your English skills. The Email Assistant
+      can help you write professional messages, and the practice tools
+      can help with pronunciation and conversation.
+    </p>
+
+    <div class="tool-container">
+      <h3>Email Assistant</h3>
+      <iframe 
+        src="https://email-assist.danmills.dev/" 
+        class="tool-iframe" 
+        title="ESL Email Assistant Tool">
+      </iframe>
+    </div>
+
+    <div class="tool-container">
+      <h3>Pronunciation Practice</h3>
+      <iframe 
+        src="https://pronunciation.danmills.dev/" 
+        class="tool-iframe" 
+        title="Pronunciation Practice Tool">
+      </iframe>
+    </div>
+    
+    <div class="tool-container">
+      <h3>Dialogue Practice</h3>
+      <iframe 
+        src="https://dialogue.danmills.dev/" 
+        class="tool-iframe" 
+        title="Dialogue Generation Tool">
+      </iframe>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Kohsel & Dan Mills</p>
+  </footer>
+
+  <script src="/js/app.js"></script>
+  
+  <!-- UPDATED: Logout script now uses Firebase -->
+  <script type="module">
+    import { auth } from './firebase-init.js';
+    import { signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    document.getElementById('logout-button').addEventListener('click', () => {
+      signOut(auth).then(() => {
+        // Sign-out successful, redirect to login page.
+        window.location.href = '/login.html';
+      }).catch((error) => {
+        console.error("Sign out error:", error);
+      });
+    });
+  </script>
+</body>
+</html>
+

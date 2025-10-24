@@ -1,0 +1,21 @@
+{
+  "short_name": "Kohsel English",
+  "name": "Kohsel English Learning Portal",
+  "description": "English lessons and tools for Kohsel employees.",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/login.html",
+  "display": "standalone",
+  "theme_color": "#003366",
+  "background_color": "#ffffff"
+}

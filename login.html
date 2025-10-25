@@ -1,58 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Kohsel ESL</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json">
-    <style>
-        /* Add a little space between the buttons */
-        .button-group {
-            display: flex;
-            justify-content: center;
-        }
-        .button-group button {
-            margin: 0 8px; /* 8px margin on left and right */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Kohsel English Portal</title>
+  <!-- Using your repo's 'style.css' file -->
+  <link rel="stylesheet" href="css/style.css"> 
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/logo.png" type="image/png">
+  
+  <!-- Using the styling from your "previous version" -->
+  <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .login-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f4f7f6;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .login-logo {
+      height: 50px;
+      margin-bottom: 10px;
+    }
+    .login-container h1 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .login-container p {
+        margin-bottom: 20px;
+    }
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .login-form input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    
+    /* Updated button styles for two buttons */
+    .login-form button {
+      padding: 12px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Login button */
+    #loginButton {
+        background-color: #003366; /* Main color */
+    }
+    #loginButton:hover {
+        background-color: #0056b3;
+    }
+
+    /* Sign Up button */
+    #signupButton {
+        background-color: #0069d9; /* A slightly different blue */
+    }
+    #signupButton:hover {
+        background-color: #007bff;
+    }
+
+    #errorMessage { /* Renamed from error-message to match JS */
+      color: #D32F2F;
+      background-color: #FFEBEE;
+      border: 1px solid #D32F2F;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 15px;
+      display: none; /* Hidden by default */
+    }
+  </style>
 </head>
-<body>
-    <header>
-        <img src="images/logo.png" alt="Kohsel ESL Logo" class="logo">
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="lessons.html">Lessons</a></li>
-                <li><a href="videos.html">Videos</a></li>
-                <li><a href="tools.html">Tools</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="login.html">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+<body class="login-wrapper" style="display: flex;">
 
-    <main>
-        <div class="container">
-            <h1>Login or Sign Up</h1>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            
-            <!-- This is the updated part -->
-            <div class="button-group">
-                <button id="loginButton">Login</button>
-                <button id="signupButton">Sign Up</button> <!-- This button was missing -->
-            </div>
-            
-            <p id="errorMessage" class="error"></p>
-        </div>
-    </main>
+  <main class="login-container">
+    <img src="images/logo.png" alt="Kohsel Logo" class="login-logo">
+    <h1>Kohsel English Portal</h1>
+    <p>Please log in or sign up to access your learning materials.</p>
+    
+    <!-- Using a div, not a form, to handle button clicks separately -->
+    <div class="login-form">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      
+      <!-- The two buttons for login and signup -->
+      <button id="loginButton" type="button">Login</button>
+      <button id="signupButton" type="button">Sign Up</button>
+    </div>
+    
+    <div id="errorMessage"></div>
+  </main>
 
-    <footer>
-        <p>&copy; 2024 Kohsel ESL. All rights reserved.</p>
-    </footer>
-
-    <script type="module" src="js/firebase-init.js"></script>
-    <script type="module" src="js/login-logic.js"></script>
+  <!-- Load Firebase and the login script as modules -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <script type="module" src="js/login-logic.js"></script>
 </body>
 </html>
+

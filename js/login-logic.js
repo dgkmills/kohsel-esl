@@ -47,8 +47,15 @@ if (loginButton) {
             console.log("Attempting to sign in...");
             await signInWithEmailAndPassword(auth, email, password);
             console.log("Sign in successful!");
-            // Successful login, redirect to dashboard
-            window.location.href = 'dashboard.html'; 
+            
+            // --- FIX ---
+            // Redirect to the main index page.
+            // The protect.js script will show admins the 'Dashboard' link,
+            // so they can navigate there. This avoids redirecting non-admins
+            // to a page they can't view.
+            window.location.href = 'index.html'; 
+            // --- END FIX ---
+
         } catch (error) {
             console.error("Login Error: ", error);
             showError("Login failed. Please check your email and password.");
@@ -56,7 +63,7 @@ if (loginButton) {
     });
 }
 
-// 2. SIGN UP BUTTON LISTENER (This was missing)
+// 2. SIGN UP BUTTON LISTENER
 if (signupButton) {
     signupButton.addEventListener('click', async () => {
         hideError();
@@ -76,15 +83,20 @@ if (signupButton) {
             console.log("User created successfully:", user.uid);
 
             // Create a document in the 'users' collection for this new user
+            // Set a default role of 'user'
             await setDoc(doc(db, "users", user.uid), {
                 email: user.email,
+                role: 'user', // Explicitly set default role
                 joinedDate: new Date()
             });
             
             console.log("User document created in Firestore.");
 
-            // Redirect to dashboard after successful signup
-            window.location.href = 'dashboard.html';
+            // --- FIX ---
+            // Redirect to the main index page after signup as well.
+            window.location.href = 'index.html';
+            // --- END FIX ---
+
         } catch (error) {
             console.error("Sign Up Error: ", error);
             if (error.code === 'auth/email-already-in-use') {
@@ -102,7 +114,11 @@ if (signupButton) {
 onAuthStateChanged(auth, (user) => {
     // If user is logged in and they are on the login page, redirect them
     if (user && window.location.pathname.includes('login.html')) {
-        console.log("User already logged in, redirecting to dashboard.");
-        window.location.href = 'dashboard.html';
+        console.log("User already logged in, redirecting to index page.");
+        
+        // --- FIX ---
+        // Redirect to index.html, not dashboard.html
+        window.location.href = 'index.html';
+        // --- END FIX ---
     }
 });

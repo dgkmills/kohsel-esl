@@ -9,7 +9,9 @@
   <script type="module" src="js/firebase-init.js"></script>
   <script type="module" src="js/protect.js"></script>
   
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- FIX: Corrected stylesheet name from styles.css to style.css -->
+  <link rel="stylesheet" href="css/style.css">
+
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="images/logo.png" type="image/png">
   
@@ -45,6 +47,11 @@
       can help you write professional messages, and the practice tools
       can help with pronunciation and conversation.
     </p>
+    
+    <!-- 
+      NOTE: The .tool-iframe class from css/style.css will now be applied,
+      making these iframes 70vh tall (70% of viewport height) and usable.
+    -->
 
     <div class="tool-container">
       <h3>Email Assistant</h3>
@@ -95,4 +102,3 @@
   </script>
 </body>
 </html>
-

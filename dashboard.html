@@ -1,84 +1,125 @@
-import { db, collection, query, getDocs } from './firebase-init.js'; // Removed unused imports
-
-// Function to load dashboard data
-async function loadDashboardData() {
-  const tableBody = document.getElementById('quiz-scores-body');
-  const loadingEl = document.getElementById('dashboard-loading');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Kohsel English</title>
   
-  if (!tableBody || !loadingEl) {
-    console.error("Dashboard elements not found.");
-    return;
-  }
+  <!-- Firebase SDKs -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <script type="module" src="js/protect.js"></script>
+  
+  <!-- Correct stylesheet link -->
+  <link rel="stylesheet" href="css/style.css">
 
-  try {
-    // 1. Get all documents from the 'users' collection
-    const usersCollectionRef = collection(db, 'users');
-    const usersQuery = query(usersCollectionRef);
-    const usersSnapshot = await getDocs(usersQuery);
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/logo.png" type="image/png">
+  
+  <style>
+    /* Hides the body until auth check is complete */
+    body { display: none; }
 
-    let allQuizAttempts = [];
+    /* Styles for the dashboard table */
+    .dashboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .dashboard-table th,
+    .dashboard-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+    .dashboard-table th {
+      background-color: #f4f7f6;
+      color: #003366;
+    }
+    .dashboard-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .user-email {
+      font-weight: bold;
+      color: #333;
+    }
+    .quiz-score.pass {
+      color: #155724; /* Green */
+      font-weight: bold;
+    }
+    .quiz-score.fail {
+      color: #721C24; /* Red */
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
 
-    // 2. Loop through each user
-    for (const userDoc of usersSnapshot.docs) {
-      const userData = userDoc.data();
-      // Ensure we have an email field saved in the user document when they sign up or first save a score
-      const userEmail = userData?.email || userDoc.id; // Use email if available, otherwise UID
+  <header>
+    <div class="logo-container">
+      <img src="images/logo.png" alt="Kohsel Logo">
+      <h1>English Portal</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lessons.html">Lessons</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <!-- This link will be hidden by protect.js if user is not admin -->
+        <li id="dashboard-nav-link" style="display: none;"><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><button id="logout-button">Logout</button></li>
+      </ul>
+    </nav>
+  </header>
 
-      // 3. Get the 'quizAttempts' sub-collection for this user
-      const quizAttemptsRef = collection(db, 'users', userDoc.id, 'quizAttempts');
-      const quizAttemptsQuery = query(quizAttemptsRef);
-      const quizAttemptsSnapshot = await getDocs(quizAttemptsQuery);
+  <main class="container">
+    <h2>Admin Dashboard</h2>
+    <p>
+      Recent quiz attempts from all users.
+    </p>
+    
+    <!-- This table is what was missing -->
+    <table class="dashboard-table">
+      <thead>
+        <tr>
+          <th>User Email</th>
+          <th>Quiz Name</th>
+          <th>Score</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="quiz-scores-body">
+        <!-- Rows will be inserted here by dashboard-logic.js -->
+      </tbody>
+    </table>
+    <p id="dashboard-loading" style="text-align: center; padding: 20px;">
+      Loading quiz data...
+    </p>
 
-      quizAttemptsSnapshot.forEach(quizDoc => {
-        const quizData = quizDoc.data();
-        allQuizAttempts.push({
-          email: userEmail, // Use the fetched email
-          ...quizData
-        });
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Kohsel & Dan Mills</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  
+  <!-- This script populates the table -->
+  <!-- It correctly links to the JS file -->
+  <script type="module" src="dashboard-logic.js"></script>
+  
+  <script type="module">
+    import { auth, signOut } from './js/firebase-init.js';
+
+    document.getElementById('logout-button').addEventListener('click', () => {
+      signOut(auth).then(() => {
+        // Sign-out successful, redirect to login page.
+        window.location.href = 'login.html';
+      }).catch((error) => {
+        console.error("Sign out error:", error);
       });
-    }
-
-    // 4. Sort all attempts by timestamp, newest first
-    allQuizAttempts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-
-    // 5. Populate the table
-    if (allQuizAttempts.length === 0) {
-      loadingEl.textContent = "No quiz attempts found.";
-      return;
-    }
-
-    tableBody.innerHTML = ''; // Clear the table
-    allQuizAttempts.forEach(attempt => {
-      const row = document.createElement('tr');
-      
-      const scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'fail';
-      const date = attempt.timestamp ? new Date(attempt.timestamp.seconds * 1000).toLocaleString() : 'N/A';
-      
-      // Use quizName from attempt data
-      const quizName = attempt.quizName || 'N/A'; 
-      
-      row.innerHTML = `
-        <td><span class="user-email">${attempt.email}</span></td>
-        <td>${quizName}</td> 
-        <td><span class="quiz-score ${scoreClass}">${attempt.score}%</span></td>
-        <td>${date}</td>
-      `;
-      tableBody.appendChild(row);
     });
-
-    loadingEl.style.display = 'none'; // Hide loading message
-
-  } catch (error) {
-    console.error("Error loading dashboard data: ", error);
-    loadingEl.textContent = "Error loading data. See console for details.";
-    loadingEl.style.color = 'red';
-  }
-}
-
-// Ensure the DOM is fully loaded before running the script
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadDashboardData);
-} else {
-    loadDashboardData(); // DOMContentLoaded has already fired
-}
+  </script>
+</body>
+</html>
 

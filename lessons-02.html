@@ -35,6 +35,7 @@
     .slide {
       display: none; /* Hide all slides by default */
       flex-grow: 1; 
+      line-height: 1.7; /* Improve readability */
     }
     .slide.active {
       display: block; /* Show the active slide */
@@ -54,18 +55,26 @@
       color: #003366;
       font-weight: 600; /* Slightly bolder */
     }
+    .slide ul {
+      list-style: disc;
+      margin-left: 25px; /* Indent lists */
+      margin-bottom: 15px;
+    }
+     .slide li {
+       margin-bottom: 10px;
+     }
     
     /* Example table styles */
     .example-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      font-size: 1.05rem; /* Slightly smaller for potentially more content */
+      font-size: 1.05rem; 
     }
     .example-table th,
     .example-table td {
       border: 1px solid #ddd;
-      padding: 10px 12px; /* Adjust padding */
+      padding: 10px 12px; 
       text-align: left;
       vertical-align: top; /* Align content to top */
     }
@@ -86,6 +95,33 @@
      .example-table td strong { /* Style bold text inside table */
          font-weight: 600;
      }
+     /* Style for word lists within table cells */
+     .example-table td span.word {
+         display: inline-block;
+         margin-right: 8px; /* Space between words */
+         margin-bottom: 5px; /* Space if words wrap */
+     }
+
+     /* NEW: Audio Button Style */
+     .audio-button {
+         background: none;
+         border: none;
+         padding: 0 5px; /* Minimal padding */
+         margin: 0;
+         cursor: pointer;
+         vertical-align: middle; /* Align with text */
+         font-size: 1.1rem; /* Adjust size */
+         color: #0056b3; /* Match link color */
+         display: inline-block;
+     }
+      .audio-button:hover {
+          color: #003366;
+      }
+      .audio-button svg { /* Simple speaker icon */
+          width: 1em;
+          height: 1em;
+          fill: currentColor;
+      }
 
     /* Navigation buttons */
     .slide-nav {
@@ -117,9 +153,32 @@
         color: #555;
         align-self: center; /* Center vertically */
      }
+      .slide-nav a.button-link { /* Style the link like a button */
+        display: inline-block;
+        padding: 10px 18px;
+        background-color: #17a2b8; /* Different color for final link */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+     .slide-nav a.button-link:hover {
+        background-color: #138496;
+     }
   </style>
 </head>
 <body>
+
+  <!-- Speaker Icon SVG (Hidden) -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="speaker-icon" viewBox="0 0 24 24">
+      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </symbol>
+  </svg>
 
   <header>
     <div class="logo-container">
@@ -147,27 +206,42 @@
       <div class="slide active" id="slide1">
         <h3>Introduction to Short Vowels</h3>
         <p>
-          Welcome to Lesson 2! Today, we will focus on **short vowel sounds**.
+          Welcome! Clear pronunciation is important at Kohsel, especially when discussing technical details like <strong>pla</strong>n numbers or product sp<strong>e</strong>cs. Today, we focus on **short vowel sounds**.
         </p>
         <p>
-          English has five vowels: <strong>A, E, I, O, U</strong>. Each vowel can make different sounds. Short vowel sounds are quick and clear, like a short tap.
+          English has five vowels: <strong>A, E, I, O, U</strong>. Short vowel sounds are quick and clear, like a short tap.
         </p>
-        <p>Think of them like this:</p>
+        <p>Think of them like this (click the speaker to hear):</p>
         <ul>
-            <li><strong>A</strong> as in c<strong>a</strong>t or <strong>a</strong>pple</li>
-            <li><strong>E</strong> as in b<strong>e</strong>d or <strong>e</strong>gg</li>
-            <li><strong>I</strong> as in s<strong>i</strong>t or <strong>i</strong>gloo</li>
-            <li><strong>O</strong> as in h<strong>o</strong>t or <strong>o</strong>ctopus</li>
-            <li><strong>U</strong> as in s<strong>u</strong>n or <strong>u</strong>mbrella</li>
+            <li><strong>A</strong> as in c<strong>a</strong>t 
+                <button class="audio-button" onclick="speakWord('cat')"><svg><use xlink:href="#speaker-icon"></use></svg></button> 
+                or <strong>a</strong>pple 
+                <button class="audio-button" onclick="speakWord('apple')"><svg><use xlink:href="#speaker-icon"></use></svg></button></li>
+            <li><strong>E</strong> as in b<strong>e</strong>d 
+                <button class="audio-button" onclick="speakWord('bed')"><svg><use xlink:href="#speaker-icon"></use></svg></button> 
+                or <strong>e</strong>gg 
+                <button class="audio-button" onclick="speakWord('egg')"><svg><use xlink:href="#speaker-icon"></use></svg></button></li>
+            <li><strong>I</strong> as in s<strong>i</strong>t 
+                <button class="audio-button" onclick="speakWord('sit')"><svg><use xlink:href="#speaker-icon"></use></svg></button> 
+                or <strong>i</strong>gloo 
+                <button class="audio-button" onclick="speakWord('igloo')"><svg><use xlink:href="#speaker-icon"></use></svg></button></li>
+            <li><strong>O</strong> as in h<strong>o</strong>t 
+                <button class="audio-button" onclick="speakWord('hot')"><svg><use xlink:href="#speaker-icon"></use></svg></button> 
+                or <strong>o</strong>ctopus 
+                <button class="audio-button" onclick="speakWord('octopus')"><svg><use xlink:href="#speaker-icon"></use></svg></button></li>
+            <li><strong>U</strong> as in s<strong>u</strong>n 
+                <button class="audio-button" onclick="speakWord('sun')"><svg><use xlink:href="#speaker-icon"></use></svg></button> 
+                or <strong>u</strong>mbrella 
+                <button class="audio-button" onclick="speakWord('umbrella')"><svg><use xlink:href="#speaker-icon"></use></svg></button></li>
         </ul>
-         <p>Click 'Next' to see examples from Kohsel.</p>
+         <p>Click 'Next' to practice with Kohsel examples.</p>
       </div>
 
       <!-- Slide 2: Kohsel Examples -->
       <div class="slide" id="slide2">
         <h3>Kohsel Vowel Sound Examples</h3>
         <p>
-          Let's practice these sounds using words common in our work at Kohsel. Notice the bold part of the word makes the short vowel sound.
+          Let's practice these sounds using words common at Kohsel. Click the speaker icon to hear each word.
         </p>
         <table class="example-table">
           <thead>
@@ -181,27 +255,52 @@
             <tr>
               <td><code>A</code></td>
               <td>c<strong>a</strong>t</td>
-              <td><strong>tra</strong>nsformer, <strong>pla</strong>nt, m<strong>a</strong>nager, <strong>a</strong>nalysis</td>
+              <td>
+                <span class="word">transformer <button class="audio-button" onclick="speakWord('transformer')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">plant <button class="audio-button" onclick="speakWord('plant')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">manager <button class="audio-button" onclick="speakWord('manager')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">analysis <button class="audio-button" onclick="speakWord('analysis')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+              </td>
             </tr>
             <tr>
               <td><code>E</code></td>
               <td>b<strong>e</strong>d</td>
-              <td>t<strong>e</strong>st, w<strong>e</strong>ld, ass<strong>e</strong>mbly, s<strong>e</strong>nd</td>
+              <td>
+                 <span class="word">test <button class="audio-button" onclick="speakWord('test')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                 <span class="word">weld <button class="audio-button" onclick="speakWord('weld')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                 <span class="word">assembly <button class="audio-button" onclick="speakWord('assembly')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                 <span class="word">send <button class="audio-button" onclick="speakWord('send')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+              </td>
             </tr>
             <tr>
               <td><code>I</code></td>
               <td>s<strong>i</strong>t</td>
-              <td>w<strong>i</strong>nding, sh<strong>i</strong>p, <strong>i</strong>nspect, f<strong>i</strong>x</td>
+              <td>
+                <span class="word">winding <button class="audio-button" onclick="speakWord('winding')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">ship <button class="audio-button" onclick="speakWord('ship')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">inspect <button class="audio-button" onclick="speakWord('inspect')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">fix <button class="audio-button" onclick="speakWord('fix')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+              </td>
             </tr>
             <tr>
               <td><code>O</code></td>
               <td>h<strong>o</strong>t</td>
-              <td>c<strong>o</strong>pper, c<strong>o</strong>il, pr<strong>o</strong>duct, b<strong>o</strong>x</td>
+              <td>
+                <span class="word">copper <button class="audio-button" onclick="speakWord('copper')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">coil <button class="audio-button" onclick="speakWord('coil')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">product <button class="audio-button" onclick="speakWord('product')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">box <button class="audio-button" onclick="speakWord('box')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+              </td>
             </tr>
             <tr>
               <td><code>U</code></td>
               <td>s<strong>u</strong>n</td>
-              <td>fl<strong>u</strong>x, c<strong>u</strong>stomer, pr<strong>o</strong>d<strong>u</strong>ction, b<strong>u</strong>siness</td>
+              <td>
+                <span class="word">flux <button class="audio-button" onclick="speakWord('flux')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">customer <button class="audio-button" onclick="speakWord('customer')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">production <button class="audio-button" onclick="speakWord('production')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+                <span class="word">business <button class="audio-button" onclick="speakWord('business')"><svg><use xlink:href="#speaker-icon"></use></svg></button></span>
+             </td>
             </tr>
           </tbody>
         </table>
@@ -211,7 +310,7 @@
       <div class="slide" id="slide3">
         <h3>Minimal Pair Practice</h3>
         <p>
-          "Minimal pairs" are words that sound almost the same, but one vowel sound is different. Listening carefully to these helps train your ear.
+          "Minimal pairs" sound almost the same. Listen carefully to the vowel difference. Click to hear each word.
         </p>
          <table class="example-table">
             <thead>
@@ -224,37 +323,37 @@
             <tbody>
               <tr>
                 <td><strong>A / E</strong></td>
-                <td>b<strong>a</strong>d (<em>adjective</em>: not good)</td>
-                <td>b<strong>e</strong>d (<em>noun</em>: furniture for sleep)</td>
+                <td>b<strong>a</strong>d <button class="audio-button" onclick="speakWord('bad')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>adj:</em> not good)</td>
+                <td>b<strong>e</strong>d <button class="audio-button" onclick="speakWord('bed')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>noun:</em> for sleep)</td>
               </tr>
                <tr>
                 <td><strong>I / E</strong></td>
-                <td>p<strong>i</strong>n (<em>noun</em>: small sharp metal)</td>
-                <td>p<strong>e</strong>n (<em>noun</em>: tool for writing)</td>
+                <td>p<strong>i</strong>n <button class="audio-button" onclick="speakWord('pin')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>noun:</em> small sharp metal)</td>
+                <td>p<strong>e</strong>n <button class="audio-button" onclick="speakWord('pen')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>noun:</em> for writing)</td>
               </tr>
                <tr>
                 <td><strong>A / U</strong></td>
-                <td>r<strong>a</strong>n (<em>verb</em>: past of run)</td>
-                <td>r<strong>u</strong>n (<em>verb</em>: to move fast)</td>
+                <td>r<strong>a</strong>n <button class="audio-button" onclick="speakWord('ran')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>verb:</em> past of run)</td>
+                <td>r<strong>u</strong>n <button class="audio-button" onclick="speakWord('run')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>verb:</em> to move fast)</td>
               </tr>
               <tr>
                 <td><strong>O / U</strong></td>
-                <td>c<strong>o</strong>p (<em>noun</em>: police officer)</td>
-                <td>c<strong>u</strong>p (<em>noun</em>: container for drink)</td>
+                <td>c<strong>o</strong>p <button class="audio-button" onclick="speakWord('cop')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>noun:</em> police)</td>
+                <td>c<strong>u</strong>p <button class="audio-button" onclick="speakWord('cup')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>noun:</em> for drink)</td>
               </tr>
                <tr>
                 <td><strong>I / A</strong></td>
-                <td>s<strong>i</strong>t (<em>verb</em>: rest on a chair)</td>
-                <td>s<strong>a</strong>t (<em>verb</em>: past of sit)</td>
+                <td>s<strong>i</strong>t <button class="audio-button" onclick="speakWord('sit')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>verb:</em> rest on chair)</td>
+                <td>s<strong>a</strong>t <button class="audio-button" onclick="speakWord('sat')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>verb:</em> past of sit)</td>
               </tr>
                <tr>
                 <td><strong>I / A</strong></td>
-                <td>f<strong>i</strong>n (<em>noun</em>: part of a fish)</td>
-                <td>f<strong>a</strong>n (<em>noun</em>: machine that moves air)</td>
+                <td>f<strong>i</strong>n <button class="audio-button" onclick="speakWord('fin')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>noun:</em> part of fish)</td>
+                <td>f<strong>a</strong>n <button class="audio-button" onclick="speakWord('fan')"><svg><use xlink:href="#speaker-icon"></use></svg></button> (<em>noun:</em> moves air)</td>
               </tr>
             </tbody>
           </table>
-          <p>Practice saying these pairs aloud!</p>
+          <p>Try saying these pairs aloud yourself!</p>
       </div>
 
        <!-- Slide 4: End -->
@@ -281,8 +380,6 @@
       
     </div> <!-- End Slideshow Container -->
 
-    <!-- Quiz has been removed from this version -->
-
   </main>
 
   <footer>
@@ -294,46 +391,49 @@
   <script type="module">
     // Basic Slideshow Logic (Same as Lesson 20)
     let currentSlide = 1;
-    const totalSlides = 4; // UPDATE THIS: Now 4 slides
+    const totalSlides = 4; // Total slides
     const slides = document.querySelectorAll('.slide');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const counter = document.getElementById('slide-counter');
 
     function showSlide(n) {
-      // Hide all slides
       slides.forEach(slide => slide.classList.remove('active'));
-      // Show the current slide
       const currentSlideElement = document.getElementById(`slide${n}`);
       if (currentSlideElement) {
           currentSlideElement.classList.add('active');
       } else {
           console.error(`Slide element with ID slide${n} not found.`);
-          return; // Exit if slide not found
+          return; 
       }
-      
-      // Update counter text
       counter.textContent = `Slide ${n} of ${totalSlides}`;
-      
-      // Enable/disable buttons based on current slide number
       prevBtn.disabled = (n === 1);
       nextBtn.disabled = (n === totalSlides); 
     }
 
-    // Make changeSlide globally accessible for the button onclick handlers
     window.changeSlide = function(n) {
       currentSlide += n;
-      // Boundary checks
-      if (currentSlide < 1) {
-        currentSlide = 1;
-      } else if (currentSlide > totalSlides) {
-        currentSlide = totalSlides;
-      }
+      if (currentSlide < 1) currentSlide = 1;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
       showSlide(currentSlide);
     }
 
-    // Initialize the first slide on page load
+    // Initialize the first slide
     showSlide(currentSlide);
+    
+    // NEW: Speech Synthesis Logic
+    window.speakWord = function(word) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US'; // Set language 
+        // Optional: Adjust rate or pitch if needed
+        // utterance.rate = 0.9; 
+        window.speechSynthesis.speak(utterance);
+      } else {
+        console.warn("Browser does not support Speech Synthesis.");
+        // Optionally show a message to the user here
+      }
+    }
 
     // Logout Button Logic
     import { auth, signOut } from './js/firebase-init.js';
@@ -347,3 +447,4 @@
   </script>
 </body>
 </html>
+

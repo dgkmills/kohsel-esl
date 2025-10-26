@@ -26,28 +26,35 @@
       border-radius: 8px;
       padding: 30px;
       margin-top: 20px;
-      min-height: 400px; /* Give it some minimum height */
-      display: flex; /* Use flexbox for slide content */
-      flex-direction: column; /* Stack content vertically */
+      min-height: 450px; /* Increased height */
+      display: flex;
+      flex-direction: column;
     }
 
     /* Individual slides */
     .slide {
       display: none; /* Hide all slides by default */
       flex-grow: 1; /* Allow slide content to fill space */
+      line-height: 1.7; /* Improve readability */
     }
     .slide.active {
       display: block; /* Show the active slide */
     }
-    .slide h3 {
+    .slide h3, .slide h4 {
        margin-top: 0;
        color: #003366;
        border-bottom: 2px solid #eee;
        padding-bottom: 10px;
+       margin-bottom: 15px;
     }
+     .slide h4 { /* Sub-heading style */
+         font-size: 1.2rem;
+         border-bottom: 1px dashed #ccc;
+     }
     .slide ul {
       list-style: disc;
-      margin-left: 20px;
+      margin-left: 25px; /* Indent lists */
+      margin-bottom: 15px;
     }
      .slide li {
        margin-bottom: 10px;
@@ -57,6 +64,24 @@
        padding: 2px 5px;
        border-radius: 4px;
        font-family: monospace;
+       font-size: 0.95em; /* Slightly smaller code font */
+     }
+    .slide .quote {
+        font-style: italic;
+        color: #555;
+        border-left: 3px solid #0056b3;
+        padding-left: 15px;
+        margin: 15px 0;
+    }
+    .slide .example-box {
+        background-color: #f9f9f9;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+    }
+     .slide .example-box strong {
+        color: #003366;
      }
 
     /* Navigation buttons */
@@ -84,6 +109,11 @@
       background-color: #ccc;
       cursor: not-allowed;
     }
+    .slide-nav span { /* Style the counter */
+        font-size: 0.9rem;
+        color: #555;
+        align-self: center; /* Center vertically */
+     }
     .slide-nav a.button-link { /* Style the link like a button */
         display: inline-block;
         padding: 10px 18px;
@@ -123,39 +153,92 @@
   </header>
 
   <main class="container">
-    <h2>Lesson 20: The Clear Communication Challenge</h2>
+    <h2>Lesson 20: The Clear Communication Challenge (Interactive)</h2>
     
     <div class="slideshow-container">
       
-      <!-- Slide 1: Warm-up -->
+      <!-- Slide 1: Case Study Review -->
       <div class="slide active" id="slide1">
-        <h3>I. Warm-up: Sequential Language Review</h3>
-        <p>Remember the key phrases for explaining steps from Lesson 19?</p>
+        <h3>I. Recap: Lesson 19 Case Study - "The Production Delay"</h3>
+        <p>Remember the situation?</p>
         <ul>
+          <li><strong>Team Lead Somchai</strong> needed iron cores urgently for Assembly Line 5.</li>
+          <li><strong>QC Inspector Chom</strong> completed the physical check but missed a crucial step.</li>
+          <li><strong>The Problem:</strong> Chom only emailed Supervisor Jeab. She forgot the required *digital sign-off* from Finance before the cores could be released from inventory.</li>
+          <li><strong>The Result:</strong> Production stopped, costing time and money.</li>
+          <li><strong>The Solution (proposed):</strong> Better communication! Clearer process documentation (sequential steps) and potentially direct calls for critical confirmations.</li>
+        </ul>
+        <p>This lesson focuses on preventing such problems using clear, sequential language.</p>
+      </div>
+
+      <!-- Slide 2: Sequential Language Review & Example -->
+      <div class="slide" id="slide2">
+        <h3>II. Review: Sequential Language</h3>
+         <p>Clear communication often involves explaining steps in order. Use these key phrases:</p>
+         <ul>
           <li><strong>Starting:</strong> <code>First,...</code>, <code>To begin with,...</code></li>
           <li><strong>Continuing:</strong> <code>Next,...</code>, <code>Then,...</code>, <code>After that,...</code>, <code>Once X is complete,...</code></li>
           <li><strong>Ending:</strong> <code>Finally,...</code>, <code>The last step is...</code></li>
            <li><strong>Clarifying:</strong> <code>The key point is...</code>, <code>It is critical that you...</code>, <code>Instead of X, you must do Y.</code></li>
         </ul>
-        <p><strong>Activity ("Robot Teacher"):</strong> Think about a simple task (like making coffee or starting a machine). How would you instruct someone using these sequential phrases?</p>
-        <p>(Practice this mentally or with a colleague!)</p>
+        
+        <h4>Kohsel Example: Simplified Winding Process</h4>
+        <div class="example-box">
+          <p><strong>First</strong>, the operator mounts the empty coil bobbin onto the winding machine.</p>
+          <p><strong>Next</strong>, they carefully thread the copper wire through the guides.</p>
+          <p><strong>Then</strong>, the machine automatically winds the specified number of turns for the primary coil.</p>
+          <p><strong>After that</strong>, insulation tape is applied.</p>
+          <p><strong>Finally</strong>, the secondary coil is wound, and the completed coil assembly is removed for testing.</p>
+        </div>
       </div>
 
-      <!-- Slide 2: Main Activity Intro -->
-      <div class="slide" id="slide2">
-        <h3>II. Main Activity: The Clear Communication Challenge</h3>
-        <p>This lesson focuses on applying what we learned in a fun way.</p>
-        <p><strong>Goal:</strong> To review and apply key concepts from Unit 2 (Sequential Language, Email, Elevator Pitch) in an interactive format.</p>
-        <p>Originally, this was designed as a team-based quiz show for the classroom using the HDTV. We will adapt this for the web!</p>
-         <p>First, let's watch the case study video that this lesson is based on.</p>
+      <!-- Slide 3: Activity 1: Robot Teacher -->
+       <div class="slide" id="slide3">
+         <h3>III. Activity: Robot Teacher</h3>
+         <p>This is a fun way to practice giving clear, sequential instructions.</p>
+         <h4>How to Play (Classroom Adaptation):</h4>
+         <ul>
+           <li>Work in small teams (2-3 people).</li>
+           <li>Choose a simple task (e.g., drawing a transformer shape, stacking boxes, retrieving an item).</li>
+           <li>Write down a sequence of 3-5 steps to instruct someone (Robot Teacher Dan!) to complete the task. Use sequential language (<code>First,</code> <code>Next,</code> <code>Finally,</code> etc.).</li>
+           <li>After 5 minutes, each team gives their instructions to Robot Teacher Dan one step at a time.</li>
+           <li>Robot Dan will follow the instructions *exactly* as given. If a step is missing or unclear, Robot Dan might make a "mistake"!</li>
+           <li>The goal is to see which team's instructions lead to the task being completed correctly.</li>
+         </ul>
+         <p class="quote">Why this helps: It shows how easily miscommunication happens if steps aren't clear and in the correct order – just like in the case study!</p>
+       </div>
+
+      <!-- Slide 4: Activity 2: Clear Communication Challenge (Game Concept) -->
+      <div class="slide" id="slide4">
+        <h3>IV. Main Activity Concept: "Clear Communication Challenge"</h3>
+        <p>This activity (originally a team quiz show for the HDTV) tests your understanding of concepts from Unit 2.</p>
+        <h4>Game Idea (for future):</h4>
+         <ul>
+             <li>Divide into two teams.</li>
+             <li>Display questions related to sequential language, professional emails, or elevator pitches on a screen.</li>
+             <li>Teams race to answer correctly, sometimes needing to use specific phrases (like sequential words).</li>
+             <li>Points are awarded for accuracy and using the target language correctly.</li>
+         </ul>
+         <p>Today, we will focus on the case study video and a related quiz online.</p>
+      </div>
+
+       <!-- Slide 5: Wrap-up & Discussion -->
+      <div class="slide" id="slide5">
+          <h3>V. Wrap-up & Discussion Points</h3>
+          <p>Think about these questions after watching the video and taking the quiz:</p>
+          <ul>
+              <li>Which part of explaining a process is the most difficult? Why?</li>
+              <li>In the "Production Delay" case study, how much time and money might Kohsel have lost because of the sequence error? (Estimate!)</li>
+              <li>Why is it important to stay calm and factual (like in Lesson 19, Round 7 discussion) when explaining a problem to a manager?</li>
+          </ul>
+          <p>Being clear and sequential in your communication prevents costly mistakes!</p>
       </div>
       
-       <!-- Slide 3: Link to Video/Quiz -->
-      <div class="slide" id="slide3">
+       <!-- Slide 6: Link to Video/Quiz -->
+      <div class="slide" id="slide6">
         <h3>Watch the Case Study & Take the Quiz</h3>
-        <p>Now that you've reviewed the sequential language, let's watch the "Production Delay" case study video.</p>
-        <p>After watching, you'll find the "Clear Communication Challenge" quiz on the same page.</p>
-        <p>Click the button below when you are ready.</p>
+        <p>You've reviewed the case study, practiced sequential language, and thought about the activities.</p>
+        <p>Now, click the button below to watch the "Production Delay" case study video and take the "Clear Communication Challenge" quiz.</p>
          <!-- Link will be styled like a button via CSS -->
          <a href="videos.html#lesson20" class="button-link" style="margin-top: 20px;">Go to Video & Quiz</a>
       </div>
@@ -163,7 +246,7 @@
       <!-- Navigation -->
       <div class="slide-nav">
         <button id="prevBtn" onclick="changeSlide(-1)" disabled>Previous</button>
-        <span id="slide-counter">Slide 1 of 3</span>
+        <span id="slide-counter">Slide 1 of 6</span>
         <button id="nextBtn" onclick="changeSlide(1)">Next</button>
       </div>
       
@@ -180,7 +263,7 @@
   <script type="module">
     // Basic Slideshow Logic
     let currentSlide = 1;
-    const totalSlides = 3; // Update this if you add/remove slides
+    const totalSlides = 6; // *** UPDATED TOTAL SLIDES ***
     const slides = document.querySelectorAll('.slide');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -188,21 +271,23 @@
 
     function showSlide(n) {
       slides.forEach(slide => slide.classList.remove('active'));
-      document.getElementById(`slide${n}`).classList.add('active');
+      const currentSlideElement = document.getElementById(`slide${n}`);
+      if (currentSlideElement) {
+          currentSlideElement.classList.add('active');
+      } else {
+          console.error(`Slide element with ID slide${n} not found.`);
+          return; 
+      }
       counter.textContent = `Slide ${n} of ${totalSlides}`;
-      
-      // Enable/disable buttons
       prevBtn.disabled = (n === 1);
-      nextBtn.disabled = (n === totalSlides); // Disable 'Next' on the last slide
+      nextBtn.disabled = (n === totalSlides); 
     }
 
+    // Make changeSlide globally accessible
     window.changeSlide = function(n) {
       currentSlide += n;
-      if (currentSlide < 1) {
-        currentSlide = 1;
-      } else if (currentSlide > totalSlides) {
-        currentSlide = totalSlides;
-      }
+      if (currentSlide < 1) currentSlide = 1;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
       showSlide(currentSlide);
     }
 
@@ -221,3 +306,4 @@
   </script>
 </body>
 </html>
+

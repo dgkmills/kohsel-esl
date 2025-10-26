@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 20: Clear Communication - Kohsel English</title>
+  
+  <!-- Firebase SDKs -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <script type="module" src="js/protect.js"></script>
+  
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/logo.png" type="image/png">
+  
+  <style>
+    /* Hides the body until auth check is complete */
+    body { display: none; }
+    
+    /* Slideshow container */
+    .slideshow-container {
+      position: relative;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 30px;
+      margin-top: 20px;
+      min-height: 400px; /* Give it some minimum height */
+      display: flex; /* Use flexbox for slide content */
+      flex-direction: column; /* Stack content vertically */
+    }
+
+    /* Individual slides */
+    .slide {
+      display: none; /* Hide all slides by default */
+      flex-grow: 1; /* Allow slide content to fill space */
+    }
+    .slide.active {
+      display: block; /* Show the active slide */
+    }
+    .slide h3 {
+       margin-top: 0;
+       color: #003366;
+       border-bottom: 2px solid #eee;
+       padding-bottom: 10px;
+    }
+    .slide ul {
+      list-style: disc;
+      margin-left: 20px;
+    }
+     .slide li {
+       margin-bottom: 10px;
+     }
+     .slide code {
+       background-color: #eef;
+       padding: 2px 5px;
+       border-radius: 4px;
+       font-family: monospace;
+     }
+
+    /* Navigation buttons */
+    .slide-nav {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+    .slide-nav button {
+      padding: 10px 18px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .slide-nav button:hover {
+      background-color: #0056b3;
+    }
+    .slide-nav button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .slide-nav a.button-link { /* Style the link like a button */
+        display: inline-block;
+        padding: 10px 18px;
+        background-color: #17a2b8; /* Different color for final link */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+     .slide-nav a.button-link:hover {
+        background-color: #138496;
+     }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="images/logo.png" alt="Kohsel Logo">
+      <h1>English Portal</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lessons.html" class="active">Lessons</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li id="dashboard-nav-link" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+        <li><button id="logout-button">Logout</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Lesson 20: The Clear Communication Challenge</h2>
+    
+    <div class="slideshow-container">
+      
+      <!-- Slide 1: Warm-up -->
+      <div class="slide active" id="slide1">
+        <h3>I. Warm-up: Sequential Language Review</h3>
+        <p>Remember the key phrases for explaining steps from Lesson 19?</p>
+        <ul>
+          <li><strong>Starting:</strong> <code>First,...</code>, <code>To begin with,...</code></li>
+          <li><strong>Continuing:</strong> <code>Next,...</code>, <code>Then,...</code>, <code>After that,...</code>, <code>Once X is complete,...</code></li>
+          <li><strong>Ending:</strong> <code>Finally,...</code>, <code>The last step is...</code></li>
+           <li><strong>Clarifying:</strong> <code>The key point is...</code>, <code>It is critical that you...</code>, <code>Instead of X, you must do Y.</code></li>
+        </ul>
+        <p><strong>Activity ("Robot Teacher"):</strong> Think about a simple task (like making coffee or starting a machine). How would you instruct someone using these sequential phrases?</p>
+        <p>(Practice this mentally or with a colleague!)</p>
+      </div>
+
+      <!-- Slide 2: Main Activity Intro -->
+      <div class="slide" id="slide2">
+        <h3>II. Main Activity: The Clear Communication Challenge</h3>
+        <p>This lesson focuses on applying what we learned in a fun way.</p>
+        <p><strong>Goal:</strong> To review and apply key concepts from Unit 2 (Sequential Language, Email, Elevator Pitch) in an interactive format.</p>
+        <p>Originally, this was designed as a team-based quiz show for the classroom using the HDTV. We will adapt this for the web!</p>
+         <p>First, let's watch the case study video that this lesson is based on.</p>
+      </div>
+      
+       <!-- Slide 3: Link to Video/Quiz -->
+      <div class="slide" id="slide3">
+        <h3>Watch the Case Study & Take the Quiz</h3>
+        <p>Now that you've reviewed the sequential language, let's watch the "Production Delay" case study video.</p>
+        <p>After watching, you'll find the "Clear Communication Challenge" quiz on the same page.</p>
+        <p>Click the button below when you are ready.</p>
+         <!-- Link will be styled like a button via CSS -->
+         <a href="videos.html#lesson20" class="button-link" style="margin-top: 20px;">Go to Video & Quiz</a>
+      </div>
+
+      <!-- Navigation -->
+      <div class="slide-nav">
+        <button id="prevBtn" onclick="changeSlide(-1)" disabled>Previous</button>
+        <span id="slide-counter">Slide 1 of 3</span>
+        <button id="nextBtn" onclick="changeSlide(1)">Next</button>
+      </div>
+      
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Kohsel & Dan Mills</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  
+  <script type="module">
+    // Basic Slideshow Logic
+    let currentSlide = 1;
+    const totalSlides = 3; // Update this if you add/remove slides
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('slide-counter');
+
+    function showSlide(n) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      document.getElementById(`slide${n}`).classList.add('active');
+      counter.textContent = `Slide ${n} of ${totalSlides}`;
+      
+      // Enable/disable buttons
+      prevBtn.disabled = (n === 1);
+      nextBtn.disabled = (n === totalSlides); // Disable 'Next' on the last slide
+    }
+
+    window.changeSlide = function(n) {
+      currentSlide += n;
+      if (currentSlide < 1) {
+        currentSlide = 1;
+      } else if (currentSlide > totalSlides) {
+        currentSlide = totalSlides;
+      }
+      showSlide(currentSlide);
+    }
+
+    // Initialize first slide
+    showSlide(currentSlide);
+
+    // Logout Button Logic
+    import { auth, signOut } from './js/firebase-init.js';
+    document.getElementById('logout-button').addEventListener('click', () => {
+      signOut(auth).then(() => {
+        window.location.href = 'login.html';
+      }).catch((error) => {
+        console.error("Sign out error:", error);
+      });
+    });
+  </script>
+</body>
+</html>

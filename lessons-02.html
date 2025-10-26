@@ -18,17 +18,41 @@
     /* Hides the body until auth check is complete */
     body { display: none; }
     
-    /* Lesson content styles */
-    .lesson-content {
-      line-height: 1.8;
+     /* Slideshow container */
+    .slideshow-container {
+      position: relative;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 30px;
+      margin-top: 20px;
+      min-height: 450px; /* Adjusted height */
+      display: flex; 
+      flex-direction: column; 
     }
-    .lesson-content h3 {
-      border-bottom: 2px solid #003366;
-      padding-bottom: 5px;
-      margin-top: 40px;
+
+    /* Individual slides */
+    .slide {
+      display: none; /* Hide all slides by default */
+      flex-grow: 1; 
     }
-    .lesson-content strong {
+    .slide.active {
+      display: block; /* Show the active slide */
+    }
+    .slide h3 {
+       margin-top: 0;
+       color: #003366;
+       border-bottom: 2px solid #eee;
+       padding-bottom: 10px;
+       margin-bottom: 20px; /* Add space below heading */
+    }
+     .slide p {
+         line-height: 1.7; /* Adjust line spacing */
+         margin-bottom: 15px;
+     }
+    .slide strong {
       color: #003366;
+      font-weight: 600; /* Slightly bolder */
     }
     
     /* Example table styles */
@@ -36,84 +60,63 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-      font-size: 1.1rem;
+      font-size: 1.05rem; /* Slightly smaller for potentially more content */
     }
     .example-table th,
     .example-table td {
       border: 1px solid #ddd;
-      padding: 12px;
+      padding: 10px 12px; /* Adjust padding */
       text-align: left;
+      vertical-align: top; /* Align content to top */
     }
     .example-table th {
       background-color: #f4f7f6;
       color: #003366;
+      font-weight: 600;
     }
     .example-table td code {
       background-color: #eef;
       padding: 3px 6px;
       border-radius: 4px;
-      font-size: 1.2rem;
+      font-size: 1.1rem; /* Adjust size */
       font-weight: bold;
+      display: inline-block; /* Prevent wrapping */
+      margin-right: 5px; /* Space after code */
     }
+     .example-table td strong { /* Style bold text inside table */
+         font-weight: 600;
+     }
 
-    /* Quiz Styles */
-    .lesson-quiz-container {
-      background-color: #fff;
-      border: 1px solid #003366;
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 30px;
+    /* Navigation buttons */
+    .slide-nav {
+      margin-top: 25px; /* More space */
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #eee;
+      padding-top: 20px; /* More space */
     }
-    .quiz-question {
-      margin-bottom: 15px;
-    }
-    .quiz-question fieldset {
-      border: none;
-      padding: 0;
-      margin: 0;
-    }
-    .quiz-question legend {
-      font-weight: bold;
-      margin-bottom: 8px;
-      padding: 0;
-      font-size: 1.1rem;
-    }
-    .quiz-option {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 1.05rem;
-    }
-    .quiz-submit {
-      padding: 12px 20px;
+    .slide-nav button {
+      padding: 10px 18px;
       background-color: #003366;
       color: white;
       border: none;
       border-radius: 5px;
       font-size: 1rem;
-      font-weight: bold;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    .quiz-submit:hover {
+    .slide-nav button:hover {
       background-color: #0056b3;
     }
-    .quiz-result {
-      margin-top: 15px;
-      font-weight: bold;
-      padding: 10px;
-      border-radius: 5px;
-      display: none;
+    .slide-nav button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
-    .quiz-result.success {
-      color: #155724;
-      background-color: #D4EDDA;
-      border: 1px solid #C3E6CB;
-    }
-    .quiz-result.error {
-      color: #721C24;
-      background-color: #F8D7DA;
-      border: 1px solid #F5C6CB;
-    }
+     .slide-nav span { /* Style the counter */
+        font-size: 0.9rem;
+        color: #555;
+        align-self: center; /* Center vertically */
+     }
   </style>
 </head>
 <body>
@@ -138,154 +141,147 @@
   <main class="container">
     <h2>Lesson 02: Short Vowel Sounds (Interactive)</h2>
     
-    <div class="lesson-content">
-      <p>
-        Welcome to your first interactive lesson! Today, we will learn about **short vowel sounds**.
-      </p>
-      <p>
-        English has five vowels: **A, E, I, O, U**. Each vowel can make a short sound and a long sound. Short vowel sounds are quick and clear.
-      </p>
+    <div class="slideshow-container">
       
-      <h3>Kohsel Vowel Sound Examples</h3>
-      <p>
-        Let's practice these sounds using words you might see at Kohsel.
-      </p>
+      <!-- Slide 1: Introduction -->
+      <div class="slide active" id="slide1">
+        <h3>Introduction to Short Vowels</h3>
+        <p>
+          Welcome to Lesson 2! Today, we will focus on **short vowel sounds**.
+        </p>
+        <p>
+          English has five vowels: <strong>A, E, I, O, U</strong>. Each vowel can make different sounds. Short vowel sounds are quick and clear, like a short tap.
+        </p>
+        <p>Think of them like this:</p>
+        <ul>
+            <li><strong>A</strong> as in c<strong>a</strong>t or <strong>a</strong>pple</li>
+            <li><strong>E</strong> as in b<strong>e</strong>d or <strong>e</strong>gg</li>
+            <li><strong>I</strong> as in s<strong>i</strong>t or <strong>i</strong>gloo</li>
+            <li><strong>O</strong> as in h<strong>o</strong>t or <strong>o</strong>ctopus</li>
+            <li><strong>U</strong> as in s<strong>u</strong>n or <strong>u</strong>mbrella</li>
+        </ul>
+         <p>Click 'Next' to see examples from Kohsel.</p>
+      </div>
+
+      <!-- Slide 2: Kohsel Examples -->
+      <div class="slide" id="slide2">
+        <h3>Kohsel Vowel Sound Examples</h3>
+        <p>
+          Let's practice these sounds using words common in our work at Kohsel. Notice the bold part of the word makes the short vowel sound.
+        </p>
+        <table class="example-table">
+          <thead>
+            <tr>
+              <th>Short Vowel</th>
+              <th>Sound Like...</th>
+              <th>Kohsel Examples</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>A</code></td>
+              <td>c<strong>a</strong>t</td>
+              <td><strong>tra</strong>nsformer, <strong>pla</strong>nt, m<strong>a</strong>nager, <strong>a</strong>nalysis</td>
+            </tr>
+            <tr>
+              <td><code>E</code></td>
+              <td>b<strong>e</strong>d</td>
+              <td>t<strong>e</strong>st, w<strong>e</strong>ld, ass<strong>e</strong>mbly, s<strong>e</strong>nd</td>
+            </tr>
+            <tr>
+              <td><code>I</code></td>
+              <td>s<strong>i</strong>t</td>
+              <td>w<strong>i</strong>nding, sh<strong>i</strong>p, <strong>i</strong>nspect, f<strong>i</strong>x</td>
+            </tr>
+            <tr>
+              <td><code>O</code></td>
+              <td>h<strong>o</strong>t</td>
+              <td>c<strong>o</strong>pper, c<strong>o</strong>il, pr<strong>o</strong>duct, b<strong>o</strong>x</td>
+            </tr>
+            <tr>
+              <td><code>U</code></td>
+              <td>s<strong>u</strong>n</td>
+              <td>fl<strong>u</strong>x, c<strong>u</strong>stomer, pr<strong>o</strong>d<strong>u</strong>ction, b<strong>u</strong>siness</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       
-      <table class="example-table">
-        <thead>
-          <tr>
-            <th>Short Vowel</th>
-            <th>Sound (like in...)</th>
-            <th>Kohsel Examples</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>A</code></td>
-            <td>cat, apple</td>
-            <td><strong>tra</strong>nsformer, <strong>pla</strong>nt, m<strong>a</strong>nager, <strong>a</strong>nalysis</td>
-          </tr>
-          <tr>
-            <td><code>E</code></td>
-            <td>bed, egg</td>
-            <td>t<strong>e</strong>st, w<strong>e</strong>ld, ass<strong>e</strong>mbly, s<strong>e</strong>nd</td>
-          </tr>
-          <tr>
-            <td><code>I</code></td>
-            <td>sit, igloo</td>
-            <td>w<strong>i</strong>nding, sh<strong>i</strong>p, <strong>i</strong>nspect, f<strong>i</strong>x</td>
-          </tr>
-          <tr>
-            <td><code>O</code></td>
-            <td>hot, octopus</td>
-            <td>c<strong>o</strong>pper, c<strong>o</strong>il, pr<strong>o</strong>duct, b<strong>o</strong>x</td>
-          </tr>
-          <tr>
-            <td><code>U</code></td>
-            <td>sun, umbrella</td>
-            <td>fl<strong>u</strong>x, c<strong>u</strong>stomer, pr<strong>o</strong>duction, b<strong>u</strong>siness</td>
-          </tr>
-        </tbody>
-      </table>
+       <!-- Slide 3: Minimal Pairs -->
+      <div class="slide" id="slide3">
+        <h3>Minimal Pair Practice</h3>
+        <p>
+          "Minimal pairs" are words that sound almost the same, but one vowel sound is different. Listening carefully to these helps train your ear.
+        </p>
+         <table class="example-table">
+            <thead>
+              <tr>
+                <th>Pair</th>
+                <th>Word 1</th>
+                <th>Word 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>A / E</strong></td>
+                <td>b<strong>a</strong>d (<em>adjective</em>: not good)</td>
+                <td>b<strong>e</strong>d (<em>noun</em>: furniture for sleep)</td>
+              </tr>
+               <tr>
+                <td><strong>I / E</strong></td>
+                <td>p<strong>i</strong>n (<em>noun</em>: small sharp metal)</td>
+                <td>p<strong>e</strong>n (<em>noun</em>: tool for writing)</td>
+              </tr>
+               <tr>
+                <td><strong>A / U</strong></td>
+                <td>r<strong>a</strong>n (<em>verb</em>: past of run)</td>
+                <td>r<strong>u</strong>n (<em>verb</em>: to move fast)</td>
+              </tr>
+              <tr>
+                <td><strong>O / U</strong></td>
+                <td>c<strong>o</strong>p (<em>noun</em>: police officer)</td>
+                <td>c<strong>u</strong>p (<em>noun</em>: container for drink)</td>
+              </tr>
+               <tr>
+                <td><strong>I / A</strong></td>
+                <td>s<strong>i</strong>t (<em>verb</em>: rest on a chair)</td>
+                <td>s<strong>a</strong>t (<em>verb</em>: past of sit)</td>
+              </tr>
+               <tr>
+                <td><strong>I / A</strong></td>
+                <td>f<strong>i</strong>n (<em>noun</em>: part of a fish)</td>
+                <td>f<strong>a</strong>n (<em>noun</em>: machine that moves air)</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Practice saying these pairs aloud!</p>
+      </div>
+
+       <!-- Slide 4: End -->
+      <div class="slide" id="slide4">
+        <h3>Lesson Complete!</h3>
+        <p>
+          Great job practicing short vowel sounds! Remember:
+        </p>
+         <ul>
+            <li>Short vowels are quick and clear sounds.</li>
+            <li>Listen carefully for the difference in minimal pairs.</li>
+            <li>Practice using these sounds in Kohsel-related words.</li>
+         </ul>
+        <p>You can go back using the 'Previous' button or return to the main lessons page.</p>
+         <a href="lessons.html" class="button-link" style="display: inline-block; margin-top: 20px;">Back to Lessons</a>
+      </div>
+
+      <!-- Navigation -->
+      <div class="slide-nav">
+        <button id="prevBtn" onclick="changeSlide(-1)" disabled>Previous</button>
+        <span id="slide-counter">Slide 1 of 4</span>
+        <button id="nextBtn" onclick="changeSlide(1)">Next</button>
+      </div>
       
-      <h3>Minimal Pair Drills</h3>
-      <p>
-        "Minimal pairs" are words that sound almost the same, with only one sound being different. Let's practice hearing the difference.
-      </p>
-      
-      <table class="example-table">
-        <thead>
-          <tr>
-            <th>Vowel Pair</th>
-            <th>Example 1</th>
-            <th>Example 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>A / E</strong></td>
-            <td>b<strong>a</strong>d (not good)</td>
-            <td>b<strong>e</strong>d (you sleep on it)</td>
-          </tr>
-           <tr>
-            <td><strong>I / E</strong></td>
-            <td>p<strong>i</strong>n (small sharp metal)</td>
-            <td>p<strong>e</strong>n (you write with it)</td>
-          </tr>
-           <tr>
-            <td><strong>A / U</strong></td>
-            <td>r<strong>a</strong>n (past of run)</td>
-            <td>r<strong>u</strong>n (to move fast)</td>
-          </tr>
-          <tr>
-            <td><strong>O / U</strong></td>
-            <td>c<strong>o</strong>p (police officer)</td>
-            <td>c<strong>u</strong>p (you drink from it)</td>
-          </tr>
-           <tr>
-            <td><strong>I / A</strong></td>
-            <td>s<strong>i</strong>t (to be in a chair)</td>
-            <td>s<strong>a</strong>t (past of sit)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    </div> <!-- End Slideshow Container -->
 
-    <!-- NEW: Lesson 2 Quiz -->
-    <div class="lesson-quiz-container">
-      <h3>Lesson 02: Check Your Understanding</h3>
-      <p>Take this short quiz to practice what you've learned.</p>
-      <form id="lesson-quiz-form">
-        
-        <div class="quiz-question">
-          <fieldset>
-            <legend>1. Which Kohsel word has the short 'A' sound (like 'cat')?</legend>
-            <label class="quiz-option"><input type="radio" name="lq1" value="a" required> Team</label>
-            <label class="quiz-option"><input type="radio" name="lq1" value="b" required> Plant</label>
-            <label class="quiz-option"><input type="radio" name="lq1" value="c" required> Coil</label>
-          </fieldset>
-        </div>
-        
-        <div class="quiz-question">
-          <fieldset>
-            <legend>2. Which word has the short 'E' sound (like 'bed')?</legend>
-            <label class="quiz-option"><input type="radio" name="lq2" value="a" required> Test</label>
-            <label class="quiz-option"><input type="radio" name="lq2" value="b" required> Ship</label>
-            <label class="quiz-option"><input type="radio" name="lq2" value="c" required> Wire</label>
-          </fieldset>
-        </div>
-
-        <div class="quiz-question">
-          <fieldset>
-            <legend>3. Which word has the short 'I' sound (like 'sit')?</legend>
-            <label class="quiz-option"><input type="radio" name="lq3" value="a" required> Send</label>
-            <label class="quiz-option"><input type="radio" name="lq3" value="b" required> Time</label>
-            <label class="quiz-option"><input type="radio" name="lq3" value="c" required> Winding</label>
-          </fieldset>
-        </div>
-
-        <div class="quiz-question">
-          <fieldset>
-            <legend>4. Which word has the short 'O' sound (like 'hot')?</legend>
-            <label class="quiz-option"><input type="radio" name="lq4" value="a" required> Copper</label>
-            <label class="quiz-option"><input type="radio" name="lq4" value="b" required> Flux</label>
-            <label class="quiz-option"><input type="radio" name="lq4" value="c" required> Manager</label>
-          </fieldset>
-        </div>
-        
-        <div class="quiz-question">
-          <fieldset>
-            <legend>5. "I need to ___ the report to the manager." Which word fits best?</legend>
-            <label class="quiz-option"><input type="radio" name="lq5" value="a" required> sand</label>
-            <label class="quiz-option"><input type="radio" name="lq5" value="b" required> send</label>
-            <label class="quiz-option"><input type="radio" name="lq5" value="c" required> sound</label>
-          </fieldset>
-        </div>
-
-        <button type="submit" class="quiz-submit">Submit Lesson Quiz</button>
-      </form>
-      <div id="lesson-quiz-result" class="quiz-result"></div>
-    </div>
+    <!-- Quiz has been removed from this version -->
 
   </main>
 
@@ -294,15 +290,55 @@
   </footer>
 
   <script src="js/app.js"></script>
-  <!-- NEW: Load the lesson quiz logic script -->
-  <script type="module" src="js/lesson-quiz-logic.js"></script>
   
   <script type="module">
-    import { auth, signOut } from './js/firebase-init.js';
+    // Basic Slideshow Logic (Same as Lesson 20)
+    let currentSlide = 1;
+    const totalSlides = 4; // UPDATE THIS: Now 4 slides
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('slide-counter');
 
+    function showSlide(n) {
+      // Hide all slides
+      slides.forEach(slide => slide.classList.remove('active'));
+      // Show the current slide
+      const currentSlideElement = document.getElementById(`slide${n}`);
+      if (currentSlideElement) {
+          currentSlideElement.classList.add('active');
+      } else {
+          console.error(`Slide element with ID slide${n} not found.`);
+          return; // Exit if slide not found
+      }
+      
+      // Update counter text
+      counter.textContent = `Slide ${n} of ${totalSlides}`;
+      
+      // Enable/disable buttons based on current slide number
+      prevBtn.disabled = (n === 1);
+      nextBtn.disabled = (n === totalSlides); 
+    }
+
+    // Make changeSlide globally accessible for the button onclick handlers
+    window.changeSlide = function(n) {
+      currentSlide += n;
+      // Boundary checks
+      if (currentSlide < 1) {
+        currentSlide = 1;
+      } else if (currentSlide > totalSlides) {
+        currentSlide = totalSlides;
+      }
+      showSlide(currentSlide);
+    }
+
+    // Initialize the first slide on page load
+    showSlide(currentSlide);
+
+    // Logout Button Logic
+    import { auth, signOut } from './js/firebase-init.js';
     document.getElementById('logout-button').addEventListener('click', () => {
       signOut(auth).then(() => {
-        // Sign-out successful, redirect to login page.
         window.location.href = 'login.html';
       }).catch((error) => {
         console.error("Sign out error:", error);

@@ -1,19 +1,46 @@
-rules_version = '2';
-
-service cloud.firestore {
-  match /databases/{database}/documents {
-
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 11, 23);
-    }
-  }
+rules_version = '2';service cloud.firestore {match /databases/{database}/documents {// --- Helper Function ---
+// Checks if the currently authenticated user has the 'admin' role
+// in their user document.
+function isAdmin() {
+  // get() checks a single document.
+  return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
 }
+
+// --- User Rules ---
+// Rules for the 'users' collection
+match /users/{userId} {
+  // A user can read and write their OWN document (e.g., update profile)
+  allow read, write: if request.auth.uid == userId;
+  
+  // An admin can 'get' (read one) or 'list' (read all) user docs
+  // This is needed for the dashboard logic to map user IDs to emails.
+  allow get, list: if isAdmin();
+}
+
+// --- Video Quiz Attempt Rules ---
+// Rules for the 'quizAttempts' sub-collection (for Videos)
+match /users/{userId}/quizAttempts/{attemptId} {
+  // A user can read and write their OWN quiz attempts
+  allow read, write: if request.auth.uid == userId;
+  
+  // An admin can 'get' or 'list' quiz attempts for ANY user
+  // This is the FIX for the dashboard logic.
+  allow get, list: if isAdmin();
+}
+
+// --- NEW: Lesson Quiz Attempt Rules ---
+// Rules for the 'lessonAttempts' sub-collection (for new Web Lessons)
+match /users/{userId}/lessonAttempts/{attemptId} {
+  // A user can read and write their OWN lesson attempts
+  allow read, write: if request.auth.uid == userId;
+  
+  // An admin can 'get' or 'list' lesson attempts for ANY user
+  // (This allows for future expansion of the dashboard)
+  allow get, list: if isAdmin();
+}
+
+// --- Default Deny ---
+// Explicitly deny reads/writes to any other collection by default
+// Note: This isn't strictly necessary if the rules above are exhaustive,
+// but it's good practice. Any path not matched is implicitly denied.
+}}

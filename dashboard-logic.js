@@ -1,4 +1,32 @@
-import { db, collection, query, getDocs } from './firebase-init.js'; // Removed unused imports
+// IMPORTS
+// FIX: Corrected the import path to point to the 'js' folder
+import { 
+  db, 
+  collection, 
+  query, 
+  getDocs, 
+  onAuthStateChanged, // Added auth import
+  auth,               // Added auth import
+  getDoc,             // Added getDoc import
+  doc                 // Added doc import
+} from './js/firebase-init.js';
+
+// --- NEW: Role checking logic (moved from protect.js) ---
+// We need this to ensure only admins can try to fetch all data.
+async function getUserRole(user) {
+  if (!user) return 'user';
+  try {
+    const userDocRef = doc(db, 'users', user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+      return userDocSnap.data().role || 'user';
+    }
+    return 'user';
+  } catch (error) {
+    console.error("Error fetching user role:", error);
+    return 'user';
+  }
+}
 
 // Function to load dashboard data
 async function loadDashboardData() {
@@ -12,6 +40,7 @@ async function loadDashboardData() {
 
   try {
     // 1. Get all documents from the 'users' collection
+    // This requires the admin-only 'list' permission from firestore.rules
     const usersCollectionRef = collection(db, 'users');
     const usersQuery = query(usersCollectionRef);
     const usersSnapshot = await getDocs(usersQuery);
@@ -21,10 +50,10 @@ async function loadDashboardData() {
     // 2. Loop through each user
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
-      // Ensure we have an email field saved in the user document when they sign up or first save a score
-      const userEmail = userData?.email || userDoc.id; // Use email if available, otherwise UID
+      const userEmail = userData?.email || userDoc.id; // Use email if available
 
       // 3. Get the 'quizAttempts' sub-collection for this user
+      // This also requires the admin-only 'list' permission
       const quizAttemptsRef = collection(db, 'users', userDoc.id, 'quizAttempts');
       const quizAttemptsQuery = query(quizAttemptsRef);
       const quizAttemptsSnapshot = await getDocs(quizAttemptsQuery);
@@ -54,7 +83,6 @@ async function loadDashboardData() {
       const scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'fail';
       const date = attempt.timestamp ? new Date(attempt.timestamp.seconds * 1000).toLocaleString() : 'N/A';
       
-      // Use quizName from attempt data
       const quizName = attempt.quizName || 'N/A'; 
       
       row.innerHTML = `
@@ -70,15 +98,24 @@ async function loadDashboardData() {
 
   } catch (error) {
     console.error("Error loading dashboard data: ", error);
-    loadingEl.textContent = "Error loading data. See console for details.";
+    loadingEl.textContent = "Error loading data. Check console and Firestore rules.";
     loadingEl.style.color = 'red';
   }
 }
 
-// Ensure the DOM is fully loaded before running the script
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadDashboardData);
-} else {
-    loadDashboardData(); // DOMContentLoaded has already fired
-}
-
+// Auth listener to trigger data load
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // User is logged in, check their role
+    const role = await getUserRole(user);
+    if (role === 'admin') {
+      // Only load data if user is an admin
+      loadDashboardData();
+    } else {
+      // This page should be protected by protect.js, but as a fallback:
+      const loadingEl = document.getElementById('dashboard-loading');
+      if (loadingEl) loadingEl.textContent = "Access denied. Admin required.";
+    }
+  }
+  // If no user, protect.js should have already redirected to login.html
+});

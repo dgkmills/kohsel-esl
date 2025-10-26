@@ -8,7 +8,7 @@ import {
 } from './firebase-init.js';
 
 // Helper function to save quiz data
-async function saveQuizToFirestore(user, quizId, quizName, score, answers) {
+async function saveQuizToFirestore(user, quizId, quizName, score, answers, collectionName) {
     if (!user) return; // Exit if no user
 
     try {
@@ -16,8 +16,8 @@ async function saveQuizToFirestore(user, quizId, quizName, score, answers) {
         const quizAttemptId = `${quizId}_${Date.now()}`;
         
         // Create a reference to the document
-        // Path: /users/{userId}/quizAttempts/{quizAttemptId}
-        const docRef = doc(db, 'users', user.uid, 'quizAttempts', quizAttemptId);
+        // Path: /users/{userId}/{collectionName}/{quizAttemptId}
+        const docRef = doc(db, 'users', user.uid, collectionName, quizAttemptId);
 
         // Set the data
         await setDoc(docRef, {
@@ -41,7 +41,7 @@ async function saveQuizToFirestore(user, quizId, quizName, score, answers) {
 // Ensure this script runs only when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- Handler for Test Quiz ---
+    // --- Handler for Test Quiz (in videos.html) ---
     const testQuizForm = document.getElementById('test-quiz-form');
     const testQuizResult = document.getElementById('test-quiz-result');
 
@@ -68,7 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const answers = { q1, q2 };
             
             try {
-                await saveQuizToFirestore(user, 'test_email_mistakes', 'Test Quiz: Common Email Mistakes', score, answers);
+                // This is a "video quiz" so it saves to 'quizAttempts'
+                await saveQuizToFirestore(user, 'test_email_mistakes', 'Test Quiz: Common Email Mistakes', score, answers, 'quizAttempts');
                 testQuizResult.textContent = `Your test score: ${score}%`;
                 testQuizResult.className = 'quiz-result success';
             } catch (error) {
@@ -79,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- NEW: Handler for Powtoon Quiz ---
+    // --- MODIFIED: Handler for Powtoon Quiz (in videos.html) ---
     const powtoonQuizForm = document.getElementById('powtoon-quiz-form');
     const powtoonQuizResult = document.getElementById('powtoon-quiz-result');
 
@@ -96,21 +97,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const formData = new FormData(powtoonQuizForm);
+            // Get all 5 answers
             const pq1 = formData.get('pq1');
             const pq2 = formData.get('pq2');
+            const pq3 = formData.get('pq3');
+            const pq4 = formData.get('pq4');
+            const pq5 = formData.get('pq5'); // This is the textarea
             
-            // --- ACTION REQUIRED ---
-            // Update this logic with your real correct answers
+            // --- MODIFIED: Scoring for 5 questions (20 points each) ---
             let score = 0;
-            if (pq1 === 'b') score += 50; 
-            // Simple text check, case-insensitive and trimmed
-            if (pq2 && pq2.trim().toLowerCase() === 'smith') score += 50; 
-            // --- END ACTION ---
+            if (pq1 === 'b') score += 20; // Correct answer for Q1
+            if (pq2 === 'c') score += 20; // Correct answer for Q2
+            if (pq3 === 'b') score += 20; // Correct answer for Q3
+            if (pq4 === 'b') score += 20; // Correct answer for Q4
+            
+            // For the open-ended question, just check if they wrote *something*.
+            // A simple check for at least 10 characters.
+            if (pq5 && pq5.trim().length >= 10) score += 20; 
+            // --- END MODIFICATION ---
 
-            const answers = { pq1, pq2 };
+            const answers = { pq1, pq2, pq3, pq4, pq5 };
 
             try {
-                await saveQuizToFirestore(user, 'powtoon_450k_decision', 'Quiz: The 450000 Decision', score, answers);
+                // This is a "video quiz" so it saves to 'quizAttempts'
+                await saveQuizToFirestore(user, 'powtoon_450k_decision', 'Quiz: The 450000 Decision', score, answers, 'quizAttempts');
                 powtoonQuizResult.textContent = `Your quiz score: ${score}%`;
                 powtoonQuizResult.className = 'quiz-result success';
             } catch (error) {

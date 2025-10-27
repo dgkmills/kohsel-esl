@@ -3,61 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Kohsel English</title>
-  
+  <!-- Updated Title -->
+  <title>Transformer Team Portal - Admin Dashboard</title>
+
   <!-- Firebase SDKs -->
   <script type="module" src="js/firebase-init.js"></script>
   <script type="module" src="js/protect.js"></script>
-  
-  <!-- Correct stylesheet link -->
+
   <link rel="stylesheet" href="css/style.css">
 
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="images/logo.png" type="image/png">
-  
-  <style>
-    /* Hides the body until auth check is complete */
-    body { display: none; }
+  <link rel="icon" href="images/icon-192.png" type="image/png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Learning Portal">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
 
-    /* Styles for the dashboard table */
-    .dashboard-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    .dashboard-table th,
-    .dashboard-table td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-    .dashboard-table th {
-      background-color: #f4f7f6;
-      color: #003366;
-    }
-    .dashboard-table tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-    .user-email {
-      font-weight: bold;
-      color: #333;
-    }
-    .quiz-score.pass {
-      color: #155724; /* Green */
-      font-weight: bold;
-    }
-    .quiz-score.fail {
-      color: #721C24; /* Red */
-      font-weight: bold;
-    }
+  <!-- Keep this style block for auth protection -->
+  <style>
+    body.auth-loading { display: none; }
   </style>
+
+  <!-- Removed inline styles -->
 </head>
-<body>
+<body class="auth-loading">
 
   <header>
     <div class="logo-container">
-      <img src="images/logo.png" alt="Kohsel Logo">
-      <h1>English Portal</h1>
+      <img src="images/icon-192.png" alt="Portal Logo">
+      <h1>Transformer Team Portal</h1>
     </div>
     <nav>
       <ul>
@@ -65,7 +39,6 @@
         <li><a href="lessons.html">Lessons</a></li>
         <li><a href="videos.html">Videos</a></li>
         <li><a href="tools.html">Tools</a></li>
-        <!-- This link will be hidden by protect.js if user is not admin -->
         <li id="dashboard-nav-link" style="display: none;"><a href="dashboard.html" class="active">Dashboard</a></li>
         <li><button id="logout-button">Logout</button></li>
       </ul>
@@ -75,10 +48,9 @@
   <main class="container">
     <h2>Admin Dashboard</h2>
     <p>
-      Recent quiz attempts from all users.
+      Recent quiz attempts from all team members.
     </p>
-    
-    <!-- This table is what was missing -->
+
     <table class="dashboard-table">
       <thead>
         <tr>
@@ -92,34 +64,33 @@
         <!-- Rows will be inserted here by dashboard-logic.js -->
       </tbody>
     </table>
-    <p id="dashboard-loading" style="text-align: center; padding: 20px;">
+    <p id="dashboard-loading">
       Loading quiz data...
     </p>
 
   </main>
 
   <footer>
-    <p>&copy; 2025 Kohsel & Dan Mills</p>
+    <p>&copy; 2025 Dan Mills</p>
   </footer>
 
   <script src="js/app.js"></script>
-  
-  <!-- This script populates the table -->
-  <!-- It correctly links to the JS file -->
   <script type="module" src="dashboard-logic.js"></script>
-  
+
   <script type="module">
     import { auth, signOut } from './js/firebase-init.js';
+    document.body.classList.remove('auth-loading'); // Show body
 
-    document.getElementById('logout-button').addEventListener('click', () => {
-      signOut(auth).then(() => {
-        // Sign-out successful, redirect to login page.
-        window.location.href = 'login.html';
-      }).catch((error) => {
-        console.error("Sign out error:", error);
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', () => {
+        signOut(auth).then(() => {
+          window.location.href = 'login.html';
+        }).catch((error) => {
+          console.error("Sign out error:", error);
+        });
       });
-    });
+    }
   </script>
 </body>
 </html>
-

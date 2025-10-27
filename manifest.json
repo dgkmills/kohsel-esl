@@ -1,11 +1,11 @@
 {
-  "name": "Kohsel ESL Learning",
-  "short_name": "Kohsel ESL",
-  "description": "An ESL learning platform with lessons, quizzes, and tools.",
+  "name": "My Teacher Dan Portal",
+  "short_name": "Portal",
+  "description": "An English learning portal with lessons, quizzes, and tools for the Transformer Team.",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#004aad",
+  "theme_color": "#4f46e5",
   "orientation": "portrait-primary",
   "icons": [
     {

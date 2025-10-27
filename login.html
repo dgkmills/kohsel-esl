@@ -3,117 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Kohsel English Portal</title>
-  <!-- Using your repo's 'style.css' file -->
-  <link rel="stylesheet" href="css/style.css"> 
+  <title>Login - Transformer Team Portal</title>
+
+  <link rel="stylesheet" href="css/style.css">
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="images/logo.png" type="image/png">
-  
-  <!-- Using the styling from your "previous version" -->
-  <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    .login-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background-color: #f4f7f6;
-    }
-    .login-container {
-      width: 100%;
-      max-width: 400px;
-      padding: 30px;
-      background-color: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .login-logo {
-      height: 50px;
-      margin-bottom: 10px;
-    }
-    .login-container h1 {
-      font-size: 1.5rem;
-      color: #333;
-      margin-bottom: 10px;
-    }
-    .login-container p {
-        margin-bottom: 20px;
-    }
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .login-form input {
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    
-    /* Updated button styles for two buttons */
-    .login-form button {
-      padding: 12px;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+  <link rel="icon" href="images/icon-192.png" type="image/png">
 
-    /* Login button */
-    #loginButton {
-        background-color: #003366; /* Main color */
-    }
-    #loginButton:hover {
-        background-color: #0056b3;
-    }
-
-    /* Sign Up button */
-    #signupButton {
-        background-color: #0069d9; /* A slightly different blue */
-    }
-    #signupButton:hover {
-        background-color: #007bff;
-    }
-
-    #errorMessage { /* Renamed from error-message to match JS */
-      color: #D32F2F;
-      background-color: #FFEBEE;
-      border: 1px solid #D32F2F;
-      border-radius: 5px;
-      padding: 10px;
-      margin-top: 15px;
-      display: none; /* Hidden by default */
-    }
-  </style>
+  <!-- Styles are now in style.css, no inline styles needed except for initial body display -->
+   <style>
+     /* Ensure the login wrapper takes full height even before JS runs */
+     body.login-wrapper {
+         display: flex; /* Kept for centering */
+         /* Removed other styles now in style.css */
+     }
+     /* Style for the new login assistance links */
+     .login-links {
+         margin-top: 1.5rem; /* mt-6 */
+         font-size: 0.875rem; /* text-sm */
+         text-align: center;
+         color: #6b7280; /* text-gray-500 */
+     }
+     .login-links a {
+         color: #4f46e5; /* text-indigo-600 */
+         text-decoration: none;
+         margin: 0 0.5rem; /* mx-2 */
+     }
+      .login-links a:hover {
+          text-decoration: underline;
+      }
+   </style>
 </head>
-<body class="login-wrapper" style="display: flex;">
+<body class="login-wrapper"> <!-- Keep class for centering -->
 
   <main class="login-container">
-    <img src="images/logo.png" alt="Kohsel Logo" class="login-logo">
-    <h1>Kohsel English Portal</h1>
-    <p>Please log in or sign up to access your learning materials.</p>
-    
-    <!-- Using a div, not a form, to handle button clicks separately -->
+    <!-- Logo is now larger via style.css -->
+    <img src="images/icon-192.png" alt="Portal Logo" class="login-logo">
+    <h1>My Teacher Dan Portal</h1>
+    <p>Please log in to access the Transformer Team learning materials.</p>
+
+    <!-- Form structure -->
     <div class="login-form">
-      <input type="email" id="email" placeholder="Email" required>
+      <input type="email" id="email" placeholder="Email (e.g., name@myteacherdan.com)" required>
       <input type="password" id="password" placeholder="Password" required>
-      
-      <!-- The two buttons for login and signup -->
+
+      <!-- Only Login button remains -->
       <button id="loginButton" type="button">Login</button>
-      <button id="signupButton" type="button">Sign Up</button>
+      <!-- Sign Up button removed -->
     </div>
-    
-    <div id="errorMessage"></div>
+
+    <!-- Error/Status Message Area -->
+    <div id="messageArea" style="display: none;"></div> <!-- Renamed from errorMessage for clarity -->
+
+    <!-- New Assistance Links -->
+    <div class="login-links">
+      <a href="#" id="forgotPasswordLink">Forgot Password?</a> |
+      <a href="mailto:dan@myteacherdan.com?subject=Portal%20Account%20Request&body=Hi%20Dan,%0D%0A%0D%0AI%20would%20like%20to%20request%20an%20account%20for%20the%20Transformer%20Team%20Portal.%0D%0A%0D%0AMy%20name%20is:%20[Your%20Name]%0D%0A%0D%0AThank%20you!">Request an Account</a>
+    </div>
+
   </main>
 
   <!-- Load Firebase and the login script as modules -->

@@ -1,124 +1,147 @@
-// Import Firebase services (path is correct)
+// Import Firebase services
 import { auth, db } from './firebase-init.js';
 // Import Auth functions
-import { 
-    signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword, 
-    onAuthStateChanged 
+import {
+    signInWithEmailAndPassword,
+    // createUserWithEmailAndPassword, // Removed - No sign up
+    onAuthStateChanged,
+    sendPasswordResetEmail // Added for Forgot Password
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-// Import Firestore functions
-import { 
-    doc, 
-    setDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// Import Firestore functions (only needed if you were creating user docs on signup)
+// import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Get elements from the HTML
 const loginButton = document.getElementById('loginButton');
-const signupButton = document.getElementById('signupButton');
+// const signupButton = document.getElementById('signupButton'); // Removed
 const emailField = document.getElementById('email');
 const passwordField = document.getElementById('password');
-const errorMessage = document.getElementById('errorMessage');
+const messageArea = document.getElementById('messageArea'); // Renamed from errorMessage
+const forgotPasswordLink = document.getElementById('forgotPasswordLink');
 
-// Hide error message function
-function hideError() {
-    errorMessage.style.display = 'none';
-    errorMessage.textContent = '';
+// --- Helper Functions for User Feedback ---
+function showMessage(message, isError = false) {
+    if(messageArea) {
+        messageArea.textContent = message;
+        messageArea.className = isError ? 'errorMessage' : 'successMessage'; // Use classes for styling
+         // Apply basic styles directly for visibility, complement with CSS classes
+        messageArea.style.display = 'block';
+        messageArea.style.marginTop = '1rem';
+        messageArea.style.padding = '0.75rem 1rem';
+        messageArea.style.borderRadius = '0.375rem';
+        messageArea.style.textAlign = 'left';
+        messageArea.style.fontSize = '0.875rem';
+        if (isError) {
+            messageArea.style.color = '#991b1b'; // text-red-800
+            messageArea.style.backgroundColor = '#fee2e2'; // bg-red-100
+            messageArea.style.border = '1px solid #fecaca'; // border-red-200
+        } else {
+             messageArea.style.color = '#047857'; // text-green-700
+             messageArea.style.backgroundColor = '#d1fae5'; // bg-green-100
+             messageArea.style.border = '1px solid #a7f3d0'; // border-green-200
+        }
+    } else {
+        console.error("Message area element not found. Message:", message);
+    }
 }
 
-// Show error message function
-function showError(message) {
-    errorMessage.style.display = 'block';
-    errorMessage.textContent = message;
+function hideMessage() {
+    if(messageArea) {
+        messageArea.style.display = 'none';
+        messageArea.textContent = '';
+    }
 }
 
-// 1. LOGIN BUTTON LISTENER
-if (loginButton) {
-    loginButton.addEventListener('click', async () => {
-        hideError();
-        const email = emailField.value;
-        const password = passwordField.value;
+// --- Login Function ---
+async function handleLogin() {
+    hideMessage();
+    const email = emailField.value;
+    const password = passwordField.value;
 
-        if (!email || !password) {
-            showError("Please enter both email and password.");
-            return;
-        }
+    if (!email || !password) {
+        showMessage("Please enter both email and password.", true);
+        return;
+    }
 
-        try {
-            console.log("Attempting to sign in...");
-            await signInWithEmailAndPassword(auth, email, password);
-            console.log("Sign in successful!");
-            
-            // --- FIX ---
-            // Redirect to the main index page.
-            // The protect.js script will show admins the 'Dashboard' link,
-            // so they can navigate there. This avoids redirecting non-admins
-            // to a page they can't view.
-            window.location.href = 'index.html'; 
-            // --- END FIX ---
-
-        } catch (error) {
-            console.error("Login Error: ", error);
-            showError("Login failed. Please check your email and password.");
-        }
-    });
-}
-
-// 2. SIGN UP BUTTON LISTENER
-if (signupButton) {
-    signupButton.addEventListener('click', async () => {
-        hideError();
-        const email = emailField.value;
-        const password = passwordField.value;
-
-        if (!email || !password) {
-            showError("Please enter both email and password to sign up.");
-            return;
-        }
-
-        try {
-            console.log("Attempting to sign up...");
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            
-            console.log("User created successfully:", user.uid);
-
-            // Create a document in the 'users' collection for this new user
-            // Set a default role of 'user'
-            await setDoc(doc(db, "users", user.uid), {
-                email: user.email,
-                role: 'user', // Explicitly set default role
-                joinedDate: new Date()
-            });
-            
-            console.log("User document created in Firestore.");
-
-            // --- FIX ---
-            // Redirect to the main index page after signup as well.
-            window.location.href = 'index.html';
-            // --- END FIX ---
-
-        } catch (error) {
-            console.error("Sign Up Error: ", error);
-            if (error.code === 'auth/email-already-in-use') {
-                showError("This email is already in use. Please try logging in.");
-            } else if (error.code === 'auth/weak-password') {
-                showError("Password is too weak. Please use at least 6 characters.");
-            } else {
-                showError("Sign up failed. Please try again.");
-            }
-        }
-    });
-}
-
-// 3. AUTH STATE OBSERVER (Redirect if already logged in)
-onAuthStateChanged(auth, (user) => {
-    // If user is logged in and they are on the login page, redirect them
-    if (user && window.location.pathname.includes('login.html')) {
-        console.log("User already logged in, redirecting to index page.");
-        
-        // --- FIX ---
-        // Redirect to index.html, not dashboard.html
+    try {
+        console.log("Attempting to sign in...");
+        await signInWithEmailAndPassword(auth, email, password);
+        console.log("Sign in successful!");
+        // Redirect to the main index page. protect.js handles role-based access.
         window.location.href = 'index.html';
-        // --- END FIX ---
+
+    } catch (error) {
+        console.error("Login Error: ", error);
+        // Provide a generic error for incorrect credentials
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-email') {
+             showMessage("Login failed. Please check your email and password.", true);
+        } else {
+             showMessage("An unexpected error occurred. Please try again.", true);
+        }
+    }
+}
+
+// --- Password Reset Function ---
+async function handlePasswordReset() {
+    hideMessage();
+    const email = emailField.value;
+
+    if (!email) {
+        showMessage("Please enter your email address above to reset password.", true);
+        return;
+    }
+
+    try {
+        await sendPasswordResetEmail(auth, email);
+        showMessage(`Password reset email sent to ${email}. Check your inbox (and spam folder).`);
+    } catch (error) {
+        console.error("Password Reset Error:", error);
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email') {
+            showMessage("Could not send reset email. Please check the email address.", true);
+        } else {
+            showMessage("An error occurred trying to send the password reset email.", true);
+        }
+    }
+}
+
+
+// --- Event Listeners ---
+
+// 1. LOGIN BUTTON CLICK
+if (loginButton && emailField && passwordField) {
+    loginButton.addEventListener('click', handleLogin);
+} else {
+     console.error("Login button or input fields not found.");
+}
+
+// 2. ENTER KEY in Password Field
+if (passwordField) {
+    passwordField.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent default form submission (if it was a form)
+            handleLogin(); // Trigger the login function
+        }
+    });
+}
+
+// 3. FORGOT PASSWORD LINK CLICK
+if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default link behavior
+        handlePasswordReset();
+    });
+} else {
+    console.error("Forgot Password link not found.");
+}
+
+// 4. SIGN UP BUTTON LISTENER (Removed)
+// The signupButton variable and its event listener block have been removed.
+
+// 5. AUTH STATE OBSERVER (Redirect if already logged in)
+onAuthStateChanged(auth, (user) => {
+    // If user is logged in and they are somehow on the login page, redirect them
+    if (user && window.location.pathname.endsWith('login.html')) {
+        console.log("User already logged in, redirecting to index page.");
+        window.location.href = 'index.html';
     }
 });
+

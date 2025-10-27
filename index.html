@@ -3,34 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kohsel English Portal</title>
-  
+  <!-- Updated Title -->
+  <title>Transformer Team Portal - Home</title>
+
   <!-- Firebase SDKs -->
   <script type="module" src="js/firebase-init.js"></script>
   <script type="module" src="js/protect.js"></script>
-  
-  <!-- FIX: Corrected stylesheet name from styles.css to style.css -->
+
+  <!-- Link to the single CSS file -->
   <link rel="stylesheet" href="css/style.css">
-  
+
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="images/logo.png" type="image/png">
+  <!-- Using your generic icon now -->
+  <link rel="icon" href="images/icon-192.png" type="image/png">
   <!-- iOS meta tags for PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Kohsel English">
+  <meta name="apple-mobile-web-app-title" content="Learning Portal"> <!-- Updated PWA Title -->
   <link rel="apple-touch-icon" href="images/icon-192.png">
-  
+
+  <!-- Keep this style block for auth protection -->
   <style>
     /* Hides the body until auth check is complete */
-    body { display: none; }
+    body.auth-loading { display: none; }
   </style>
 </head>
-<body>
+<body class="auth-loading"> <!-- Add class for initial hiding -->
 
   <header>
     <div class="logo-container">
-      <img src="images/logo.png" alt="Kohsel Logo">
-      <h1>English Portal</h1>
+      <!-- Using your generic icon as the logo -->
+      <img src="images/icon-192.png" alt="Portal Logo">
+      <!-- Updated Site Title -->
+      <h1>Transformer Team Portal</h1>
     </div>
     <nav>
       <ul>
@@ -46,46 +51,56 @@
   </header>
 
   <main class="container">
-    <h2>Welcome, Kohsel Team!</h2>
+    <!-- Personalized Welcome -->
+    <h2>Welcome, Transformer Team!</h2>
     <p>
-      This website is a resource hub to support your English language learning. 
+      This website is your resource hub to support English language learning for our team.
       Here you can find lesson documents, practice exercises, and tools to
-      help you communicate more effectively.
+      help you communicate more effectively at work.
     </p>
     <p>
       Please use the navigation links above to explore the different sections:
     </p>
     <ul>
-      <li><strong><a href="lessons.html">Lessons:</a></strong> View and download all past lesson materials, presentations, and worksheets.</li>
+      <li><strong><a href="lessons.html">Lessons:</a></strong> View and download all past lesson materials, presentations, and worksheets, plus access interactive web lessons.</li>
       <li><strong><a href="videos.html">Videos:</a></strong> Watch video lessons and take quizzes to check your understanding.</li>
       <li><strong><a href="tools.html">Tools:</a></strong> Use the Email Assistant and practice your pronunciation and conversation skills.</li>
     </ul>
-    
+
     <h3>About This Program</h3>
     <p>
-      This program is designed for managers in HR, Production, Quality Control, 
-      and Accounting to build confidence and precision in business English. 
-      If you have any questions or requests for future topics, please let me know.
+      This program is designed specifically for our team members in HR, Production, Quality Control,
+      and Accounting to build confidence and precision in business English.
+      If you have any questions or requests for future topics, please let Teacher Dan know.
     </p>
   </main>
 
   <footer>
-    <p>&copy; 2025 Kohsel & Dan Mills</p>
+    <!-- Updated Footer -->
+    <p>&copy; 2025 Dan Mills</p>
   </footer>
 
   <script src="js/app.js"></script>
-  
+
   <script type="module">
     import { auth, signOut } from './js/firebase-init.js';
 
-    document.getElementById('logout-button').addEventListener('click', () => {
-      signOut(auth).then(() => {
-        // Sign-out successful, redirect to login page.
-        window.location.href = 'login.html';
-      }).catch((error) => {
-        console.error("Sign out error:", error);
+    // Ensure body is shown after scripts load (fallback if protect.js fails)
+    document.body.classList.remove('auth-loading');
+
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', () => {
+        signOut(auth).then(() => {
+          // Sign-out successful, redirect to login page.
+          window.location.href = 'login.html';
+        }).catch((error) => {
+          console.error("Sign out error:", error);
+        });
       });
-    });
+    } else {
+      console.error("Logout button not found");
+    }
   </script>
 </body>
 </html>

@@ -3,148 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Lessons - Kohsel English</title>
-  
+  <!-- Updated Title -->
+  <title>Transformer Team Portal - Videos</title>
+
   <!-- Firebase SDKs -->
   <script type="module" src="js/firebase-init.js"></script>
   <script type="module" src="js/protect.js"></script>
-  
+
   <link rel="stylesheet" href="css/style.css">
 
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="images/logo.png" type="image/png">
-  
+  <link rel="icon" href="images/icon-192.png" type="image/png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Learning Portal">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+
+  <!-- Keep this style block for auth protection -->
   <style>
-    /* Hides the body until auth check is complete */
-    body { display: none; }
-    
-    /* Quiz & Video Container Styles */
-    .video-quiz-section {
-      background-color: #fff;
-      border: 1px solid #003366;
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 30px; /* Increased margin between sections */
-      scroll-margin-top: 80px; /* Offset for sticky header when jumping to ID */
-    }
-    .video-quiz-section h3 {
-      margin-top: 0;
-      color: #003366;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
-    }
-    .quiz-question {
-      margin-bottom: 15px;
-    }
-    .quiz-question label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    .quiz-question select,
-    .quiz-question input[type="text"],
-    .quiz-question textarea,
-    .quiz-question input[type="radio"], 
-    .quiz-question input[type="checkbox"] { /* Added radio/checkbox */
-      margin-right: 5px; /* Space between radio/checkbox and text */
-    }
-     .quiz-question input[type="text"],
-     .quiz-question textarea,
-     .quiz-question select { /* Style block inputs */
-      padding: 8px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box; 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    
-    /* Radio/Checkbox button styles */
-    .quiz-question fieldset {
-      border: none;
-      padding: 0;
-      margin: 0;
-    }
-    .quiz-question legend {
-      font-weight: bold;
-      margin-bottom: 8px;
-      padding: 0;
-    }
-    .quiz-option {
-      display: block; /* Make each option take its own line */
-      margin-bottom: 8px; /* Spacing between options */
-      cursor: pointer; /* Indicate options are clickable */
-    }
-     .quiz-option input {
-       vertical-align: middle; /* Align radio/checkbox with text */
-     }
-
-    .quiz-submit {
-      padding: 12px 20px;
-      background-color: #003366;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 10px; /* Add space above button */
-    }
-    .quiz-submit:hover {
-      background-color: #0056b3;
-    }
-    .quiz-result {
-      margin-top: 15px;
-      font-weight: bold;
-      padding: 10px;
-      border-radius: 5px;
-      display: none;
-    }
-    .quiz-result.success {
-      color: #155724;
-      background-color: #D4EDDA;
-      border: 1px solid #C3E6CB;
-    }
-    .quiz-result.error {
-      color: #721C24;
-      background-color: #F8D7DA;
-      border: 1px solid #F5C6CB;
-    }
-
-    /* Powtoon Video Embed Style */
-    .video-embed-container {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      height: 0;
-      overflow: hidden;
-      max-width: 100%;
-      background: #f0f0f0; /* Lighter background for loading */
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc; /* Add subtle border */
-    }
-    .video-embed-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    
-    /* Ensure header doesn't overlap content when jumping to ID */
-    html {
-        scroll-padding-top: 80px; /* Adjust based on your header height */
-    }
+    body.auth-loading { display: none; }
   </style>
+
+  <!-- Removed inline styles, now handled by style.css -->
 </head>
-<body>
+<body class="auth-loading">
 
   <header>
     <div class="logo-container">
-      <img src="images/logo.png" alt="Kohsel Logo">
-      <h1>English Portal</h1>
+      <img src="images/icon-192.png" alt="Portal Logo">
+      <h1>Transformer Team Portal</h1>
     </div>
     <nav>
       <ul>
@@ -161,22 +48,22 @@
   <main class="container">
     <h2>Video Lessons & Quizzes</h2>
     <p>
-      Watch video lessons covering specific case studies and topics, then take a short quiz to check your understanding.
+      Watch video lessons covering specific case studies and topics relevant to our work, then take a short quiz to check your understanding.
     </p>
 
     <!-- Section 1: 450,000 Decision -->
-    <div class="video-quiz-section" id="decision450k"> <!-- Added ID for potential future linking -->
+    <div class="video-quiz-section" id="decision450k">
       <h3>Case Study Recap - The 450,000 Decision</h3>
       <div class="video-embed-container">
-        <iframe 
-          width="800" 
-          height="450" 
-          src="https://www.powtoon.com/embed/ch4CvQl9kLk/" 
-          frameborder="0" 
+        <iframe
+          width="800"
+          height="450"
+          src="https://www.powtoon.com/embed/ch4CvQl9kLk/"
+          frameborder="0"
           allowfullscreen>
         </iframe>
       </div>
-    
+
       <h4>Quiz: The 450,000 Decision</h4>
       <p>Take this quiz to check your understanding of the video.</p>
       <form id="powtoon-quiz-form">
@@ -213,31 +100,31 @@
           </fieldset>
         </div>
         <div class="quiz-question">
-          <label for="pq5">5. In your own words, what was the *solution* to the problem?</label>
-          <textarea id="pq5" name="pq5" rows="3" placeholder="Briefly explain what Kohsel did..." required></textarea>
+          <!-- Added block-label class -->
+          <label for="pq5" class="block-label">5. In your own words, what was the *solution* to the problem?</label>
+          <textarea id="pq5" name="pq5" rows="3" placeholder="Briefly explain what was done..." required></textarea>
         </div>
         <button type="submit" class="quiz-submit">Submit 450k Quiz</button>
       </form>
       <div id="powtoon-quiz-result" class="quiz-result"></div>
     </div> <!-- End Section 1 -->
 
-    <!-- NEW Section 2: Lesson 20 - Production Delay -->
-    <div class="video-quiz-section" id="lesson20"> <!-- Added ID for the link from lessons.html -->
+    <!-- Section 2: Lesson 20 - Production Delay -->
+    <div class="video-quiz-section" id="lesson20">
       <h3>Lesson 20 - Case Study: The Production Delay</h3>
       <div class="video-embed-container">
-        <!-- The new iframe embed code you provided -->
-        <iframe 
-          width="800" 
-          height="450" 
-          src="https://www.powtoon.com/embed/bWSydJMsCEh/" 
-          frameborder="0" 
+        <iframe
+          width="800"
+          height="450"
+          src="https://www.powtoon.com/embed/bWSydJMsCEh/"
+          frameborder="0"
           allowfullscreen>
         </iframe>
       </div>
-      
+
       <h4>Quiz: Clear Communication Challenge</h4>
       <p>Based on the video and Lesson 19, answer the following questions.</p>
-      <form id="lesson20-quiz-form"> <!-- Unique form ID -->
+      <form id="lesson20-quiz-form">
         <div class="quiz-question">
           <fieldset>
             <legend>1. In the case study, what key information did Chom forget to tell Preeya?</legend>
@@ -271,7 +158,8 @@
           </fieldset>
         </div>
         <div class="quiz-question">
-          <label for="l20q5">5. Why is using words like "First," "Next," and "Finally" important when explaining a process?</label>
+          <!-- Added block-label class -->
+          <label for="l20q5" class="block-label">5. Why is using words like "First," "Next," and "Finally" important when explaining a process?</label>
           <textarea id="l20q5" name="l20q5" rows="3" placeholder="Explain briefly in your own words..." required></textarea>
         </div>
         <button type="submit" class="quiz-submit">Submit Comm Challenge Quiz</button>
@@ -282,25 +170,27 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 Kohsel & Dan Mills</p>
+    <p>&copy; 2025 Dan Mills</p>
   </footer>
 
   <script src="js/app.js"></script>
   <!-- Load the quiz logic script -->
   <script type="module" src="js/quiz-logic.js"></script>
-  
+
   <script type="module">
     import { auth, signOut } from './js/firebase-init.js';
+    document.body.classList.remove('auth-loading'); // Show body
 
-    document.getElementById('logout-button').addEventListener('click', () => {
-      signOut(auth).then(() => {
-        // Sign-out successful, redirect to login page.
-        window.location.href = 'login.html';
-      }).catch((error) => {
-        console.error("Sign out error:", error);
+    const logoutButton = document.getElementById('logout-button');
+    if(logoutButton) {
+      logoutButton.addEventListener('click', () => {
+        signOut(auth).then(() => {
+          window.location.href = 'login.html';
+        }).catch((error) => {
+          console.error("Sign out error:", error);
+        });
       });
-    });
+    }
   </script>
 </body>
 </html>
-

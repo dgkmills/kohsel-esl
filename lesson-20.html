@@ -3,147 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson 20: Clear Communication - Kohsel English</title>
-  
+  <!-- Updated Title -->
+  <title>Lesson 20: Clear Communication - Transformer Team Portal</title>
+
   <!-- Firebase SDKs -->
   <script type="module" src="js/firebase-init.js"></script>
   <script type="module" src="js/protect.js"></script>
-  
+
   <link rel="stylesheet" href="css/style.css">
 
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="images/logo.png" type="image/png">
-  
+  <link rel="icon" href="images/icon-192.png" type="image/png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Learning Portal">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+
+  <!-- Keep this style block for auth protection -->
   <style>
-    /* Hides the body until auth check is complete */
-    body { display: none; }
-    
-    /* Slideshow container */
-    .slideshow-container {
-      position: relative;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 30px;
-      margin-top: 20px;
-      min-height: 450px; /* Increased height */
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Individual slides */
-    .slide {
-      display: none; /* Hide all slides by default */
-      flex-grow: 1; /* Allow slide content to fill space */
-      line-height: 1.7; /* Improve readability */
-    }
-    .slide.active {
-      display: block; /* Show the active slide */
-    }
-    .slide h3, .slide h4 {
-       margin-top: 0;
-       color: #003366;
-       border-bottom: 2px solid #eee;
-       padding-bottom: 10px;
-       margin-bottom: 15px;
-    }
-     .slide h4 { /* Sub-heading style */
-         font-size: 1.2rem;
-         border-bottom: 1px dashed #ccc;
-     }
-    .slide ul {
-      list-style: disc;
-      margin-left: 25px; /* Indent lists */
-      margin-bottom: 15px;
-    }
-     .slide li {
-       margin-bottom: 10px;
-     }
-     .slide code {
-       background-color: #eef;
-       padding: 2px 5px;
-       border-radius: 4px;
-       font-family: monospace;
-       font-size: 0.95em; /* Slightly smaller code font */
-     }
-    .slide .quote {
-        font-style: italic;
-        color: #555;
-        border-left: 3px solid #0056b3;
-        padding-left: 15px;
-        margin: 15px 0;
-    }
-    .slide .example-box {
-        background-color: #f9f9f9;
-        border: 1px solid #eee;
-        border-radius: 5px;
-        padding: 15px;
-        margin: 15px 0;
-    }
-     .slide .example-box strong {
-        color: #003366;
-     }
-
-    /* Navigation buttons */
-    .slide-nav {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid #eee;
-      padding-top: 15px;
-    }
-    .slide-nav button {
-      padding: 10px 18px;
-      background-color: #003366;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .slide-nav button:hover {
-      background-color: #0056b3;
-    }
-    .slide-nav button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    .slide-nav span { /* Style the counter */
-        font-size: 0.9rem;
-        color: #555;
-        align-self: center; /* Center vertically */
-     }
-    .slide-nav a.button-link { /* Style the link like a button */
-        display: inline-block;
-        padding: 10px 18px;
-        background-color: #17a2b8; /* Different color for final link */
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        text-decoration: none;
-        text-align: center;
-        transition: background-color 0.3s ease;
-    }
-     .slide-nav a.button-link:hover {
-        background-color: #138496;
-     }
-
+    body.auth-loading { display: none; }
   </style>
+
+  <!-- Removed inline styles -->
 </head>
-<body>
+<body class="auth-loading">
 
   <header>
     <div class="logo-container">
-      <img src="images/logo.png" alt="Kohsel Logo">
-      <h1>English Portal</h1>
+      <img src="images/icon-192.png" alt="Portal Logo">
+      <h1>Transformer Team Portal</h1>
     </div>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="lessons.html" class="active">Lessons</a></li>
+        <li><a href="lessons.html" class="active">Lessons</a></li> <!-- Keep Lessons active -->
         <li><a href="videos.html">Videos</a></li>
         <li><a href="tools.html">Tools</a></li>
         <li id="dashboard-nav-link" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
@@ -154,9 +47,9 @@
 
   <main class="container">
     <h2>Lesson 20: The Clear Communication Challenge (Interactive)</h2>
-    
+
     <div class="slideshow-container">
-      
+
       <!-- Slide 1: Case Study Review -->
       <div class="slide active" id="slide1">
         <h3>I. Recap: Lesson 19 Case Study - "The Production Delay"</h3>
@@ -181,9 +74,9 @@
           <li><strong>Ending:</strong> <code>Finally,...</code>, <code>The last step is...</code></li>
            <li><strong>Clarifying:</strong> <code>The key point is...</code>, <code>It is critical that you...</code>, <code>Instead of X, you must do Y.</code></li>
         </ul>
-        
-        <h4>Kohsel Example: Simplified Winding Process</h4>
-        <div class="example-box">
+
+        <h4>Example: Simplified Winding Process</h4>
+        <div class="example-box" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 5px; padding: 15px; margin: 15px 0;">
           <p><strong>First</strong>, the operator mounts the empty coil bobbin onto the winding machine.</p>
           <p><strong>Next</strong>, they carefully thread the copper wire through the guides.</p>
           <p><strong>Then</strong>, the machine automatically winds the specified number of turns for the primary coil.</p>
@@ -205,13 +98,13 @@
            <li>Robot Dan will follow the instructions *exactly* as given. If a step is missing or unclear, Robot Dan might make a "mistake"!</li>
            <li>The goal is to see which team's instructions lead to the task being completed correctly.</li>
          </ul>
-         <p class="quote">Why this helps: It shows how easily miscommunication happens if steps aren't clear and in the correct order – just like in the case study!</p>
+         <p style="font-style: italic; color: #6b7280; border-left: 3px solid #6366f1; padding-left: 15px; margin: 15px 0;">Why this helps: It shows how easily miscommunication happens if steps aren't clear and in the correct order – just like in the case study!</p>
        </div>
 
       <!-- Slide 4: Activity 2: Clear Communication Challenge (Game Concept) -->
       <div class="slide" id="slide4">
         <h3>IV. Main Activity Concept: "Clear Communication Challenge"</h3>
-        <p>This activity (originally a team quiz show for the HDTV) tests your understanding of concepts from Unit 2.</p>
+        <p>This activity tests your understanding of concepts from Unit 2.</p>
         <h4>Game Idea (for future):</h4>
          <ul>
              <li>Divide into two teams.</li>
@@ -228,19 +121,18 @@
           <p>Think about these questions after watching the video and taking the quiz:</p>
           <ul>
               <li>Which part of explaining a process is the most difficult? Why?</li>
-              <li>In the "Production Delay" case study, how much time and money might Kohsel have lost because of the sequence error? (Estimate!)</li>
-              <li>Why is it important to stay calm and factual (like in Lesson 19, Round 7 discussion) when explaining a problem to a manager?</li>
+              <li>In the "Production Delay" case study, how much time and money might have been lost because of the sequence error? (Estimate!)</li>
+              <li>Why is it important to stay calm and factual when explaining a problem to a manager?</li>
           </ul>
           <p>Being clear and sequential in your communication prevents costly mistakes!</p>
       </div>
-      
+
        <!-- Slide 6: Link to Video/Quiz -->
       <div class="slide" id="slide6">
         <h3>Watch the Case Study & Take the Quiz</h3>
         <p>You've reviewed the case study, practiced sequential language, and thought about the activities.</p>
         <p>Now, click the button below to watch the "Production Delay" case study video and take the "Clear Communication Challenge" quiz.</p>
-         <!-- Link will be styled like a button via CSS -->
-         <a href="videos.html#lesson20" class="button-link" style="margin-top: 20px;">Go to Video & Quiz</a>
+         <a href="videos.html#lesson20" class="button-link" style="margin-top: 1.25rem; display: inline-block;">Go to Video & Quiz</a>
       </div>
 
       <!-- Navigation -->
@@ -249,21 +141,21 @@
         <span id="slide-counter">Slide 1 of 6</span>
         <button id="nextBtn" onclick="changeSlide(1)">Next</button>
       </div>
-      
+
     </div>
 
   </main>
 
   <footer>
-    <p>&copy; 2025 Kohsel & Dan Mills</p>
+    <p>&copy; 2025 Dan Mills</p>
   </footer>
 
   <script src="js/app.js"></script>
-  
+
   <script type="module">
-    // Basic Slideshow Logic
+    // Basic Slideshow Logic (copied from original)
     let currentSlide = 1;
-    const totalSlides = 6; // *** UPDATED TOTAL SLIDES ***
+    const totalSlides = 6;
     const slides = document.querySelectorAll('.slide');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -276,14 +168,13 @@
           currentSlideElement.classList.add('active');
       } else {
           console.error(`Slide element with ID slide${n} not found.`);
-          return; 
+          return;
       }
       counter.textContent = `Slide ${n} of ${totalSlides}`;
       prevBtn.disabled = (n === 1);
-      nextBtn.disabled = (n === totalSlides); 
+      nextBtn.disabled = (n === totalSlides);
     }
 
-    // Make changeSlide globally accessible
     window.changeSlide = function(n) {
       currentSlide += n;
       if (currentSlide < 1) currentSlide = 1;
@@ -291,19 +182,22 @@
       showSlide(currentSlide);
     }
 
-    // Initialize first slide
-    showSlide(currentSlide);
+    showSlide(currentSlide); // Initialize first slide
 
     // Logout Button Logic
     import { auth, signOut } from './js/firebase-init.js';
-    document.getElementById('logout-button').addEventListener('click', () => {
-      signOut(auth).then(() => {
-        window.location.href = 'login.html';
-      }).catch((error) => {
-        console.error("Sign out error:", error);
-      });
-    });
+    document.body.classList.remove('auth-loading'); // Show body
+
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.href = 'login.html';
+        }).catch((error) => {
+            console.error("Sign out error:", error);
+        });
+        });
+    }
   </script>
 </body>
 </html>
-

@@ -53,8 +53,9 @@
 
     <!-- Section 1: 450,000 Decision -->
     <div class="video-quiz-section" id="decision450k">
-      <h3>Case Study Recap - The 450,000 Decision</h3>
+       <h3>Case Study Recap - The 450,000 Decision</h3>
       <div class="video-embed-container">
+        <!-- Existing Powtoon Embed -->
         <iframe
           width="800"
           height="450"
@@ -66,6 +67,7 @@
 
       <h4>Quiz: The 450,000 Decision</h4>
       <p>Take this quiz to check your understanding of the video.</p>
+      <!-- Existing Quiz Form -->
       <form id="powtoon-quiz-form">
         <div class="quiz-question">
           <fieldset>
@@ -100,7 +102,6 @@
           </fieldset>
         </div>
         <div class="quiz-question">
-          <!-- Added block-label class -->
           <label for="pq5" class="block-label">5. In your own words, what was the *solution* to the problem?</label>
           <textarea id="pq5" name="pq5" rows="3" placeholder="Briefly explain what was done..." required></textarea>
         </div>
@@ -111,8 +112,9 @@
 
     <!-- Section 2: Lesson 20 - Production Delay -->
     <div class="video-quiz-section" id="lesson20">
-      <h3>Lesson 20 - Case Study: The Production Delay</h3>
+       <h3>Lesson 20 - Case Study: The Production Delay</h3>
       <div class="video-embed-container">
+         <!-- Existing Powtoon Embed -->
         <iframe
           width="800"
           height="450"
@@ -124,6 +126,7 @@
 
       <h4>Quiz: Clear Communication Challenge</h4>
       <p>Based on the video and Lesson 19, answer the following questions.</p>
+       <!-- Existing Quiz Form -->
       <form id="lesson20-quiz-form">
         <div class="quiz-question">
           <fieldset>
@@ -158,7 +161,6 @@
           </fieldset>
         </div>
         <div class="quiz-question">
-          <!-- Added block-label class -->
           <label for="l20q5" class="block-label">5. Why is using words like "First," "Next," and "Finally" important when explaining a process?</label>
           <textarea id="l20q5" name="l20q5" rows="3" placeholder="Explain briefly in your own words..." required></textarea>
         </div>
@@ -166,6 +168,64 @@
       </form>
       <div id="lesson20-quiz-result" class="quiz-result"></div> <!-- Unique result ID -->
     </div> <!-- End Section 2 -->
+
+    <!-- *** UPDATED Section 3: Lesson 21 - Small Talk Scenario *** -->
+    <div class="video-quiz-section" id="lesson21">
+      <h3>Lesson 21 Practice - Small Talk Scenario</h3>
+      <div class="video-embed-container">
+        <!-- *** UPDATED with your embed code *** -->
+         <iframe
+           width="800"
+           height="450"
+           src="https://www.powtoon.com/embed/fdn0PoGjVCH/"
+           frameborder="0"
+           allowfullscreen>
+        </iframe>
+      </div>
+
+      <h4>Quiz: Small Talk Scenario Practice</h4>
+      <p>Based on the scenario video you just watched, answer the following questions.</p>
+      <form id="lesson21-quiz-form">
+        <div class="quiz-question">
+          <fieldset>
+            <legend>1. Who started the conversation in the video?</legend>
+            <label class="quiz-option"><input type="radio" name="l21q1" value="a" required> Somchai</label>
+            <label class="quiz-option"><input type="radio" name="l21q1" value="b" required> Pim</label>
+            <label class="quiz-option"><input type="radio" name="l21q1" value="c" required> The Narrator</label>
+          </fieldset>
+        </div>
+        <div class="quiz-question">
+          <fieldset>
+            <legend>2. Which "safe" topic did Pim and Somchai discuss?</legend>
+            <label class="quiz-option"><input type="radio" name="l21q2" value="a" required> Their weekend activities (relaxing, movie, family visit).</label>
+            <label class="quiz-option"><input type="radio" name="l21q2" value="b" required> The company's financial problems.</label>
+            <label class="quiz-option"><input type="radio" name="l21q2" value="c" required> How much coffee costs.</label>
+          </fieldset>
+        </div>
+         <div class="quiz-question">
+          <fieldset>
+            <legend>3. When Somchai said he watched a movie, what phrase did Pim use to show interest and ask for more detail?</legend>
+            <label class="quiz-option"><input type="radio" name="l21q3" value="a" required> "How about you?"</label>
+            <label class="quiz-option"><input type="radio" name="l21q3" value="b" required> "Oh, really? What movie did you watch?"</label>
+            <label class="quiz-option"><input type="radio" name="l21q3" value="c" required> "It was nice chatting with you."</label>
+          </fieldset>
+        </div>
+         <div class="quiz-question">
+          <fieldset>
+            <legend>4. What is one reason asking questions back (like "How about you?") is important in small talk?</legend>
+            <label class="quiz-option"><input type="radio" name="l21q4" value="a" required> It makes the conversation longer.</label>
+            <label class="quiz-option"><input type="radio" name="l21q4" value="b" required> It shows you are interested in the other person, not just talking about yourself.</label>
+            <label class="quiz-option"><input type="radio" name="l21q4" value="c" required> It is required by company policy.</label>
+          </fieldset>
+        </div>
+        <div class="quiz-question">
+          <label for="l21q5" class="block-label">5. Besides the weekend, what other "safe" topic could Pim or Somchai have talked about?</label>
+          <textarea id="l21q5" name="l21q5" rows="2" placeholder="Mention one safe topic from the lesson..." required></textarea>
+        </div>
+        <button type="submit" class="quiz-submit">Submit Scenario Quiz</button>
+      </form>
+      <div id="lesson21-quiz-result" class="quiz-result"></div>
+    </div> <!-- End Section 3 -->
 
   </main>
 
@@ -194,3 +254,4 @@
   </script>
 </body>
 </html>
+

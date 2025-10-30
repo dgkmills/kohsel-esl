@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- NEW: Handler for Lesson 20 Communication Challenge Quiz (in videos.html) ---
+    // --- Handler for Lesson 20 Communication Challenge Quiz (in videos.html) ---
     const lesson20QuizForm = document.getElementById('lesson20-quiz-form');
     const lesson20QuizResult = document.getElementById('lesson20-quiz-result');
 
@@ -132,5 +132,101 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-});
+    // --- Handler for Lesson 21 Small Talk Quiz (in videos.html) ---
+    const lesson21QuizForm = document.getElementById('lesson21-quiz-form');
+    const lesson21QuizResult = document.getElementById('lesson21-quiz-result');
 
+    if (lesson21QuizForm && lesson21QuizResult) {
+        lesson21QuizForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const user = auth.currentUser;
+            if (!user) {
+                lesson21QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
+                lesson21QuizResult.className = 'quiz-result error';
+                lesson21QuizResult.style.display = 'block';
+                return;
+            }
+
+            const formData = new FormData(lesson21QuizForm);
+            const l21q1 = formData.get('l21q1');
+            const l21q2 = formData.get('l21q2');
+            const l21q3 = formData.get('l21q3');
+            const l21q4 = formData.get('l21q4');
+            const l21q5 = formData.get('l21q5'); // Textarea
+            
+            // --- Scoring based on Lesson 21 content ---
+            let score = 0;
+            if (l21q1 === 'b') score += 20; // 1. Pim started the conversation
+            if (l21q2 === 'a') score += 20; // 2. Weekend activities
+            if (l21q3 === 'b') score += 20; // 3. "Oh, really? What movie did you watch?"
+            if (l21q4 === 'b') score += 20; // 4. Shows interest in the other person
+            // Check if textarea has some content (e.g., at least 10 chars)
+            if (l21q5 && l21q5.trim().length >= 5) score += 20; // Less strict check on text area
+            // --- End Scoring ---
+
+            const answers = { l21q1, l21q2, l21q3, l21q4, l21q5 };
+
+            try {
+                 // Saving to 'quizAttempts' for consistency
+                await saveQuizToFirestore(user, 'lesson_21_small_talk', 'Quiz: Small Talk Scenario Practice', score, answers, 'quizAttempts');
+                
+                lesson21QuizResult.textContent = `Your quiz score: ${score}%`;
+                lesson21QuizResult.className = 'quiz-result success';
+            } catch (error) {
+                lesson21QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
+                lesson21QuizResult.className = 'quiz-result error';
+            }
+            lesson21QuizResult.style.display = 'block';
+        });
+    }
+
+    // --- NEW: Handler for Lesson 22 Expressing Opinions Quiz (in videos.html) ---
+    const lesson22QuizForm = document.getElementById('lesson22-quiz-form');
+    const lesson22QuizResult = document.getElementById('lesson22-quiz-result'); 
+
+    if (lesson22QuizForm && lesson22QuizResult) {
+        lesson22QuizForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const user = auth.currentUser;
+            if (!user) {
+                lesson22QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
+                lesson22QuizResult.className = 'quiz-result error';
+                lesson22QuizResult.style.display = 'block';
+                return;
+            }
+
+            const formData = new FormData(lesson22QuizForm);
+            const l22q1 = formData.get('l22q1');
+            const l22q2 = formData.get('l22q2');
+            const l22q3 = formData.get('l22q3');
+            const l22q4 = formData.get('l22q4');
+            const l22q5 = formData.get('l22q5');
+            
+            let score = 0;
+            // 20 points per correct answer (5 questions total)
+            if (l22q1 === 'b') score += 20; // 1. Giving opinion: "I think we should..."
+            if (l22q2 === 'b') score += 20; // 2. Polite disagreement: "I see your point, but..."
+            if (l22q3 === 'a') score += 20; // 3. Importance of politeness: To show respect
+            if (l22q4 === 'c') score += 20; // 4. Questioning disagreement: "Have you considered...?"
+            if (l22q5 === 'a') score += 20; // 5. "I'm not sure I agree" is Polite
+            
+            const answers = { l22q1, l22q2, l22q3, l22q4, l22q5 };
+
+            try {
+                // Saving to 'quizAttempts' for consistency
+                await saveQuizToFirestore(user, 'lesson_22_opinions_videos_page', 'Quiz: Expressing Opinions', score, answers, 'quizAttempts');
+                
+                lesson22QuizResult.textContent = `Your quiz score: ${score}%`;
+                lesson22QuizResult.className = 'quiz-result success';
+            } catch (error) {
+                lesson22QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
+                lesson22QuizResult.className = 'quiz-result error';
+            }
+            lesson22QuizResult.style.display = 'block';
+        });
+    }
+
+
+});

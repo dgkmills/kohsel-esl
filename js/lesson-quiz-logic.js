@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- NEW: Handler for Lesson 20 Communication Challenge Quiz (in videos.html) ---
+    // --- Handler for Lesson 20 Communication Challenge Quiz (in videos.html) ---
     const lesson20QuizForm = document.getElementById('lesson20-quiz-form');
     const lesson20QuizResult = document.getElementById('lesson20-quiz-result');
 
@@ -116,10 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const answers = { l20q1, l20q2, l20q3, l20q4, l20q5 };
 
             try {
-                 // Even though it's on videos.html, this relates to Lesson 20 content.
-                 // Let's keep it consistent with other video quizzes and save to 'quizAttempts'
-                 // You could create a new collection if you *really* want them separate,
-                 // but using the quizName field helps distinguish them.
+                 // Saving to 'quizAttempts' for consistency
                 await saveQuizToFirestore(user, 'lesson_20_comm_challenge', 'Quiz: Clear Communication Challenge', score, answers, 'quizAttempts');
                 
                 lesson20QuizResult.textContent = `Your quiz score: ${score}%`;
@@ -132,5 +129,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-});
+    // --- NEW: Handler for Lesson 22 Expressing Opinions Quiz (in lesson-22-video-quiz.html) ---
+    const lesson22QuizForm = document.getElementById('lesson-quiz-form');
+    const lesson22QuizResult = document.getElementById('quiz-result-message'); // Using the common result ID
 
+    // Check if the form is for lesson 22 before adding the listener
+    if (lesson22QuizForm && lesson22QuizResult && lesson22QuizForm.dataset.lessonId === 'lesson22') {
+        lesson22QuizForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const user = auth.currentUser;
+            if (!user) {
+                lesson22QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
+                lesson22QuizResult.className = 'quiz-result error';
+                lesson22QuizResult.style.display = 'block';
+                return;
+            }
+
+            const formData = new FormData(lesson22QuizForm);
+            const q1 = formData.get('q1');
+            const q2 = formData.get('q2');
+            const q3 = formData.get('q3');
+            const q4 = formData.get('q4');
+            const q5 = formData.get('q5');
+            
+            let score = 0;
+            // 20 points per correct answer (5 questions total)
+            if (q1 === 'b') score += 20; // 1. Giving opinion: "I think we should..."
+            if (q2 === 'b') score += 20; // 2. Polite disagreement: "I see your point, but..."
+            if (q3 === 'a') score += 20; // 3. Importance of politeness: To show respect
+            if (q4 === 'c') score += 20; // 4. Questioning disagreement: "Have you considered...?"
+            if (q5 === 'a') score += 20; // 5. "I'm not sure I agree" is Polite
+            
+            const answers = { q1, q2, q3, q4, q5 };
+
+            try {
+                // Saving to 'quizAttempts' for consistency
+                await saveQuizToFirestore(user, 'lesson_22_opinions', 'Quiz: Expressing Opinions', score, answers, 'quizAttempts');
+                
+                lesson22QuizResult.textContent = `Your quiz score: ${score}%`;
+                lesson22QuizResult.className = 'quiz-result success';
+            } catch (error) {
+                lesson22QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
+                lesson22QuizResult.className = 'quiz-result error';
+            }
+            lesson22QuizResult.style.display = 'block';
+        });
+    }
+
+});

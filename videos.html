@@ -169,11 +169,11 @@
       <div id="lesson20-quiz-result" class="quiz-result"></div> <!-- Unique result ID -->
     </div> <!-- End Section 2 -->
 
-    <!-- *** UPDATED Section 3: Lesson 21 - Small Talk Scenario *** -->
+    <!-- Section 3: Lesson 21 - Small Talk Scenario -->
     <div class="video-quiz-section" id="lesson21">
       <h3>Lesson 21 Practice - Small Talk Scenario</h3>
       <div class="video-embed-container">
-        <!-- *** UPDATED with your embed code *** -->
+         <!-- Powtoon Embed for Lesson 21 Small Talk -->
          <iframe
            width="800"
            height="450"
@@ -227,6 +227,81 @@
       <div id="lesson21-quiz-result" class="quiz-result"></div>
     </div> <!-- End Section 3 -->
 
+    <!-- *** NEW Section 4: Lesson 22 - Expressing Opinions *** -->
+    <div class="video-quiz-section" id="lesson22">
+       <h3>Lesson 22 Practice - Expressing Opinions</h3>
+      <div class="video-embed-container">
+         <!-- Powtoon Embed for Lesson 22 Expressing Opinions (The one you linked earlier) -->
+         <iframe
+           width="800"
+           height="450"
+           src="https://www.powtoon.com/embed/dDPO55UnHIm/"
+           frameborder="0"
+           allowfullscreen>
+        </iframe>
+      </div>
+
+      <h4>Quiz: Expressing Opinions and Disagreeing Politely</h4>
+      <p>Based on the scenario video you just watched and Lesson 22, answer the following questions.</p>
+       <!-- The form structure is the same as lesson-22-video-quiz.html, but the IDs must be unique. 
+            I will use unique IDs (l22q1, l22q2, etc.) and update the logic file to check both locations.
+            However, the logic already handles multiple quizzes via unique form IDs, so I'll create a new form block here.
+       -->
+      <form id="lesson22-quiz-form">
+        <!-- Question 1 -->
+        <div class="quiz-question">
+            <fieldset>
+                <legend>1. Which phrase is best for giving your opinion?</legend>
+                <label class="quiz-option"><input type="radio" name="l22q1" value="a" required> A) I see your point.</label>
+                <label class="quiz-option"><input type="radio" name="l22q1" value="b" required> B) I think we should...</label>
+                <label class="quiz-option"><input type="radio" name="l22q1" value="c" required> C) What about...?</label>
+            </fieldset>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="quiz-question">
+            <fieldset>
+                <legend>2. "I see your point, but..." is a polite phrase for...</legend>
+                <label class="quiz-option"><input type="radio" name="l22q2" value="a" required> A) Giving an opinion.</label>
+                <label class="quiz-option"><input type="radio" name="l22q2" value="b" required> B) Disagreeing politely.</label>
+                <label class="quiz-option"><input type="radio" name="l22q2" value="c" required> C) Asking a question.</label>
+            </fieldset>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-question">
+             <fieldset>
+                <legend>3. Why is it important to disagree politely at work?</legend>
+                <label class="quiz-option"><input type="radio" name="l22q3" value="a" required> A) To show respect and build good relationships.</label>
+                <label class="quiz-option"><input type="radio" name="l22q3" value="b" required> B) To show you are smarter than your colleague.</label>
+                <label class="quiz-option"><input type="radio" name="l22q3" value="c" required> C) To end the conversation quickly.</label>
+            </fieldset>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-question">
+             <fieldset>
+                <legend>4. Which phrase is a *questioning* way to disagree?</legend>
+                <label class="quiz-option"><input type="radio" name="l22q4" value="a" required> A) I believe that is wrong.</label>
+                <label class="quiz-option"><input type="radio" name="l22q4" value="b" required> B) In my opinion, no.</label>
+                <label class="quiz-option"><input type="radio" name="l22q4" value="c" required> C) Have you considered...?</label>
+            </fieldset>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-question">
+             <fieldset>
+                <legend>5. Is this phrase polite or impolite? "I'm not sure I agree."</legend>
+                <label class="quiz-option"><input type="radio" name="l22q5" value="a" required> A) Polite</label>
+                <label class="quiz-option"><input type="radio" name="l22q5" value="b" required> B) Impolite</label>
+            </fieldset>
+        </div>
+
+        <button type="submit" class="quiz-submit">Submit Opinions Quiz</button>
+      </form>
+      <div id="lesson22-quiz-result" class="quiz-result"></div>
+    </div> <!-- End Section 4 -->
+
   </main>
 
   <footer>
@@ -254,4 +329,3 @@
   </script>
 </body>
 </html>
-

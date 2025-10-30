@@ -396,17 +396,17 @@
 
         <h4>Key Takeaways:</h4>
         <ul>
-            <li>Small talk is <strong>important</strong> for building good relationships.</li>
-            <li>Keep topics <strong>"safe"</strong>: Weather, Weekends, Food, Hobbies.</li>
-            <li>Ask <strong>follow-up questions</strong> (like "Oh, really?") to show you are listening.</li>
+            <li>Small talk is **important** for building good relationships.</li>
+            <li>Keep topics **"safe"**: Weather, Weekends, Food, Hobbies.</li>
+            <li>Ask **follow-up questions** (like "Oh, really?") to show you are listening.</li>
             <li>Practice makes you more confident!</li>
         </ul>
 
         <h4>Discussion:</h4>
         <p>Which "small talk" starter phrase do you feel most comfortable using? Why?</p>
 
-        <!-- Placeholder Link to Video/Quiz -->
-        <a href="videos.html#lesson21" class="button-link" style="margin-top: 1.25rem;">Go to Video & Quiz (Coming Soon)</a>
+        <!-- Link to the video/quiz page -->
+        <a href="videos.html#lesson21" class="button-link" style="margin-top: 1.25rem;">Go to Video & Quiz</a>
       </div>
 
       <!-- Navigation -->
@@ -434,6 +434,15 @@
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const counter = document.getElementById('slide-counter');
+    
+    // --- SLIDE JUMP LOGIC ---
+    // Check URL parameters for a starting slide
+    const urlParams = new URLSearchParams(window.location.search);
+    const startSlide = urlParams.get('slide');
+    if (startSlide && !isNaN(parseInt(startSlide))) {
+        currentSlide = Math.min(Math.max(1, parseInt(startSlide)), totalSlides);
+    }
+    // --- END SLIDE JUMP LOGIC ---
 
     function showSlide(n) {
       // Hide all slides
@@ -500,4 +509,3 @@
   </script>
 </body>
 </html>
-

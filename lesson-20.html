@@ -55,11 +55,11 @@
         <h3>I. Recap: Lesson 19 Case Study - "The Production Delay"</h3>
         <p>Remember the situation?</p>
         <ul>
-          <li><strong>Team Lead Somchai</strong> needed iron cores urgently for Assembly Line 5.</li>
-          <li><strong>QC Inspector Chom</strong> completed the physical check but missed a crucial step.</li>
-          <li><strong>The Problem:</strong> Chom only emailed Supervisor Jeab. She forgot the required *digital sign-off* from Finance before the cores could be released from inventory.</li>
-          <li><strong>The Result:</strong> Production stopped, costing time and money.</li>
-          <li><strong>The Solution (proposed):</strong> Better communication! Clearer process documentation (sequential steps) and potentially direct calls for critical confirmations.</li>
+          <li>**Team Lead Somchai** needed iron cores urgently for Assembly Line 5.</li>
+          <li>**QC Inspector Chom** completed the physical check but missed a crucial step.</li>
+          <li>**The Problem:** Chom only emailed Supervisor Jeab. She forgot the required *digital sign-off* from Finance before the cores could be released from inventory.</li>
+          <li>**The Result:** Production stopped, costing time and money.</li>
+          <li>**The Solution (proposed):** Better communication! Clearer process documentation (sequential steps) and potentially direct calls for critical confirmations.</li>
         </ul>
         <p>This lesson focuses on preventing such problems using clear, sequential language.</p>
       </div>
@@ -69,19 +69,19 @@
         <h3>II. Review: Sequential Language</h3>
          <p>Clear communication often involves explaining steps in order. Use these key phrases:</p>
          <ul>
-          <li><strong>Starting:</strong> <code>First,...</code>, <code>To begin with,...</code></li>
-          <li><strong>Continuing:</strong> <code>Next,...</code>, <code>Then,...</code>, <code>After that,...</code>, <code>Once X is complete,...</code></li>
-          <li><strong>Ending:</strong> <code>Finally,...</code>, <code>The last step is...</code></li>
-           <li><strong>Clarifying:</strong> <code>The key point is...</code>, <code>It is critical that you...</code>, <code>Instead of X, you must do Y.</code></li>
+          <li>**Starting:** <code>First,...</code>, <code>To begin with,...</code></li>
+          <li>**Continuing:** <code>Next,...</code>, <code>Then,...</code>, <code>After that,...</code>, <code>Once X is complete,...</code></li>
+          <li>**Ending:** <code>Finally,...</code>, <code>The last step is...</code></li>
+           <li>**Clarifying:** <code>The key point is...</code>, <code>It is critical that you...</code>, <code>Instead of X, you must do Y.</code></li>
         </ul>
 
         <h4>Example: Simplified Winding Process</h4>
         <div class="example-box" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 5px; padding: 15px; margin: 15px 0;">
-          <p><strong>First</strong>, the operator mounts the empty coil bobbin onto the winding machine.</p>
-          <p><strong>Next</strong>, they carefully thread the copper wire through the guides.</p>
-          <p><strong>Then</strong>, the machine automatically winds the specified number of turns for the primary coil.</p>
-          <p><strong>After that</strong>, insulation tape is applied.</p>
-          <p><strong>Finally</strong>, the secondary coil is wound, and the completed coil assembly is removed for testing.</p>
+          <p>**First**, the operator mounts the empty coil bobbin onto the winding machine.</p>
+          <p>**Next**, they carefully thread the copper wire through the guides.</p>
+          <p>**Then**, the machine automatically winds the specified number of turns for the primary coil.</p>
+          <p>**After that**, insulation tape is applied.</p>
+          <p>**Finally**, the secondary coil is wound, and the completed coil assembly is removed for testing.</p>
         </div>
       </div>
 
@@ -160,6 +160,15 @@
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const counter = document.getElementById('slide-counter');
+    
+    // --- SLIDE JUMP LOGIC ---
+    // Check URL parameters for a starting slide
+    const urlParams = new URLSearchParams(window.location.search);
+    const startSlide = urlParams.get('slide');
+    if (startSlide && !isNaN(parseInt(startSlide))) {
+        currentSlide = Math.min(Math.max(1, parseInt(startSlide)), totalSlides);
+    }
+    // --- END SLIDE JUMP LOGIC ---
 
     function showSlide(n) {
       slides.forEach(slide => slide.classList.remove('active'));

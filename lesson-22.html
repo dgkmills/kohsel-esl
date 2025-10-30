@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="images/icon-192.png" type="image/png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Learning Portal">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
   <style>
     body.auth-loading { display: none; }
     .slideshow-container {
@@ -101,12 +105,34 @@
         margin-left: auto;
         margin-right: auto;
     }
-    .slide a.button-link {
-         background-color: #059669;
-         margin-top: 1.25rem;
+    /* Styles for the reveal logic */
+    .revealable-text {
+        display: none;
+        padding-left: 0.5rem;
+        color: #374151; /* text-gray-700 */
     }
-    .slide a.button-link:hover { background-color: #047857; }
-    
+    .reveal-controls button {
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        background-color: #e0e7ff; /* bg-indigo-100 */
+        color: #4338ca; /* text-indigo-700 */
+        border: 1px solid #c7d2fe; /* border-indigo-200 */
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.375rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .reveal-controls button:hover {
+        background-color: #c7d2fe;
+    }
+    .reveal-container {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-left: 4px solid #4f46e5;
+        background-color: #f7f7ff;
+        border-radius: 0.375rem;
+    }
     /* Good for columns */
     .phrase-list {
         display: grid;
@@ -124,17 +150,67 @@
         font-weight: 700;
         font-size: 1.25rem; /* 20px */
     }
-    .topic-agree {
-        background-color: #d1fae5; /* bg-green-100 */
-        border-left: 4px solid #059669; /* border-green-600 */
-        padding: 1rem;
-        border-radius: 0.375rem;
-    }
     .topic-disagree {
         background-color: #fee2e2; /* bg-red-100 */
         border-left: 4px solid #dc2626; /* border-red-600 */
         padding: 1rem;
         border-radius: 0.375rem;
+    }
+    /* Styles for modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Audio button style */
+     .audio-button {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 0.25rem 0.5rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      vertical-align: middle;
+      font-size: 0.9rem;
+      border-radius: 0.25rem;
+      transition: background-color 0.2s ease;
+      white-space: nowrap;
+    }
+    .audio-button:hover {
+      background-color: #4338ca;
+    }
+    .audio-button:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
     }
 
   </style>
@@ -176,14 +252,17 @@
              onerror="this.src='https://placehold.co/400x200/cccccc/ffffff?text=Small+Talk+Review'; this.alt='Error loading image';">
 
         <p>What "safe" topics did you use? (Weather? Weekend?)</p>
-        <p>Today, we will learn what to do when your "small talk" becomes a "big talk" and you have a different opinion.</p>
+        <p>
+            Today, we will learn what to do when your "small talk" becomes a "big talk" and you have a 
+            <button class="audio-button" onclick="showModal('opinionModal')">different opinion</button>.
+        </p>
       </div>
 
       <!-- Slide 2: Introduction -->
       <div class="slide" id="slide2">
         <h3>II. Introduction: Polite Disagreement</h3>
         <p>
-          At work, we often have different opinions. This is normal and <strong>good</strong>! Different opinions help us find the best solution.
+          At work, we often have different opinions. This is normal and **good**! Different opinions help us find the best solution.
         </p>
          
         <img src="images/lesson-22-slide2-intro.png"
@@ -192,14 +271,23 @@
              style="max-width: 500px;"
              onerror="this.src='https://placehold.co/500x250/cccccc/ffffff?text=Polite+Debate'; this.alt='Error loading image';">
         
-        <p><strong>Why is it important to disagree *politely*?</strong></p>
-        <ul>
-          <li>It shows <strong>respect</strong> for your colleagues.</li>
-          <li>It keeps the conversation <strong>professional</strong>.</li>
-          <li>It helps you focus on the <strong>problem</strong>, not the person.</li>
-          <li>It helps build trust.</li>
-        </ul>
-        <p>Using the right phrases is key!</p>
+        <p>
+            Why is it important to disagree **politely**? We will discuss this in class, but first, try to think of the reasons yourself!
+        </p>
+
+        <div class="reveal-container">
+            <h4>Reasons (Click to reveal one at a time):</h4>
+            <div class="reveal-controls" id="slide2-controls">
+                <button onclick="revealNext('slide2-reveals')">Reveal Next Point</button>
+            </div>
+            <ul id="slide2-reveals" style="list-style: none; padding-left: 0;">
+                <li class="revealable-text" data-order="1">**1.** It shows **respect** for your colleagues.</li>
+                <li class="revealable-text" data-order="2">**2.** It keeps the conversation **professional**.</li>
+                <li class="revealable-text" data-order="3">**3.** It helps you focus on the **problem**, not the person.</li>
+                <li class="revealable-text" data-order="4">**4.** It helps build trust.</li>
+                <li class="revealable-text" data-order="5" style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 0.5rem; font-style: italic;">**Key:** Using the right phrases is key!</li>
+            </ul>
+        </div>
       </div>
 
       <!-- Slide 3: Choral Reading (Giving Opinions) -->
@@ -214,13 +302,14 @@
              onerror="this.src='https://placehold.co/300x200/cccccc/ffffff?text=Giving+Opinions'; this.alt='Error loading image';">
 
         <h4>Key Phrases (Strong to Soft)</h4>
+        <!-- No reveal needed here, as requested -->
         <ul>
-            <li>"In my opinion, we should..."</li>
-            <li>"I believe that..."</li>
-            <li>"I think we need to..."</li>
-            <li>"I feel that..."</li>
-            <li>"From my perspective,..."</li>
-            <li>"It seems to me that..."</li>
+            <li>"In my opinion, we should..." <button class="audio-button" onclick="speakPhrase('In my opinion, we should focus on quality.')">Listen</button></li>
+            <li>"I believe that..." <button class="audio-button" onclick="speakPhrase('I believe that the new process is too slow.')">Listen</button></li>
+            <li>"I think we need to..." <button class="audio-button" onclick="speakPhrase('I think we need to reschedule the delivery.')">Listen</button></li>
+            <li>"I feel that..." <button class="audio-button" onclick="speakPhrase('I feel that the team is doing a great job.')">Listen</button></li>
+            <li>"From my perspective,..." <button class="audio-button" onclick="speakPhrase('From my perspective, we have enough inventory.')">Listen</button></li>
+            <li>"It seems to me that..." <button class="audio-button" onclick="speakPhrase('It seems to me that the problem is the wire size.')">Listen</button></li>
         </ul>
         
         <h4>Industry Example:</h4>
@@ -242,24 +331,49 @@
             <div class="topic-disagree">
                 <h4>"Soft" Disagreement</h4>
                 <ul>
-                    <li>"I'm not sure I agree..."</li>
-                    <li>"I see what you mean, but..."</li>
-                    <li>"I understand your point, however..."</li>
+                    <li>"I'm not sure I agree..." <button class="audio-button" onclick="speakPhrase('I\'m not sure I agree with that timeline.')">Listen</button></li>
+                    <li>"I see what you mean, but..." <button class="audio-button" onclick="speakPhrase('I see what you mean, but the cost is too high.')">Listen</button></li>
+                    <li>"I understand your point, however..." <button class="audio-button" onclick="speakPhrase('I understand your point, however, the report deadline is firm.')">Listen</button></li>
                 </ul>
             </div>
             <div class="topic-disagree">
                 <h4>"Questioning" Disagreement</h4>
                 <ul>
-                    <li>"Have you considered...?"</li>
-                    <li>"What about...?"</li>
-                    <li>"I'm not sure. What if we...?"</li>
+                    <li>"Have you considered...?" <button class="audio-button" onclick="speakPhrase('Have you considered using the new supplier?')">Listen</button></li>
+                    <li>"What about...?" <button class="audio-button" onclick="speakPhrase('What about the overtime budget?')">Listen</button></li>
+                    <li>"I'm not sure. What if we...?" <button class="audio-button" onclick="speakPhrase('I\'m not sure. What if we delay assembly by one day?')">Listen</button></li>
                 </ul>
             </div>
         </div>
         
-        <h4 style="margin-top: 1rem;">Industry Example:</h4>
+        <h4 style="margin-top: 1rem;">Industry Example Practice (Click to Reveal):</h4>
+        
+        <!-- Example 1 -->
         <p>Person A: "I think we should stop quality checks."</p>
-        <p>You: "<code>I see your point, but</code> quality is critical for our customers."</p>
+        <div class="reveal-container" style="border-left-color: #059669; background-color: #d1fae5;">
+            <div class="reveal-controls">
+                <button onclick="revealText('example1')">Reveal Polite Disagreement</button>
+            </div>
+            <p id="example1" class="revealable-text">You: "**I see your point, but** quality is critical for our customers."</p>
+        </div>
+
+        <!-- Example 2 (New) -->
+        <p style="margin-top: 1.5rem;">Person A: "We should use the cheapest transformer core."</p>
+        <div class="reveal-container" style="border-left-color: #059669; background-color: #d1fae5;">
+            <div class="reveal-controls">
+                <button onclick="revealText('example2')">Reveal Questioning Disagreement</button>
+            </div>
+            <p id="example2" class="revealable-text">You: "**Have you considered** the long-term impact on machine performance?"</p>
+        </div>
+        
+        <!-- Example 3 (New) -->
+        <p style="margin-top: 1.5rem;">Person A: "I believe the report deadline should be tomorrow."</p>
+        <div class="reveal-container" style="border-left-color: #059669; background-color: #d1fae5;">
+            <div class="reveal-controls">
+                <button onclick="revealText('example3')">Reveal Soft Disagreement</button>
+            </div>
+            <p id="example3" class="revealable-text">You: "**I'm not sure I agree.** I feel we need at least two more days for final data analysis.</p>
+        </div>
       </div>
 
       <!-- Slide 5: Game -->
@@ -295,19 +409,35 @@
              style="max-width: 300px;"
              onerror="this.src='https://placehold.co/300x150/cccccc/ffffff?text=Key+Ideas'; this.alt='Error loading image';">
 
-        <h4>Key Takeaways:</h4>
-        <ul>
-            <li>Different opinions are <strong>good</strong> for the team.</li>
-            <li>Always be <strong>respectful</strong> and <strong>professional</strong>.</li>
-            <li>First, show you <strong>understand</strong> ("I see your point...").</li>
-            <li>Then, give your opinion ("...but I feel...").</li>
+        <h4>Key Takeaways (Click to reveal one at a time):</h4>
+        <div class="reveal-controls" id="slide6-controls-keys">
+            <button onclick="revealNext('slide6-reveals-keys')">Reveal Next Takeaway</button>
+        </div>
+        <ul id="slide6-reveals-keys" style="list-style: none; padding-left: 0;">
+            <li class="revealable-text" data-order="1">**1.** Different opinions are **good** for the team.</li>
+            <li class="revealable-text" data-order="2">**2.** Always be **respectful** and **professional**.</li>
+            <li class="revealable-text" data-order="3">**3.** First, show you **understand** ("I see your point...").</li>
+            <li class="revealable-text" data-order="4">**4.** Then, give your opinion ("...but I feel...").</li>
         </ul>
-
-        <h4>Discussion:</h4>
+        
+        <h4 style="margin-top: 1.5rem;">Discussion:</h4>
         <p>Why is it *difficult* to disagree politely in a second language?</p>
+        
+        <div class="reveal-container" style="border-left-color: #059669; background-color: #d1fae5;">
+            <div class="reveal-controls" id="slide6-controls-disc">
+                <button onclick="revealNext('slide6-reveals-disc')">Brainstorm Answers</button>
+            </div>
+            <ul id="slide6-reveals-disc" style="list-style: disc; margin-left: 1.5rem; margin-top: 0; padding-left: 0;">
+                <li class="revealable-text" data-order="1" style="list-style: disc;">You may confuse direct translation (Thai to English) with polite phrasing.</li>
+                <li class="revealable-text" data-order="2" style="list-style: disc;">You lack confidence in advanced vocabulary, so you use short, simple (and sometimes direct) words.</li>
+                <li class="revealable-text" data-order="3" style="list-style: disc;">You might be afraid of mispronouncing the longer, softer phrases.</li>
+            </ul>
+        </div>
 
-        <!-- Link to the new Video/Quiz page -->
-        <a href="lesson-22-video-quiz.html" class="button-link">Go to Lesson 22 Video & Quiz</a>
+        <!-- Link to the video/quiz page -->
+        <a href="videos.html#lesson22" class="button-link" style="margin-top: 1.5rem;">Go to Lesson 22 Video & Quiz</a>
+        <!-- New back button -->
+        <a href="lessons.html" class="button-link" style="margin-top: 1rem; background-color: #6b7280;">Back to Lessons List</a>
       </div>
 
       <!-- Navigation -->
@@ -318,7 +448,24 @@
       </div>
 
     </div> <!-- End Slideshow Container -->
-
+    
+    <!-- The Modal Structure (Hidden by default) -->
+    <div id="opinionModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('opinionModal')">&times;</span>
+        <h3>What is a "Different Opinion"?</h3>
+        <p>
+            When two people have a **different opinion**, it means they have different ideas, beliefs, or thoughts about the same topic.
+        </p>
+        <p>
+            **Example:** Person A thinks **chocolate** is the best flavor. Person B has a different opinion and thinks **vanilla** is the best flavor.
+        </p>
+        <p>
+            In the workplace, it means having different ideas on how to solve a problem or what the best plan is.
+        </p>
+      </div>
+    </div>
+    
   </main>
 
   <footer>
@@ -334,6 +481,82 @@
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const counter = document.getElementById('slide-counter');
+    
+    // --- SLIDE JUMP LOGIC ---
+    // Check URL parameters for a starting slide
+    const urlParams = new URLSearchParams(window.location.search);
+    const startSlide = urlParams.get('slide');
+    if (startSlide && !isNaN(parseInt(startSlide))) {
+        currentSlide = Math.min(Math.max(1, parseInt(startSlide)), totalSlides);
+    }
+    // --- END SLIDE JUMP LOGIC ---
+
+    // Function to manage sequential reveals
+    let revealState = {}; // Tracks the next point to reveal for each container
+    
+    // *** NEW FUNCTION: Handles the direct reveal (used for Slide 4 Industry Examples) ***
+    window.revealText = function(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.style.display = 'block';
+            // Optional: Disable the button after click to prevent multiple reveals
+            const button = element.closest('.reveal-container').querySelector('.reveal-controls button[onclick*="' + elementId + '"]');
+            if (button) {
+                 button.disabled = true;
+                 button.textContent = 'Revealed';
+            }
+        }
+    }
+
+
+    window.revealNext = function(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        // Initialize or get the current step
+        if (!revealState[containerId]) {
+            revealState[containerId] = 1;
+        }
+
+        const nextPoint = container.querySelector(`.revealable-text[data-order="${revealState[containerId]}"]`);
+        if (nextPoint) {
+            nextPoint.style.display = 'list-item'; // or 'block'
+            // Check if there is a next point after this one
+            const nextNextPoint = container.querySelector(`.revealable-text[data-order="${revealState[containerId] + 1}"]`);
+            if (nextNextPoint) {
+                revealState[containerId]++;
+            } else {
+                // If this was the last point, disable the button
+                const controlButton = document.querySelector(`#${containerId}`).previousElementSibling.querySelector('button');
+                if (controlButton) {
+                    controlButton.disabled = true;
+                    controlButton.textContent = 'All Points Revealed';
+                }
+            }
+        }
+    }
+
+    // Function to reset all revealable elements on slide change
+    function resetReveals() {
+        document.querySelectorAll('.revealable-text').forEach(el => {
+            el.style.display = 'none';
+        });
+        document.querySelectorAll('.reveal-controls button').forEach(button => {
+            button.disabled = false;
+            // Restore original button text based on the container ID context
+            if (button.closest('#slide2-controls')) {
+                button.textContent = 'Reveal Next Point';
+            } else if (button.closest('#slide4')) {
+                // This targets the three specific buttons on slide 4
+                button.textContent = 'Reveal Polite Disagreement'; 
+            } else if (button.closest('#slide6-controls-keys')) {
+                 button.textContent = 'Reveal Next Takeaway';
+            } else if (button.closest('#slide6-controls-disc')) {
+                 button.textContent = 'Brainstorm Answers';
+            }
+        });
+        revealState = {}; // Reset tracking state
+    }
 
     function showSlide(n) {
       slides.forEach(slide => slide.classList.remove('active'));
@@ -344,13 +567,53 @@
       counter.textContent = `Slide ${n} of ${totalSlides}`;
       prevBtn.disabled = (n === 1);
       nextBtn.disabled = (n === totalSlides);
+      
+      // Always reset reveals when showing a new slide
+      resetReveals();
     }
 
     window.changeSlide = function(n) {
       currentSlide += n;
+      if (currentSlide < 1) currentSlide = 1;
+      if (currentSlide > totalSlides) currentSlide = totalSlides;
       showSlide(currentSlide);
     }
     showSlide(currentSlide);
+    
+    // --- Modal Logic ---
+    window.showModal = function(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+    }
+
+    window.closeModal = function(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('opinionModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    // --- Audio Logic (Web Speech API) ---
+    window.speakPhrase = function(phrase) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(phrase);
+        utterance.lang = 'en-US'; 
+        const voices = window.speechSynthesis.getVoices();
+        const enVoice = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Female'));
+        if (enVoice) {
+            utterance.voice = enVoice;
+        }
+
+        if (!window.speechSynthesis.speaking) {
+            window.speechSynthesis.speak(utterance);
+        }
+      } else {
+        console.warn("Browser does not support Speech Synthesis for audio playback.");
+      }
+    }
 
     // --- Logout Button Logic ---
     import { auth, signOut } from './js/firebase-init.js';

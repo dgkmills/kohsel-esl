@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 22: Expressing Opinions - Transformer Team Portal</title>
+  <script type="module" src="js/firebase-init.js"></script>
+  <script type="module" src="js/protect.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/icon-192.png" type="image/png">
+  <style>
+    body.auth-loading { display: none; }
+    .slideshow-container {
+      position: relative;
+      background-color: #fff;
+      border: 1px solid #d1d5db;
+      border-radius: 0.75rem;
+      padding: 2rem;
+      margin-top: 1.5rem;
+      min-height: 500px; 
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    .slide {
+      display: none;
+      flex-grow: 1;
+      /* --- LARGE FONT STYLES --- */
+      line-height: 1.8;
+      font-size: 1.25rem; /* 20px base */
+    }
+    .slide.active { display: block; }
+    .slide h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.75rem; /* 28px */
+      font-weight: 600;
+    }
+    .slide p { margin-bottom: 1rem; }
+    .slide ul {
+      list-style: disc;
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .slide li { margin-bottom: 0.5rem; }
+    .slide strong {
+      color: #4f46e5;
+      font-weight: 600;
+    }
+    .slide code {
+      background-color: #eef2ff;
+      color: #4338ca;
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-family: monospace;
+      font-size: 1.1em;
+    }
+    .slide-nav {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 1rem;
+    }
+    .slide-nav button,
+    .slide-nav a.button-link { 
+        padding: 0.625rem 1.125rem; 
+        background-color: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        margin-top: 0.5rem; 
+    }
+    .slide-nav button:hover,
+    .slide-nav a.button-link:hover { background-color: #4338ca; }
+    .slide-nav button:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+    .slide-nav span {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    .slide img.placeholder-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid #e5e7eb;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .slide a.button-link {
+         background-color: #059669;
+         margin-top: 1.25rem;
+    }
+    .slide a.button-link:hover { background-color: #047857; }
+    
+    /* Good for columns */
+    .phrase-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    @media (min-width: 768px) { /* md: */
+        .phrase-list {
+            grid-template-columns: 1fr 1fr; /* 2 columns on medium screens and up */
+        }
+    }
+    .phrase-list h4 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+        font-size: 1.25rem; /* 20px */
+    }
+    .topic-agree {
+        background-color: #d1fae5; /* bg-green-100 */
+        border-left: 4px solid #059669; /* border-green-600 */
+        padding: 1rem;
+        border-radius: 0.375rem;
+    }
+    .topic-disagree {
+        background-color: #fee2e2; /* bg-red-100 */
+        border-left: 4px solid #dc2626; /* border-red-600 */
+        padding: 1rem;
+        border-radius: 0.375rem;
+    }
+
+  </style>
+</head>
+<body class="auth-loading">
+
+  <header>
+    <div class="logo-container">
+      <img src="images/icon-192.png" alt="Portal Logo">
+      <h1>Transformer Team Portal</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lessons.html" class="active">Lessons</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li id="dashboard-nav-link" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+        <li><button id="logout-button">Logout</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Lesson 22: Expressing Opinions and Disagreeing Politely</h2>
+
+    <div class="slideshow-container">
+
+      <!-- Slide 1: Review -->
+      <div class="slide active" id="slide1">
+        <h3>I. Review: Small Talk</h3>
+        <p>Let's warm up! Remember "Small Talk" from Lesson 21.</p>
+        <p><strong>Quick Challenge:</strong> Pair up. Imagine you are both waiting for the elevator. Start a 1-minute "small talk" conversation.</p>
+        
+        <img src="images/lesson-22-slide1-review.png"
+             alt="Graphic of two colleagues talking by an elevator"
+             class="placeholder-image"
+             style="max-width: 400px;"
+             onerror="this.src='https://placehold.co/400x200/cccccc/ffffff?text=Small+Talk+Review'; this.alt='Error loading image';">
+
+        <p>What "safe" topics did you use? (Weather? Weekend?)</p>
+        <p>Today, we will learn what to do when your "small talk" becomes a "big talk" and you have a different opinion.</p>
+      </div>
+
+      <!-- Slide 2: Introduction -->
+      <div class="slide" id="slide2">
+        <h3>II. Introduction: Polite Disagreement</h3>
+        <p>
+          At work, we often have different opinions. This is normal and <strong>good</strong>! Different opinions help us find the best solution.
+        </p>
+         
+        <img src="images/lesson-22-slide2-intro.png"
+             alt="Illustration of colleagues having a polite debate at a meeting table"
+             class="placeholder-image"
+             style="max-width: 500px;"
+             onerror="this.src='https://placehold.co/500x250/cccccc/ffffff?text=Polite+Debate'; this.alt='Error loading image';">
+        
+        <p><strong>Why is it important to disagree *politely*?</strong></p>
+        <ul>
+          <li>It shows <strong>respect</strong> for your colleagues.</li>
+          <li>It keeps the conversation <strong>professional</strong>.</li>
+          <li>It helps you focus on the <strong>problem</strong>, not the person.</li>
+          <li>It helps build trust.</li>
+        </ul>
+        <p>Using the right phrases is key!</p>
+      </div>
+
+      <!-- Slide 3: Choral Reading (Giving Opinions) -->
+      <div class="slide" id="slide3">
+        <h3>III. Choral Reading: Giving Opinions</h3>
+        <p>Let's practice how to state your opinion clearly. Please listen and repeat.</p>
+        
+        <img src="images/lesson-22-slide3-opinions.png"
+             alt="Graphic of a speech bubble with a plus sign or 'agree' icon"
+             class="placeholder-image"
+             style="max-width: 300px;"
+             onerror="this.src='https://placehold.co/300x200/cccccc/ffffff?text=Giving+Opinions'; this.alt='Error loading image';">
+
+        <h4>Key Phrases (Strong to Soft)</h4>
+        <ul>
+            <li>"In my opinion, we should..."</li>
+            <li>"I believe that..."</li>
+            <li>"I think we need to..."</li>
+            <li>"I feel that..."</li>
+            <li>"From my perspective,..."</li>
+            <li>"It seems to me that..."</li>
+        </ul>
+        
+        <h4>Industry Example:</h4>
+        <p><code>"I think</code> we should test the new winding machine today."</p>
+      </div>
+
+      <!-- Slide 4: Choral Reading (Disagreeing Politely) -->
+      <div class="slide" id="slide4">
+        <h3>IV. Choral Reading: Disagreeing Politely</h3>
+        <p>This is the most important skill. You must show you heard the other person *before* you disagree. Please listen and repeat.</p>
+
+        <img src="images/lesson-22-slide4-disagree.png"
+             alt="Graphic of two speech bubbles interacting, one with a question"
+             class="placeholder-image"
+             style="max-width: 350px;"
+             onerror="this.src='https://placehold.co/350x200/cccccc/ffffff?text=Polite+Disagree'; this.alt='Error loading image';">
+
+        <div class="phrase-list">
+            <div class="topic-disagree">
+                <h4>"Soft" Disagreement</h4>
+                <ul>
+                    <li>"I'm not sure I agree..."</li>
+                    <li>"I see what you mean, but..."</li>
+                    <li>"I understand your point, however..."</li>
+                </ul>
+            </div>
+            <div class="topic-disagree">
+                <h4>"Questioning" Disagreement</h4>
+                <ul>
+                    <li>"Have you considered...?"</li>
+                    <li>"What about...?"</li>
+                    <li>"I'm not sure. What if we...?"</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h4 style="margin-top: 1rem;">Industry Example:</h4>
+        <p>Person A: "I think we should stop quality checks."</p>
+        <p>You: "<code>I see your point, but</code> quality is critical for our customers."</p>
+      </div>
+
+      <!-- Slide 5: Game -->
+      <div class="slide" id="slide5">
+        <h3>V. Game: "Debateable"</h3>
+        <p>Now, let's practice using these phrases in a fun game!</p>
+        
+        <img src="images/lesson-22-slide5-game.png"
+             alt="Illustration of 'Debateable' game cards or people debating"
+             class="placeholder-image"
+             style="max-width: 450px;"
+             onerror="this.src='https://placehold.co/450x250/cccccc/ffffff?text=Debateable+Game'; this.alt='Error loading image';">
+
+        <h4>How to Play:</h4>
+        <ul>
+            <li>Get into small groups.</li>
+            <li>Your teacher will give you a "Debateable" card with a topic.</li>
+            <li>One person will give their opinion on the topic.</li>
+            <li>The next person must *politely disagree* using one of our new phrases.</li>
+            <li>Take turns. Try to have a polite 2-minute debate!</li>
+        </ul>
+        <p><strong>Listen for:</strong> "I think...", "In my opinion...", "I see your point, but...", "Have you considered..."</p>
+      </div>
+
+      <!-- Slide 6: Wrap-up -->
+      <div class="slide" id="slide6">
+        <h3>VI. Wrap-up & Next Steps</h3>
+        <p>Fantastic job today! You all did very well navigating difficult topics politely.</p>
+
+        <img src="images/lesson-22-slide6-wrapup.png"
+             alt="Icon of a lightbulb and a checkmark for key ideas"
+             class="placeholder-image"
+             style="max-width: 300px;"
+             onerror="this.src='https://placehold.co/300x150/cccccc/ffffff?text=Key+Ideas'; this.alt='Error loading image';">
+
+        <h4>Key Takeaways:</h4>
+        <ul>
+            <li>Different opinions are <strong>good</strong> for the team.</li>
+            <li>Always be <strong>respectful</strong> and <strong>professional</strong>.</li>
+            <li>First, show you <strong>understand</strong> ("I see your point...").</li>
+            <li>Then, give your opinion ("...but I feel...").</li>
+        </ul>
+
+        <h4>Discussion:</h4>
+        <p>Why is it *difficult* to disagree politely in a second language?</p>
+
+        <!-- Link to the new Video/Quiz page -->
+        <a href="lesson-22-video-quiz.html" class="button-link">Go to Lesson 22 Video & Quiz</a>
+      </div>
+
+      <!-- Navigation -->
+      <div class="slide-nav">
+        <button id="prevBtn" onclick="changeSlide(-1)" disabled>Previous</button>
+        <span id="slide-counter">Slide 1 of 6</span>
+        <button id="nextBtn" onclick="changeSlide(1)">Next</button>
+      </div>
+
+    </div> <!-- End Slideshow Container -->
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Dan Mills</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script type="module">
+    // --- Slideshow Logic ---
+    let currentSlide = 1;
+    const totalSlides = 6;
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('slide-counter');
+
+    function showSlide(n) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      const currentSlideElement = document.getElementById(`slide${n}`);
+      if (currentSlideElement) {
+          currentSlideElement.classList.add('active');
+      }
+      counter.textContent = `Slide ${n} of ${totalSlides}`;
+      prevBtn.disabled = (n === 1);
+      nextBtn.disabled = (n === totalSlides);
+    }
+
+    window.changeSlide = function(n) {
+      currentSlide += n;
+      showSlide(currentSlide);
+    }
+    showSlide(currentSlide);
+
+    // --- Logout Button Logic ---
+    import { auth, signOut } from './js/firebase-init.js';
+    document.body.classList.remove('auth-loading'); // Show body
+
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.href = 'login.html';
+        }).catch((error) => {
+            console.error("Sign out error:", error);
+        });
+        });
+    }
+  </script>
+</body>
+</html>

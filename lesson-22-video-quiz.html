@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 22 Video & Quiz - Transformer Team Portal</title>
+  
+  <!-- Firebase / Auth -->
+  <script type="module" src="js/firebase-init.js"></script>
+  <script type="module" src="js/protect.js"></script>
+
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/icon-192.png" type="image/png">
+  
+  <style>
+    body.auth-loading { display: none; }
+    
+    /* Video container to be responsive */
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        max-width: 100%;
+        background: #000;
+        border-radius: 0.5rem; /* rounded-lg */
+        margin-bottom: 1.5rem; /* mb-6 */
+        border: 1px solid #d1d5db; /* border-gray-300 */
+    }
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* Quiz Form Styles */
+    #lesson-quiz-form {
+        background-color: #ffffff; /* bg-white */
+        padding: 2rem; /* p-8 */
+        border-radius: 0.75rem; /* rounded-xl */
+        border: 1px solid #d1d5db; /* border-gray-300 */
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-lg */
+    }
+    .quiz-question {
+        margin-bottom: 1.5rem; /* mb-6 */
+    }
+    .quiz-question p {
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 600; /* font-semibold */
+        color: #1f2937; /* text-gray-800 */
+        margin-bottom: 0.75rem; /* mb-3 */
+    }
+    .quiz-question label {
+        display: block;
+        padding: 0.75rem 1rem; /* p-3 px-4 */
+        background-color: #f9fafb; /* bg-gray-50 */
+        border: 1px solid #e5e7eb; /* border-gray-200 */
+        border-radius: 0.375rem; /* rounded-md */
+        margin-bottom: 0.5rem; /* mb-2 */
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .quiz-question label:hover {
+        background-color: #f3f4f6; /* bg-gray-100 */
+    }
+    .quiz-question input[type="radio"] {
+        margin-right: 0.75rem; /* mr-3 */
+        accent-color: #4f46e5; /* indigo-600 */
+    }
+    #quiz-submit-button {
+        padding: 0.75rem 1.5rem;
+        background-color: #4f46e5; /* bg-indigo-600 */
+        color: white;
+        border: none;
+        border-radius: 0.375rem;
+        font-size: 1rem; /* text-base */
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%; /* w-full */
+    }
+    #quiz-submit-button:hover {
+        background-color: #4338ca; /* bg-indigo-700 */
+    }
+    #quiz-submit-button:disabled {
+      background-color: #9ca3af; /* bg-gray-400 */
+    }
+    #quiz-result-message {
+        margin-top: 1.5rem; /* mt-6 */
+        font-size: 1.125rem; /* text-lg */
+        font-weight: 600;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        display: none; /* Hidden by default */
+    }
+    #quiz-result-message.success {
+        background-color: #d1fae5; /* bg-green-100 */
+        color: #065f46; /* text-green-800 */
+        display: block;
+    }
+    #quiz-result-message.error {
+        background-color: #fee2e2; /* bg-red-100 */
+        color: #991b1b; /* text-red-800 */
+        display: block;
+    }
+
+  </style>
+</head>
+<body class="auth-loading">
+
+  <header>
+    <div class="logo-container">
+      <img src="images/icon-192.png" alt="Portal Logo">
+      <h1>Transformer Team Portal</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lessons.html" class="active">Lessons</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="tools.html">Tools</a></li>
+        <li id="dashboard-nav-link" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+        <li><button id="logout-button">Logout</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Lesson 22: Video & Quiz</h2>
+    <p style="margin-bottom: 1rem; font-size: 1.1rem; color: #374151;">Watch the video to review today's lesson, then take the 5-question quiz below to check your understanding.</p>
+
+    <!-- 1. Video Player Section -->
+    <div class="video-container">
+        <!-- Iframe for Powtoon embed - Responsive dimensions are handled by .video-container CSS -->
+        <iframe src="https://www.powtoon.com/embed/dDPO55UnHIm/" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- 2. Quiz Section -->
+    <!-- This form ID and data-lesson-id are critical for js/lesson-quiz-logic.js -->
+    <form id="lesson-quiz-form" data-lesson-id="lesson22">
+        <h3>Lesson 22 Quiz</h3>
+        
+        <!-- Question 1 -->
+        <div class="quiz-question">
+            <p>1. Which phrase is best for giving your opinion?</p>
+            <label><input type="radio" name="q1" value="a"> A) I see your point.</label>
+            <label><input type="radio" name="q1" value="b"> B) I think we should...</label>
+            <label><input type="radio" name="q1" value="c"> C) What about...?</label>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="quiz-question">
+            <p>2. "I see your point, but..." is a polite phrase for...</p>
+            <label><input type="radio" name="q2" value="a"> A) Giving an opinion.</label>
+            <label><input type="radio" name="q2" value="b"> B) Disagreeing politely.</label>
+            <label><input type="radio" name="q2" value="c"> C) Asking a question.</label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-question">
+            <p>3. Why is it important to disagree politely at work?</p>
+            <label><input type="radio" name="q3" value="a"> A) To show respect and build good relationships.</label>
+            <label><input type="radio" name="q3" value="b"> B) To show you are smarter than your colleague.</label>
+            <label><input type="radio" name="q3" value="c"> C) To end the conversation quickly.</label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="quiz-question">
+            <p>4. Which phrase is a *questioning* way to disagree?</p>
+            <label><input type="radio" name="q4" value="a"> A) I believe that is wrong.</label>
+            <label><input type="radio" name="q4" value="b"> B) In my opinion, no.</label>
+            <label><input type="radio" name="q4" value="c"> C) Have you considered...?</label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="quiz-question">
+            <p>5. Is this phrase polite or impolite? "I'm not sure I agree."</p>
+            <label><input type="radio" name="q5" value="a"> A) Polite</label>
+            <label><input type="radio" name="q5" value="b"> B) Impolite</label>
+        </div>
+
+        <button type="submit" id="quiz-submit-button">Submit Quiz</button>
+        
+        <!-- Message area for success/error -->
+        <div id="quiz-result-message"></div>
+    </form>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Dan Mills</p>
+  </footer>
+
+  <!-- 
+    *** CRITICAL SCRIPTS ***
+    These are needed for the quiz to work.
+  -->
+  <script src="js/app.js"></script>
+  <!-- This script handles the quiz submission, scoring, and saving to Firebase -->
+  <script type="module" src="js/lesson-quiz-logic.js"></script>
+  
+  <script type="module">
+    // --- Logout Button Logic ---
+    import { auth, signOut } from './js/firebase-init.js';
+    document.body.classList.remove('auth-loading'); // Show body
+
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.href = 'login.html';
+        }).catch((error) => {
+            console.error("Sign out error:", error);
+        });
+        });
+    }
+  </script>
+
+</body>
+</html>

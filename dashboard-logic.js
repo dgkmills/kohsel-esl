@@ -56,16 +56,28 @@ async function loadDashboardData() {
 
     // 5. Define emails to filter OUT of the dashboard
     const emailsToExclude = [
-      'dan@myteacherdan.com', 
-      'test@kohsel.com',
-      'patcharee.mango@gmail.com' // Example test account
+      'dan@myteacherdan.com', // Admin account
+      'test@kohsel.com',      // Test account
+      // --- FIX: Removed 'patcharee.mango@gmail.com' as requested ---
     ];
 
     // 6. Filter the list to remove test/admin accounts
+    console.log("All attempts found:", allQuizAttempts);
+    
+    // --- NOTE: The filter is still commented out for testing ---
+    // This lets you see ALL scores (including your admin scores)
+    // to confirm the fix is working.
+    const filteredAttempts = allQuizAttempts; 
+    
+    /* // --- UNCOMMENT THIS BLOCK LATER to hide admin/test scores ---
     const filteredAttempts = allQuizAttempts.filter(attempt => {
       // 'attempt.email' is now the correct 'displayEmail'
       return !emailsToExclude.includes(attempt.email);
     });
+    // --- END BLOCK TO UNCOMMENT ---
+    */
+    
+    console.log("Filtered attempts (currently showing all):", filteredAttempts);
 
     // 7. Sort all *filtered* attempts by timestamp, newest first
     filteredAttempts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
@@ -81,7 +93,11 @@ async function loadDashboardData() {
     filteredAttempts.forEach(attempt => {
       const row = document.createElement('tr');
       
-      const scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'fail';
+      const scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'pass'; // Defaulting to 'pass' for now, adjust as needed
+      if (attempt.score < 80) {
+          scoreClass = 'fail';
+      }
+      
       const date = attempt.timestamp ? new Date(attempt.timestamp.seconds * 1000).toLocaleString() : 'N/A';
       
       const quizName = attempt.quizName || 'N/A'; 

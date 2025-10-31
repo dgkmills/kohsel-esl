@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         powtoonQuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // --- FIX: Disable button to prevent duplicates ---
             const submitButton = powtoonQuizForm.querySelector('button[type="submit"]');
             if (submitButton) submitButton.disabled = true;
 
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 powtoonQuizResult.textContent = "Error: You must be logged in to submit a quiz.";
                 powtoonQuizResult.className = 'quiz-result error';
                 powtoonQuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
                 return;
             }
 
@@ -65,23 +64,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const pq5 = formData.get('pq5'); 
             
             let score = 0;
-            if (pq1 === 'b') score += 20; 
-            if (pq2 === 'c') score += 20; 
-            if (pq3 === 'b') score += 20; 
-            if (pq4 === 'b') score += 20; 
-            if (pq5 && pq5.trim().length >= 10) score += 20; 
+            const incorrectQuestions = [];
+
+            if (pq1 === 'b') { score += 20; } else { incorrectQuestions.push('1'); }
+            if (pq2 === 'c') { score += 20; } else { incorrectQuestions.push('2'); }
+            if (pq3 === 'b') { score += 20; } else { incorrectQuestions.push('3'); }
+            if (pq4 === 'b') { score += 20; } else { incorrectQuestions.push('4'); }
+            if (pq5 && pq5.trim().length >= 10) { score += 20; } else { incorrectQuestions.push('5'); }
 
             const answers = { pq1, pq2, pq3, pq4, pq5 };
+
+            // --- Build Result Message ---
+            let resultMessage = `Your quiz score: ${score}%`;
+            if (incorrectQuestions.length > 0) {
+                resultMessage += ` (Please retry question(s): ${incorrectQuestions.join(', ')})`;
+            } else if (score === 100) {
+                resultMessage += ` (Great job!)`;
+            }
+            // --- End Build Message ---
 
             try {
                 // Video quizzes go to 'quizAttempts'
                 await saveQuizToFirestore(user, 'powtoon_450k_decision', 'Quiz: The 450,000 Decision', score, answers, 'quizAttempts');
-                powtoonQuizResult.textContent = `Your quiz score: ${score}%`;
+                powtoonQuizResult.textContent = resultMessage; // Show new message
                 powtoonQuizResult.className = 'quiz-result success';
             } catch (error) {
                 powtoonQuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 powtoonQuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
             }
             powtoonQuizResult.style.display = 'block';
         });
@@ -95,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lesson20QuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // --- FIX: Disable button to prevent duplicates ---
             const submitButton = lesson20QuizForm.querySelector('button[type="submit"]');
             if (submitButton) submitButton.disabled = true;
 
@@ -104,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lesson20QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson20QuizResult.className = 'quiz-result error';
                 lesson20QuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
                 return;
             }
 
@@ -116,23 +125,33 @@ document.addEventListener('DOMContentLoaded', () => {
             const l20q5 = formData.get('l20q5'); // Textarea
             
             let score = 0;
-            if (l20q1 === 'b') score += 20; 
-            if (l20q2 === 'c') score += 20; 
-            if (l20q3 === 'b') score += 20; 
-            if (l20q4 === 'a') score += 20; 
-            if (l20q5 && l20q5.trim().length >= 10) score += 20; 
+            const incorrectQuestions = [];
+
+            if (l20q1 === 'b') { score += 20; } else { incorrectQuestions.push('1'); }
+            if (l20q2 === 'c') { score += 20; } else { incorrectQuestions.push('2'); }
+            if (l20q3 === 'b') { score += 20; } else { incorrectQuestions.push('3'); }
+            if (l20q4 === 'a') { score += 20; } else { incorrectQuestions.push('4'); }
+            if (l20q5 && l20q5.trim().length >= 10) { score += 20; } else { incorrectQuestions.push('5'); }
 
             const answers = { l20q1, l20q2, l20q3, l20q4, l20q5 };
 
+            // --- Build Result Message ---
+            let resultMessage = `Your quiz score: ${score}%`;
+            if (incorrectQuestions.length > 0) {
+                resultMessage += ` (Please retry question(s): ${incorrectQuestions.join(', ')})`;
+            } else if (score === 100) {
+                resultMessage += ` (Excellent!)`;
+            }
+            // --- End Build Message ---
+
             try {
                 await saveQuizToFirestore(user, 'lesson_20_comm_challenge', 'Quiz: Clear Communication Challenge', score, answers, 'quizAttempts');
-                
-                lesson20QuizResult.textContent = `Your quiz score: ${score}%`;
+                lesson20QuizResult.textContent = resultMessage; // Show new message
                 lesson20QuizResult.className = 'quiz-result success';
             } catch (error) {
                 lesson20QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson20QuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
             }
             lesson20QuizResult.style.display = 'block';
         });
@@ -146,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lesson21QuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // --- FIX: Disable button to prevent duplicates ---
             const submitButton = lesson21QuizForm.querySelector('button[type="submit"]');
             if (submitButton) submitButton.disabled = true;
 
@@ -155,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lesson21QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson21QuizResult.className = 'quiz-result error';
                 lesson21QuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
                 return;
             }
 
@@ -167,23 +185,33 @@ document.addEventListener('DOMContentLoaded', () => {
             const l21q5 = formData.get('l21q5'); // Textarea
             
             let score = 0;
-            if (l21q1 === 'b') score += 20;
-            if (l21q2 === 'a') score += 20;
-            if (l21q3 === 'b') score += 20;
-            if (l21q4 === 'b') score += 20;
-            if (l21q5 && l21q5.trim().length >= 5) score += 20;
+            const incorrectQuestions = [];
+
+            if (l21q1 === 'b') { score += 20; } else { incorrectQuestions.push('1'); }
+            if (l21q2 === 'a') { score += 20; } else { incorrectQuestions.push('2'); }
+            if (l21q3 === 'b') { score += 20; } else { incorrectQuestions.push('3'); }
+            if (l21q4 === 'b') { score += 20; } else { incorrectQuestions.push('4'); }
+            if (l21q5 && l21q5.trim().length >= 5) { score += 20; } else { incorrectQuestions.push('5'); }
 
             const answers = { l21q1, l21q2, l21q3, l21q4, l21q5 };
 
+             // --- Build Result Message ---
+            let resultMessage = `Your quiz score: ${score}%`;
+            if (incorrectQuestions.length > 0) {
+                resultMessage += ` (Please retry question(s): ${incorrectQuestions.join(', ')})`;
+            } else if (score === 100) {
+                resultMessage += ` (Well done!)`;
+            }
+            // --- End Build Message ---
+
             try {
                 await saveQuizToFirestore(user, 'lesson_21_small_talk', 'Quiz: Small Talk Scenario Practice', score, answers, 'quizAttempts');
-                
-                lesson21QuizResult.textContent = `Your quiz score: ${score}%`;
+                lesson21QuizResult.textContent = resultMessage; // Show new message
                 lesson21QuizResult.className = 'quiz-result success';
-            } catch (error) {
+            } catch (error)
                 lesson21QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson21QuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
             }
             lesson21QuizResult.style.display = 'block';
         });
@@ -197,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lesson22QuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // --- FIX: Disable button to prevent duplicates ---
             const submitButton = lesson22QuizForm.querySelector('button[type="submit"]');
             if (submitButton) submitButton.disabled = true;
 
@@ -206,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 lesson22QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson22QuizResult.className = 'quiz-result error';
                 lesson22QuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
                 return;
             }
 
@@ -218,27 +245,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const l22q5 = formData.get('l22q5');
             
             let score = 0;
-            if (l22q1 === 'b') score += 20;
-            if (l22q2 === 'b') score += 20;
-            if (l22q3 === 'a') score += 20;
-            if (l22q4 === 'c') score += 20;
-            if (l22q5 === 'a') score += 20;
+            const incorrectQuestions = [];
+
+            if (l22q1 === 'b') { score += 20; } else { incorrectQuestions.push('1'); }
+            if (l22q2 === 'b') { score += 20; } else { incorrectQuestions.push('2'); }
+            if (l22q3 === 'a') { score += 20; } else { incorrectQuestions.push('3'); }
+            if (l22q4 === 'c') { score += 20; } else { incorrectQuestions.push('4'); }
+            if (l22q5 === 'a') { score += 20; } else { incorrectQuestions.push('5'); }
             
             const answers = { l22q1, l22q2, l22q3, l22q4, l22q5 };
 
+            // --- Build Result Message ---
+            let resultMessage = `Your quiz score: ${score}%`;
+            if (incorrectQuestions.length > 0) {
+                resultMessage += ` (Please retry question(s): ${incorrectQuestions.join(', ')})`;
+            } else if (score === 100) {
+                resultMessage += ` (Perfect!)`;
+            }
+            // --- End Build Message ---
+
             try {
                 await saveQuizToFirestore(user, 'lesson_22_opinions_videos_page', 'Quiz: Expressing Opinions', score, answers, 'quizAttempts');
-                
-                lesson22QuizResult.textContent = `Your quiz score: ${score}%`;
+                lesson22QuizResult.textContent = resultMessage; // Show new message
                 lesson22QuizResult.className = 'quiz-result success';
             } catch (error) {
                 lesson22QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson22QuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false; // Re-enable on error
+                if (submitButton) submitButton.disabled = false;
             }
             lesson22QuizResult.style.display = 'block';
         });
     }
-
 
 });

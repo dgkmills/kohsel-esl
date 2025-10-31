@@ -373,6 +373,25 @@ footer {
 }
 
 /* --- Dashboard Table Styles --- */
+
+/* NEW: Style for each student's module */
+.student-module {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb; /* border-gray-200 */
+}
+.student-module:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+/* Use the h3 style we already have */
+.student-module h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
 .dashboard-table {
   width: 100%;
   border-collapse: collapse;
@@ -622,4 +641,3 @@ footer {
 html {
   scroll-padding-top: 80px; /* Adjust based on your header height */
 }
-

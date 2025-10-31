@@ -48,22 +48,37 @@
   <main class="container">
     <h2>Admin Dashboard</h2>
     <p>
-      Recent quiz attempts from all team members.
+      Showing all quiz attempts for each team member.
     </p>
 
-    <table class="dashboard-table">
-      <thead>
-        <tr>
-          <th>User Email</th>
-          <th>Quiz Name</th>
-          <th>Score</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody id="quiz-scores-body">
-        <!-- Rows will be inserted here by dashboard-logic.js -->
-      </tbody>
-    </table>
+    <!-- 
+      NEW: This is now a dynamic container.
+      dashboard-logic.js will create a module for each student inside this div.
+    -->
+    <div id="dashboard-container">
+      <!-- 
+        Example of what the script will build:
+        <div class="student-module">
+          <h3>ice@myteacherdan.com</h3>
+          <table class="dashboard-table">
+            ...
+            <tbody>
+              (all of Ice's attempts)
+            </tbody>
+          </table>
+        </div>
+        <div class="student-module">
+          <h3>maleenuk.bim@gmail.com</h3>
+          <table class="dashboard-table">
+            ...
+            <tbody>
+              (all of Maleenuk's attempts)
+            </tbody>
+          </table>
+        </div>
+      -->
+    </div>
+
     <p id="dashboard-loading">
       Loading quiz data...
     </p>

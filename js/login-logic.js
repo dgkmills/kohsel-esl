@@ -1,5 +1,6 @@
 // Import Firebase services
-import { auth, db } from './firebase-init.js';
+// *** MODIFIED: Added doc, setDoc, serverTimestamp ***
+import { auth, db, doc, setDoc, serverTimestamp } from './firebase-init.js';
 // Import Auth functions
 import {
     signInWithEmailAndPassword,
@@ -7,8 +8,6 @@ import {
     onAuthStateChanged,
     sendPasswordResetEmail // Added for Forgot Password
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-// Import Firestore functions (only needed if you were creating user docs on signup)
-// import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Get elements from the HTML
 const loginButton = document.getElementById('loginButton');
@@ -64,8 +63,28 @@ async function handleLogin() {
 
     try {
         console.log("Attempting to sign in...");
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log("Sign in successful!");
+        
+        // *** NEW: Add logic to create/update user doc on login ***
+        const user = userCredential.user;
+        if (user) {
+          try {
+            const userDocRef = doc(db, 'users', user.uid);
+            // Use { merge: true } to create the doc if it doesn't exist,
+            // or update it if it does. This will NOT overwrite the 'role' field
+            // if it already exists (e.g., as 'admin').
+            await setDoc(userDocRef, {
+              email: user.email,
+              lastLogin: serverTimestamp()
+            }, { merge: true });
+            console.log(`User document for ${user.uid} created/updated.`);
+          } catch (docError) {
+            console.error("Error saving user document:", docError);
+          }
+        }
+        // *** END NEW LOGIC ***
+
         // Redirect to the main index page. protect.js handles role-based access.
         window.location.href = 'index.html';
 

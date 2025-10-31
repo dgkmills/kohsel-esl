@@ -5,28 +5,14 @@ import {
   collection, 
   query, 
   getDocs, 
-  onAuthStateChanged, // Added auth import
-  auth,               // Added auth import
-  getDoc,             // Added getDoc import
-  doc                 // Added doc import
+  // REMOVED: onAuthStateChanged,
+  // REMOVED: auth,
+  // REMOVED: getDoc,
+  // REMOVED: doc
 } from './js/firebase-init.js';
 
-// --- NEW: Role checking logic (moved from protect.js) ---
-// We need this to ensure only admins can try to fetch all data.
-async function getUserRole(user) {
-  if (!user) return 'user';
-  try {
-    const userDocRef = doc(db, 'users', user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-    if (userDocSnap.exists()) {
-      return userDocSnap.data().role || 'user';
-    }
-    return 'user';
-  } catch (error) {
-    console.error("Error fetching user role:", error);
-    return 'user';
-  }
-}
+// --- REMOVED: getUserRole function ---
+// This is now handled by protect.js before this script even runs.
 
 // Function to load dashboard data
 async function loadDashboardData() {
@@ -50,7 +36,8 @@ async function loadDashboardData() {
     // 2. Loop through each user
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
-      const userEmail = userData?.email || userDoc.id; // Use email if available
+      // *** FIX: Get email from parent doc (it might be undefined) ***
+      const parentUserEmail = userData?.email; // This may be null for old users
 
       // 3. Get the 'quizAttempts' sub-collection for this user
       // This also requires the admin-only 'list' permission
@@ -60,24 +47,45 @@ async function loadDashboardData() {
 
       quizAttemptsSnapshot.forEach(quizDoc => {
         const quizData = quizDoc.data();
+        
+        // *** THE FIX ***
+        // Prioritize the email saved IN THE QUIZ DOCUMENT.
+        // Fall back to the parent user doc email (for future use).
+        // Fall back to UID if both are somehow missing.
+        const displayEmail = quizData.userEmail || parentUserEmail || userDoc.id;
+
         allQuizAttempts.push({
-          email: userEmail, // Use the fetched email
+          email: displayEmail, // This 'email' property will now be correct
           ...quizData
         });
       });
     }
 
-    // 4. Sort all attempts by timestamp, newest first
-    allQuizAttempts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+    // *** NEW 4. Define emails to filter out ***
+    const emailsToExclude = [
+      'dan@myteacherdan.com', 
+      'test@kohsel.com',
+      'patcharee.mango@gmail.com' // Added this one I saw in your DB
+    ];
 
-    // 5. Populate the table
-    if (allQuizAttempts.length === 0) {
-      loadingEl.textContent = "No quiz attempts found.";
+    // *** NEW 5. Filter out excluded emails ***
+    const filteredAttempts = allQuizAttempts.filter(attempt => {
+      // 'attempt.email' is now the correct 'displayEmail' we calculated above
+      return !emailsToExclude.includes(attempt.email);
+    });
+
+    // 6. Sort all *filtered* attempts by timestamp, newest first
+    filteredAttempts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+
+    // 7. Populate the table
+    if (filteredAttempts.length === 0) {
+      loadingEl.textContent = "No quiz attempts found for students.";
       return;
     }
 
     tableBody.innerHTML = ''; // Clear the table
-    allQuizAttempts.forEach(attempt => {
+    // *** FIX: Iterate over filteredAttempts, not allQuizAttempts ***
+    filteredAttempts.forEach(attempt => {
       const row = document.createElement('tr');
       
       const scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'fail';
@@ -103,19 +111,8 @@ async function loadDashboardData() {
   }
 }
 
-// Auth listener to trigger data load
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    // User is logged in, check their role
-    const role = await getUserRole(user);
-    if (role === 'admin') {
-      // Only load data if user is an admin
-      loadDashboardData();
-    } else {
-      // This page should be protected by protect.js, but as a fallback:
-      const loadingEl = document.getElementById('dashboard-loading');
-      if (loadingEl) loadingEl.textContent = "Access denied. Admin required.";
-    }
-  }
-  // If no user, protect.js should have already redirected to login.html
-});
+// --- NEW ---
+// Call the function directly.
+// The 'protect.js' script has already run and confirmed this user is an admin.
+loadDashboardData();
+

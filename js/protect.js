@@ -1,5 +1,12 @@
 // Imports from our local firebase-init.js
-import { auth, db, doc, getDoc, onAuthStateChanged } from './firebase-init.js';
+// *** MODIFIED: Removed setDoc and serverTimestamp ***
+import { 
+  auth, 
+  db, 
+  doc, 
+  getDoc, 
+  onAuthStateChanged 
+} from './firebase-init.js';
 
 // --- NEW: Wait for the DOM to be ready ---
 // This ensures document.body is available when we try to access it.
@@ -14,15 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
+        // *** REMOVED: Backfill logic (moved to login-logic.js) ***
         return userData.role || 'user'; // Return role or default to 'user'
       } else {
+        // *** MODIFIED: Do NOT create the doc here. Just return 'user'. ***
+        // The login-logic.js script will handle creation.
         console.log("User document doesn't exist yet for UID:", user.uid);
-        // Optional: Create the user document here if needed, perhaps with default role 'user'
-        // await setDoc(userDocRef, { email: user.email, role: 'user', createdAt: serverTimestamp() });
         return 'user';
       }
     } catch (error) {
-      console.error("Error fetching user role for UID", user.uid, ":", error);
+      console.error("Error fetching/creating user role for UID", user.uid, ":", error);
       return 'user'; // Default to 'user' on error
     }
   }
@@ -54,7 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       // If we haven't redirected, show the page content
-      document.body.style.display = 'block';
+      // FIX: Check body exists before applying style.
+      if (document.body) {
+        document.body.style.display = 'block';
+      }
 
     } else {
       // User is not logged in. Redirect to login.html.
@@ -65,10 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
          window.location.replace('login.html'); // Use relative path
       } else {
          // If already on login page, make sure it's visible
-         document.body.style.display = 'flex'; // Use flex for login page wrapper
+         // FIX: Check body exists before applying style.
+         if (document.body) {
+            document.body.style.display = 'flex'; // Use flex for login page wrapper
+         }
       }
     }
   });
 
-}); // --- NEW: End of DOMContentLoaded listener ---
+}); // --- END of DOMContentLoaded listener ---
 

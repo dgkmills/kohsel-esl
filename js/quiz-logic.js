@@ -42,12 +42,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (powtoonQuizForm && powtoonQuizResult) {
         powtoonQuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // --- FIX: Disable button to prevent duplicates ---
+            const submitButton = powtoonQuizForm.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
 
             const user = auth.currentUser;
             if (!user) {
                 powtoonQuizResult.textContent = "Error: You must be logged in to submit a quiz.";
                 powtoonQuizResult.className = 'quiz-result error';
                 powtoonQuizResult.style.display = 'block';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
                 return;
             }
 
@@ -75,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 powtoonQuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 powtoonQuizResult.className = 'quiz-result error';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
             }
             powtoonQuizResult.style.display = 'block';
         });
@@ -87,12 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lesson20QuizForm && lesson20QuizResult) {
         lesson20QuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // --- FIX: Disable button to prevent duplicates ---
+            const submitButton = lesson20QuizForm.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
 
             const user = auth.currentUser;
             if (!user) {
                 lesson20QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson20QuizResult.className = 'quiz-result error';
                 lesson20QuizResult.style.display = 'block';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
                 return;
             }
 
@@ -127,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 lesson20QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson20QuizResult.className = 'quiz-result error';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
             }
             lesson20QuizResult.style.display = 'block';
         });
@@ -140,11 +152,16 @@ document.addEventListener('DOMContentLoaded', () => {
         lesson21QuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // --- FIX: Disable button to prevent duplicates ---
+            const submitButton = lesson21QuizForm.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+
             const user = auth.currentUser;
             if (!user) {
                 lesson21QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson21QuizResult.className = 'quiz-result error';
                 lesson21QuizResult.style.display = 'block';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
                 return;
             }
 
@@ -176,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 lesson21QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson21QuizResult.className = 'quiz-result error';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
             }
             lesson21QuizResult.style.display = 'block';
         });
@@ -189,11 +207,16 @@ document.addEventListener('DOMContentLoaded', () => {
         lesson22QuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // --- FIX: Disable button to prevent duplicates ---
+            const submitButton = lesson22QuizForm.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+
             const user = auth.currentUser;
             if (!user) {
                 lesson22QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson22QuizResult.className = 'quiz-result error';
                 lesson22QuizResult.style.display = 'block';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
                 return;
             }
 
@@ -223,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 lesson22QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson22QuizResult.className = 'quiz-result error';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
             }
             lesson22QuizResult.style.display = 'block';
         });

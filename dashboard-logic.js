@@ -6,7 +6,38 @@ import {
   getDocs, 
 } from './js/firebase-init.js';
 
-// Function to load dashboard data
+// --- Helper Function to format date ---
+function formatDate(timestamp) {
+  if (timestamp && timestamp.seconds) {
+    return new Date(timestamp.seconds * 1000).toLocaleString();
+  }
+  return 'N/A';
+}
+
+// --- Helper Function to build the history table ---
+function buildHistoryTable(attempts) {
+  // Create a simple table for the history
+  const table = document.createElement('table');
+  table.className = 'history-table';
+  
+  let tableHTML = '<tbody>';
+  attempts.forEach(attempt => {
+    const date = formatDate(attempt.timestamp);
+    const scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'fail';
+    tableHTML += `
+      <tr>
+        <td><span class="quiz-score ${scoreClass}">${attempt.score}%</span></td>
+        <td>${date}</td>
+      </tr>
+    `;
+  });
+  tableHTML += '</tbody>';
+  
+  table.innerHTML = tableHTML;
+  return table;
+}
+
+// --- Main Function to load dashboard data ---
 async function loadDashboardData() {
   const container = document.getElementById('dashboard-container');
   const loadingEl = document.getElementById('dashboard-loading');
@@ -17,7 +48,7 @@ async function loadDashboardData() {
   }
 
   try {
-    // 1. Get all documents from the 'users' collection
+    // 1. Get all users
     const usersCollectionRef = collection(db, 'users');
     const usersQuery = query(usersCollectionRef);
     const usersSnapshot = await getDocs(usersQuery);
@@ -29,91 +60,108 @@ async function loadDashboardData() {
 
     let usersProcessed = 0;
 
-    // 2. Loop through each user doc in the 'users' collection
+    // 2. Loop through each user
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
-      const parentUserEmail = userData?.email || userDoc.id; // Use email or UID as fallback
+      const parentUserEmail = userData?.email || userDoc.id;
 
-      // --- Filter out admin/test accounts ---
-      // (Leaving this commented out as per your video so you can see all test data)
-      // const emailsToExclude = ['dan@myteacherdan.com', 'test@kohsel.com'];
-      // if (emailsToExclude.includes(parentUserEmail)) {
-      //   continue; // Skip this user
-      // }
-      // --- End Filter ---
-
-      // 3. Get the 'quizAttempts' sub-collection for this user
+      // 3. Get all quiz attempts for this user
       const quizAttemptsRef = collection(db, 'users', userDoc.id, 'quizAttempts');
       const quizAttemptsQuery = query(quizAttemptsRef);
       const quizAttemptsSnapshot = await getDocs(quizAttemptsQuery);
 
-      // 4. If this user has no attempts, skip creating a module for them
       if (quizAttemptsSnapshot.empty) {
-        continue; // Skip to the next user
+        continue; // Skip user if they have no attempts
       }
 
-      usersProcessed++; // We found a user with attempts
-      let allQuizAttempts = [];
+      usersProcessed++;
 
-      // 5. Loop through each quiz attempt and add it to an array
-      quizAttemptsSnapshot.forEach(quizDoc => {
-        const quizData = quizDoc.data();
-        allQuizAttempts.push(quizData);
-      });
-
-      // 6. Sort all attempts for THIS USER by timestamp, newest first
-      allQuizAttempts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-
-      // 7. Build the HTML for this user's module
+      // --- NEW LOGIC: Group attempts by quizId ---
+      const quizzesMap = new Map();
       
-      // Create the module container
-      const moduleDiv = document.createElement('div');
-      moduleDiv.className = 'student-module';
+      quizAttemptsSnapshot.forEach(quizDoc => {
+        const attempt = quizDoc.data();
+        const quizId = attempt.quizId || 'unknown_quiz';
+        
+        if (!quizzesMap.has(quizId)) {
+          quizzesMap.set(quizId, []); // Create an array for this quiz
+        }
+        quizzesMap.get(quizId).push(attempt);
+      });
+      // --- END NEW LOGIC ---
 
-      // Create the user email heading
+      // 4. Create the outer module for the student
+      const studentModuleDiv = document.createElement('div');
+      studentModuleDiv.className = 'student-module';
       const heading = document.createElement('h3');
       heading.textContent = parentUserEmail;
-      moduleDiv.appendChild(heading);
+      studentModuleDiv.appendChild(heading);
 
-      // Create the table for this user
-      const table = document.createElement('table');
-      table.className = 'dashboard-table';
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>Quiz Name</th>
-            <th>Score</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-      `;
-      
-      const tableBody = document.createElement('tbody');
-      
-      // 8. Populate the table with ALL attempts for this user
-      allQuizAttempts.forEach(attempt => {
-        const row = document.createElement('tr');
+      // 5. Process each unique quiz for this student
+      for (const [quizId, attempts] of quizzesMap.entries()) {
         
-        let scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'fail';
-        const date = attempt.timestamp ? new Date(attempt.timestamp.seconds * 1000).toLocaleString() : 'N/A';
-        const quizName = attempt.quizName || 'N/A'; 
+        // Sort attempts: highest score first, then newest first
+        attempts.sort((a, b) => {
+          if ((b.score || 0) !== (a.score || 0)) {
+            return (b.score || 0) - (a.score || 0); // Highest score first
+          }
+          return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0); // Newest first
+        });
+
+        const topAttempt = attempts[0];
+        const quizName = topAttempt.quizName || 'Unnamed Quiz';
+        const topScore = topAttempt.score || 0;
+        const topDate = formatDate(topAttempt.timestamp);
+        const scoreClass = topScore >= 80 ? 'pass' : 'fail';
         
-        row.innerHTML = `
-          <td>${quizName}</td> 
-          <td><span class="quiz-score ${scoreClass}">${attempt.score}%</span></td>
-          <td>${date}</td>
+        // Create the module for this specific quiz
+        const quizSummaryModule = document.createElement('div');
+        quizSummaryModule.className = 'quiz-summary-module';
+
+        // --- Create the Header Row ---
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'quiz-summary-header';
+        
+        headerDiv.innerHTML = `
+          <span class="quiz-name">${quizName}</span>
+          <span class="quiz-score ${scoreClass}">${topScore}%</span>
+          <span class="quiz-date">${topDate}</span>
         `;
-        tableBody.appendChild(row);
-      });
+        
+        // Create the history button
+        const historyBtn = document.createElement('button');
+        historyBtn.className = 'history-toggle-btn';
+        historyBtn.textContent = `Show History (${attempts.length})`;
+        
+        headerDiv.appendChild(historyBtn);
+        quizSummaryModule.appendChild(headerDiv);
 
-      table.appendChild(tableBody);
-      moduleDiv.appendChild(table);
-      
-      // 9. Append the entire module to the main container
-      container.appendChild(moduleDiv);
-    } // End of FOR loop (next user)
+        // --- Create the Collapsible History Table ---
+        const historyContainer = document.createElement('div');
+        historyContainer.className = 'quiz-history-container';
+        historyContainer.style.display = 'none'; // Hide by default
+        
+        const historyTable = buildHistoryTable(attempts); // Use helper
+        historyContainer.appendChild(historyTable);
+        quizSummaryModule.appendChild(historyContainer);
+        
+        // --- Add click listener for the toggle button ---
+        historyBtn.addEventListener('click', () => {
+            const isHidden = historyContainer.style.display === 'none';
+            historyContainer.style.display = isHidden ? 'block' : 'none';
+            historyBtn.textContent = isHidden ? `Hide History (${attempts.length})` : `Show History (${attempts.length})`;
+        });
 
-    // 10. Update loading message
+        // Add this quiz module to the student's main module
+        studentModuleDiv.appendChild(quizSummaryModule);
+      } // End of quiz loop
+
+      // 6. Append the entire student module to the main container
+      container.appendChild(studentModuleDiv);
+
+    } // End of user loop
+
+    // 7. Update loading message
     if (usersProcessed === 0) {
       loadingEl.textContent = "No quiz attempts found for any students.";
     } else {
@@ -127,6 +175,6 @@ async function loadDashboardData() {
   }
 }
 
-// Call the function directly.
-// protect.js has already confirmed this user is an admin.
+// Call the function
 loadDashboardData();
+

@@ -431,6 +431,90 @@ footer {
   color: #6b7280; /* text-gray-500 */
 }
 
+/* --- NEW: Styles for Quiz Summary Module --- */
+
+.quiz-summary-module {
+  border: 1px solid #e5e7eb; /* border-gray-200 */
+  border-radius: 0.5rem; /* rounded-lg */
+  margin-bottom: 0.75rem; /* mb-3 */
+  background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.quiz-summary-header {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem; /* py-3 px-4 */
+  gap: 1rem; /* space-x-4 */
+}
+
+.quiz-summary-header .quiz-name {
+  font-weight: 600; /* font-semibold */
+  color: #111827; /* text-gray-900 */
+  flex-grow: 1; /* Take up available space */
+}
+
+.quiz-summary-header .quiz-score {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 700; /* font-bold */
+  flex-shrink: 0; /* Don't shrink */
+}
+
+.quiz-summary-header .quiz-date {
+  font-size: 0.8rem; /* text-xs */
+  color: #6b7280; /* text-gray-500 */
+  flex-shrink: 0;
+}
+
+.history-toggle-btn {
+  background-color: #eef2ff; /* bg-indigo-50 */
+  color: #4f46e5; /* text-indigo-600 */
+  border: 1px solid #c7d2fe; /* border-indigo-200 */
+  padding: 0.25rem 0.75rem; /* py-1 px-3 */
+  border-radius: 9999px; /* rounded-full */
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 600; /* font-semibold */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.history-toggle-btn:hover {
+  background-color: #e0e7ff; /* hover:bg-indigo-100 */
+}
+
+.quiz-history-container {
+  padding: 0.5rem 1rem 1rem 1rem; /* p-4 */
+  border-top: 1px solid #e5e7eb; /* border-gray-200 */
+  background-color: #ffffff;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem; /* text-sm */
+}
+
+.history-table tr {
+  border-bottom: 1px solid #f3f4f6; /* border-gray-100 */
+}
+.history-table tr:last-child {
+  border-bottom: none;
+}
+
+.history-table td {
+  padding: 0.5rem 0; /* py-2 */
+  color: #374151; /* text-gray-700 */
+}
+
+.history-table td:first-child { /* The score */
+  padding-right: 1rem; /* px-4 */
+}
+
+
 /* --- Video/Quiz Specific Styles --- */
 .video-quiz-section {
   background-color: #fff;
@@ -641,3 +725,4 @@ footer {
 html {
   scroll-padding-top: 80px; /* Adjust based on your header height */
 }
+

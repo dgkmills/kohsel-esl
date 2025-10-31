@@ -208,11 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 await saveQuizToFirestore(user, 'lesson_21_small_talk', 'Quiz: Small Talk Scenario Practice', score, answers, 'quizAttempts');
                 lesson21QuizResult.textContent = resultMessage; // Show new message
                 lesson21QuizResult.className = 'quiz-result success';
-            } catch (error)
+            } catch (error) { // *** SYNTAX FIX: Added { ***
                 lesson21QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson21QuizResult.className = 'quiz-result error';
                 if (submitButton) submitButton.disabled = false;
-            }
+            } // *** SYNTAX FIX: Added } ***
             lesson21QuizResult.style.display = 'block';
         });
     }
@@ -278,3 +278,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+

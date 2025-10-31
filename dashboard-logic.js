@@ -1,18 +1,10 @@
 // IMPORTS
-// FIX: Corrected the import path to point to the 'js' folder
 import { 
   db, 
   collection, 
   query, 
   getDocs, 
-  // REMOVED: onAuthStateChanged,
-  // REMOVED: auth,
-  // REMOVED: getDoc,
-  // REMOVED: doc
 } from './js/firebase-init.js';
-
-// --- REMOVED: getUserRole function ---
-// This is now handled by protect.js before this script even runs.
 
 // Function to load dashboard data
 async function loadDashboardData() {
@@ -33,11 +25,11 @@ async function loadDashboardData() {
 
     let allQuizAttempts = [];
 
-    // 2. Loop through each user
+    // 2. Loop through each user doc in the 'users' collection
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
-      // *** FIX: Get email from parent doc (it might be undefined) ***
-      const parentUserEmail = userData?.email; // This may be null for old users
+      // Get the email from the parent user doc (if it exists)
+      const parentUserEmail = userData?.email; 
 
       // 3. Get the 'quizAttempts' sub-collection for this user
       // This also requires the admin-only 'list' permission
@@ -45,46 +37,47 @@ async function loadDashboardData() {
       const quizAttemptsQuery = query(quizAttemptsRef);
       const quizAttemptsSnapshot = await getDocs(quizAttemptsQuery);
 
+      // 4. Loop through each quiz attempt for that user
       quizAttemptsSnapshot.forEach(quizDoc => {
         const quizData = quizDoc.data();
         
-        // *** THE FIX ***
-        // Prioritize the email saved IN THE QUIZ DOCUMENT.
-        // Fall back to the parent user doc email (for future use).
-        // Fall back to UID if both are somehow missing.
+        // --- THIS IS THE CRITICAL FIX ---
+        // Use the email saved IN THE QUIZ DOC first.
+        // Fall back to the parent user doc's email.
+        // Fall back to the user's ID if no email is found anywhere.
         const displayEmail = quizData.userEmail || parentUserEmail || userDoc.id;
 
         allQuizAttempts.push({
-          email: displayEmail, // This 'email' property will now be correct
+          email: displayEmail, // Use the correct email
           ...quizData
         });
       });
     }
 
-    // *** NEW 4. Define emails to filter out ***
+    // 5. Define emails to filter OUT of the dashboard
     const emailsToExclude = [
       'dan@myteacherdan.com', 
       'test@kohsel.com',
-      'patcharee.mango@gmail.com' // Added this one I saw in your DB
+      'patcharee.mango@gmail.com' // Example test account
     ];
 
-    // *** NEW 5. Filter out excluded emails ***
+    // 6. Filter the list to remove test/admin accounts
     const filteredAttempts = allQuizAttempts.filter(attempt => {
-      // 'attempt.email' is now the correct 'displayEmail' we calculated above
+      // 'attempt.email' is now the correct 'displayEmail'
       return !emailsToExclude.includes(attempt.email);
     });
 
-    // 6. Sort all *filtered* attempts by timestamp, newest first
+    // 7. Sort all *filtered* attempts by timestamp, newest first
     filteredAttempts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
 
-    // 7. Populate the table
+    // 8. Populate the table
     if (filteredAttempts.length === 0) {
       loadingEl.textContent = "No quiz attempts found for students.";
       return;
     }
 
     tableBody.innerHTML = ''; // Clear the table
-    // *** FIX: Iterate over filteredAttempts, not allQuizAttempts ***
+    // Iterate over the filtered list
     filteredAttempts.forEach(attempt => {
       const row = document.createElement('tr');
       
@@ -111,8 +104,6 @@ async function loadDashboardData() {
   }
 }
 
-// --- NEW ---
 // Call the function directly.
-// The 'protect.js' script has already run and confirmed this user is an admin.
+// protect.js has already confirmed this user is an admin.
 loadDashboardData();
-

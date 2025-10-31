@@ -1,5 +1,4 @@
 // Imports from our local firebase-init.js
-// *** MODIFIED: Removed setDoc and serverTimestamp ***
 import { 
   auth, 
   db, 
@@ -8,8 +7,7 @@ import {
   onAuthStateChanged 
 } from './firebase-init.js';
 
-// --- NEW: Wait for the DOM to be ready ---
-// This ensures document.body is available when we try to access it.
+// Wait for the DOM to be ready
 document.addEventListener('DOMContentLoaded', () => {
 
   // Function to check user's role from Firestore
@@ -21,23 +19,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
-        // *** REMOVED: Backfill logic (moved to login-logic.js) ***
         return userData.role || 'user'; // Return role or default to 'user'
       } else {
-        // *** MODIFIED: Do NOT create the doc here. Just return 'user'. ***
-        // The login-logic.js script will handle creation.
+        // This is fine. login-logic.js will create the doc on their next login.
+        // For now, they are just a 'user'.
         console.log("User document doesn't exist yet for UID:", user.uid);
         return 'user';
       }
     } catch (error) {
-      console.error("Error fetching/creating user role for UID", user.uid, ":", error);
+      console.error("Error fetching user role for UID", user.uid, ":", error);
       return 'user'; // Default to 'user' on error
     }
   }
 
   onAuthStateChanged(auth, async (user) => {
     const dashboardNav = document.getElementById('dashboard-nav-link');
-    // Check if current page path ends with dashboard.html
     const isDashboardPage = window.location.pathname.endsWith('dashboard.html'); 
 
     if (user) {
@@ -57,12 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isDashboardPage) {
           console.log("Non-admin user attempting to access dashboard. Redirecting.");
           window.location.replace('index.html'); // Redirect non-admins away from dashboard
-          return; // Stop further execution for this page load
+          return; 
         }
       }
       
       // If we haven't redirected, show the page content
-      // FIX: Check body exists before applying style.
       if (document.body) {
         document.body.style.display = 'block';
       }
@@ -71,12 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // User is not logged in. Redirect to login.html.
       console.log("Auth state: Not logged in, redirecting to login...");
       
-      // Only redirect if NOT already on the login page
       if (!window.location.pathname.endsWith('login.html')) {
-         window.location.replace('login.html'); // Use relative path
+         window.location.replace('login.html');
       } else {
-         // If already on login page, make sure it's visible
-         // FIX: Check body exists before applying style.
          if (document.body) {
             document.body.style.display = 'flex'; // Use flex for login page wrapper
          }
@@ -84,5 +76,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-}); // --- END of DOMContentLoaded listener ---
-
+}); // END of DOMContentLoaded listener

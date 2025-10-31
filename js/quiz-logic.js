@@ -12,6 +12,7 @@ async function saveQuizToFirestore(user, quizId, quizName, score, answers, colle
     if (!user) return; // Exit if no user
 
     try {
+        // Use a unique ID for each attempt
         const quizAttemptId = `${quizId}_${Date.now()}`;
         const docRef = doc(db, 'users', user.uid, collectionName, quizAttemptId);
 
@@ -21,7 +22,7 @@ async function saveQuizToFirestore(user, quizId, quizName, score, answers, colle
             score: score,
             answers: answers, 
             timestamp: serverTimestamp(),
-            userEmail: user.email // Store email - make sure user doc has this field!
+            userEmail: user.email // Store the user's email WITH the quiz attempt
         });
         console.log(`Quiz score for ${quizId} saved successfully to ${collectionName}!`);
         
@@ -114,23 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const l20q4 = formData.get('l20q4');
             const l20q5 = formData.get('l20q5'); // Textarea
             
-            // --- Scoring based on Lesson 19/20 content ---
             let score = 0;
-            if (l20q1 === 'b') score += 20; // Correct: Digital sign-off required
-            if (l20q2 === 'c') score += 20; // Correct: First / To begin with
-            if (l20q3 === 'b') score += 20; // Correct: next
-            if (l20q4 === 'a') score += 20; // Correct: It is critical that you...
-            // Check if textarea has some content (e.g., at least 10 chars)
+            if (l20q1 === 'b') score += 20; 
+            if (l20q2 === 'c') score += 20; 
+            if (l20q3 === 'b') score += 20; 
+            if (l20q4 === 'a') score += 20; 
             if (l20q5 && l20q5.trim().length >= 10) score += 20; 
-            // --- End Scoring ---
 
             const answers = { l20q1, l20q2, l20q3, l20q4, l20q5 };
 
             try {
-                 // Even though it's on videos.html, this relates to Lesson 20 content.
-                 // Let's keep it consistent with other video quizzes and save to 'quizAttempts'
-                 // You could create a new collection if you *really* want them separate,
-                 // but using the quizName field helps distinguish them.
                 await saveQuizToFirestore(user, 'lesson_20_comm_challenge', 'Quiz: Clear Communication Challenge', score, answers, 'quizAttempts');
                 
                 lesson20QuizResult.textContent = `Your quiz score: ${score}%`;
@@ -172,20 +166,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const l21q4 = formData.get('l21q4');
             const l21q5 = formData.get('l21q5'); // Textarea
             
-            // --- Scoring based on Lesson 21 content ---
             let score = 0;
-            if (l21q1 === 'b') score += 20; // 1. Pim started the conversation
-            if (l21q2 === 'a') score += 20; // 2. Weekend activities
-            if (l21q3 === 'b') score += 20; // 3. "Oh, really? What movie did you watch?"
-            if (l21q4 === 'b') score += 20; // 4. Shows interest in the other person
-            // Check if textarea has some content (e.g., at least 10 chars)
-            if (l21q5 && l21q5.trim().length >= 5) score += 20; // Less strict check on text area
-            // --- End Scoring ---
+            if (l21q1 === 'b') score += 20;
+            if (l21q2 === 'a') score += 20;
+            if (l21q3 === 'b') score += 20;
+            if (l21q4 === 'b') score += 20;
+            if (l21q5 && l21q5.trim().length >= 5) score += 20;
 
             const answers = { l21q1, l21q2, l21q3, l21q4, l21q5 };
 
             try {
-                 // Saving to 'quizAttempts' for consistency
                 await saveQuizToFirestore(user, 'lesson_21_small_talk', 'Quiz: Small Talk Scenario Practice', score, answers, 'quizAttempts');
                 
                 lesson21QuizResult.textContent = `Your quiz score: ${score}%`;
@@ -199,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- NEW: Handler for Lesson 22 Expressing Opinions Quiz (in videos.html) ---
+    // --- Handler for Lesson 22 Expressing Opinions Quiz (in videos.html) ---
     const lesson22QuizForm = document.getElementById('lesson22-quiz-form');
     const lesson22QuizResult = document.getElementById('lesson22-quiz-result'); 
 
@@ -228,17 +218,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const l22q5 = formData.get('l22q5');
             
             let score = 0;
-            // 20 points per correct answer (5 questions total)
-            if (l22q1 === 'b') score += 20; // 1. Giving opinion: "I think we should..."
-            if (l22q2 === 'b') score += 20; // 2. Polite disagreement: "I see your point, but..."
-            if (l22q3 === 'a') score += 20; // 3. Importance of politeness: To show respect
-            if (l22q4 === 'c') score += 20; // 4. Questioning disagreement: "Have you considered...?"
-            if (l22q5 === 'a') score += 20; // 5. "I'm not sure I agree" is Polite
+            if (l22q1 === 'b') score += 20;
+            if (l22q2 === 'b') score += 20;
+            if (l22q3 === 'a') score += 20;
+            if (l22q4 === 'c') score += 20;
+            if (l22q5 === 'a') score += 20;
             
             const answers = { l22q1, l22q2, l22q3, l22q4, l22q5 };
 
             try {
-                // Saving to 'quizAttempts' for consistency
                 await saveQuizToFirestore(user, 'lesson_22_opinions_videos_page', 'Quiz: Expressing Opinions', score, answers, 'quizAttempts');
                 
                 lesson22QuizResult.textContent = `Your quiz score: ${score}%`;

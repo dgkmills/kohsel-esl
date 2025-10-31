@@ -1,28 +1,24 @@
 // Import Firebase services
-// *** MODIFIED: Added doc, setDoc, serverTimestamp ***
 import { auth, db, doc, setDoc, serverTimestamp } from './firebase-init.js';
 // Import Auth functions
 import {
     signInWithEmailAndPassword,
-    // createUserWithEmailAndPassword, // Removed - No sign up
     onAuthStateChanged,
-    sendPasswordResetEmail // Added for Forgot Password
+    sendPasswordResetEmail 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // Get elements from the HTML
 const loginButton = document.getElementById('loginButton');
-// const signupButton = document.getElementById('signupButton'); // Removed
 const emailField = document.getElementById('email');
 const passwordField = document.getElementById('password');
-const messageArea = document.getElementById('messageArea'); // Renamed from errorMessage
+const messageArea = document.getElementById('messageArea'); 
 const forgotPasswordLink = document.getElementById('forgotPasswordLink');
 
 // --- Helper Functions for User Feedback ---
 function showMessage(message, isError = false) {
     if(messageArea) {
         messageArea.textContent = message;
-        messageArea.className = isError ? 'errorMessage' : 'successMessage'; // Use classes for styling
-         // Apply basic styles directly for visibility, complement with CSS classes
+        messageArea.className = isError ? 'errorMessage' : 'successMessage';
         messageArea.style.display = 'block';
         messageArea.style.marginTop = '1rem';
         messageArea.style.padding = '0.75rem 1rem';
@@ -66,14 +62,16 @@ async function handleLogin() {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log("Sign in successful!");
         
-        // *** NEW: Add logic to create/update user doc on login ***
+        // --- THIS IS THE FIX ---
+        // On successful login, create or update their user document in the 'users' collection.
+        // This makes them "visible" to the dashboard query.
         const user = userCredential.user;
         if (user) {
           try {
             const userDocRef = doc(db, 'users', user.uid);
-            // Use { merge: true } to create the doc if it doesn't exist,
-            // or update it if it does. This will NOT overwrite the 'role' field
-            // if it already exists (e.g., as 'admin').
+            // Use { merge: true } to create doc if it doesn't exist,
+            // or update 'lastLogin' if it does.
+            // This will NOT overwrite an existing 'role' field (like 'admin').
             await setDoc(userDocRef, {
               email: user.email,
               lastLogin: serverTimestamp()
@@ -83,14 +81,13 @@ async function handleLogin() {
             console.error("Error saving user document:", docError);
           }
         }
-        // *** END NEW LOGIC ***
+        // --- END FIX ---
 
-        // Redirect to the main index page. protect.js handles role-based access.
+        // Redirect to the main index page.
         window.location.href = 'index.html';
 
     } catch (error) {
         console.error("Login Error: ", error);
-        // Provide a generic error for incorrect credentials
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-email') {
              showMessage("Login failed. Please check your email and password.", true);
         } else {
@@ -124,43 +121,33 @@ async function handlePasswordReset() {
 
 
 // --- Event Listeners ---
-
-// 1. LOGIN BUTTON CLICK
 if (loginButton && emailField && passwordField) {
     loginButton.addEventListener('click', handleLogin);
 } else {
      console.error("Login button or input fields not found.");
 }
 
-// 2. ENTER KEY in Password Field
 if (passwordField) {
     passwordField.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent default form submission (if it was a form)
-            handleLogin(); // Trigger the login function
+            event.preventDefault(); 
+            handleLogin(); 
         }
     });
 }
 
-// 3. FORGOT PASSWORD LINK CLICK
 if (forgotPasswordLink) {
     forgotPasswordLink.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default link behavior
+        event.preventDefault(); 
         handlePasswordReset();
     });
 } else {
     console.error("Forgot Password link not found.");
 }
 
-// 4. SIGN UP BUTTON LISTENER (Removed)
-// The signupButton variable and its event listener block have been removed.
-
-// 5. AUTH STATE OBSERVER (Redirect if already logged in)
 onAuthStateChanged(auth, (user) => {
-    // If user is logged in and they are somehow on the login page, redirect them
     if (user && window.location.pathname.endsWith('login.html')) {
         console.log("User already logged in, redirecting to index page.");
         window.location.href = 'index.html';
     }
 });
-

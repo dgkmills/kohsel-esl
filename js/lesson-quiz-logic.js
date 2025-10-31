@@ -21,7 +21,7 @@ async function saveQuizToFirestore(user, quizId, quizName, score, answers, colle
             score: score,
             answers: answers, 
             timestamp: serverTimestamp(),
-            userEmail: user.email // Store email - make sure user doc has this field!
+            userEmail: user.email // Store email
         });
         console.log(`Quiz score for ${quizId} saved successfully to ${collectionName}!`);
         
@@ -35,101 +35,10 @@ async function saveQuizToFirestore(user, quizId, quizName, score, answers, colle
 // Ensure this script runs only when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- Handler for 450k Decision Quiz (in videos.html) ---
-    const powtoonQuizForm = document.getElementById('powtoon-quiz-form');
-    const powtoonQuizResult = document.getElementById('powtoon-quiz-result');
+    // This file is only for lesson-specific pages, so we only check for those.
+    // The forms on videos.html are handled by quiz-logic.js
 
-    if (powtoonQuizForm && powtoonQuizResult) {
-        powtoonQuizForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const user = auth.currentUser;
-            if (!user) {
-                powtoonQuizResult.textContent = "Error: You must be logged in to submit a quiz.";
-                powtoonQuizResult.className = 'quiz-result error';
-                powtoonQuizResult.style.display = 'block';
-                return;
-            }
-
-            const formData = new FormData(powtoonQuizForm);
-            const pq1 = formData.get('pq1');
-            const pq2 = formData.get('pq2');
-            const pq3 = formData.get('pq3');
-            const pq4 = formData.get('pq4');
-            const pq5 = formData.get('pq5'); 
-            
-            let score = 0;
-            if (pq1 === 'b') score += 20; 
-            if (pq2 === 'c') score += 20; 
-            if (pq3 === 'b') score += 20; 
-            if (pq4 === 'b') score += 20; 
-            if (pq5 && pq5.trim().length >= 10) score += 20; 
-
-            const answers = { pq1, pq2, pq3, pq4, pq5 };
-
-            try {
-                // Video quizzes go to 'quizAttempts'
-                await saveQuizToFirestore(user, 'powtoon_450k_decision', 'Quiz: The 450,000 Decision', score, answers, 'quizAttempts');
-                powtoonQuizResult.textContent = `Your quiz score: ${score}%`;
-                powtoonQuizResult.className = 'quiz-result success';
-            } catch (error) {
-                powtoonQuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
-                powtoonQuizResult.className = 'quiz-result error';
-            }
-            powtoonQuizResult.style.display = 'block';
-        });
-    }
-
-    // --- Handler for Lesson 20 Communication Challenge Quiz (in videos.html) ---
-    const lesson20QuizForm = document.getElementById('lesson20-quiz-form');
-    const lesson20QuizResult = document.getElementById('lesson20-quiz-result');
-
-    if (lesson20QuizForm && lesson20QuizResult) {
-        lesson20QuizForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const user = auth.currentUser;
-            if (!user) {
-                lesson20QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
-                lesson20QuizResult.className = 'quiz-result error';
-                lesson20QuizResult.style.display = 'block';
-                return;
-            }
-
-            const formData = new FormData(lesson20QuizForm);
-            const l20q1 = formData.get('l20q1');
-            const l20q2 = formData.get('l20q2');
-            const l20q3 = formData.get('l20q3');
-            const l20q4 = formData.get('l20q4');
-            const l20q5 = formData.get('l20q5'); // Textarea
-            
-            // --- Scoring based on Lesson 19/20 content ---
-            let score = 0;
-            if (l20q1 === 'b') score += 20; // Correct: Digital sign-off required
-            if (l20q2 === 'c') score += 20; // Correct: First / To begin with
-            if (l20q3 === 'b') score += 20; // Correct: next
-            if (l20q4 === 'a') score += 20; // Correct: It is critical that you...
-            // Check if textarea has some content (e.g., at least 10 chars)
-            if (l20q5 && l20q5.trim().length >= 10) score += 20; 
-            // --- End Scoring ---
-
-            const answers = { l20q1, l20q2, l20q3, l20q4, l20q5 };
-
-            try {
-                 // Saving to 'quizAttempts' for consistency
-                await saveQuizToFirestore(user, 'lesson_20_comm_challenge', 'Quiz: Clear Communication Challenge', score, answers, 'quizAttempts');
-                
-                lesson20QuizResult.textContent = `Your quiz score: ${score}%`;
-                lesson20QuizResult.className = 'quiz-result success';
-            } catch (error) {
-                lesson20QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
-                lesson20QuizResult.className = 'quiz-result error';
-            }
-            lesson20QuizResult.style.display = 'block';
-        });
-    }
-
-    // --- NEW: Handler for Lesson 22 Expressing Opinions Quiz (in lesson-22-video-quiz.html) ---
+    // --- Handler for Lesson 22 Expressing Opinions Quiz (in lesson-22-video-quiz.html) ---
     const lesson22QuizForm = document.getElementById('lesson-quiz-form');
     const lesson22QuizResult = document.getElementById('quiz-result-message'); // Using the common result ID
 
@@ -138,11 +47,16 @@ document.addEventListener('DOMContentLoaded', () => {
         lesson22QuizForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // --- FIX: Disable button to prevent duplicates ---
+            const submitButton = lesson22QuizForm.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+
             const user = auth.currentUser;
             if (!user) {
                 lesson22QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson22QuizResult.className = 'quiz-result error';
                 lesson22QuizResult.style.display = 'block';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
                 return;
             }
 
@@ -154,12 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const q5 = formData.get('q5');
             
             let score = 0;
-            // 20 points per correct answer (5 questions total)
-            if (q1 === 'b') score += 20; // 1. Giving opinion: "I think we should..."
-            if (q2 === 'b') score += 20; // 2. Polite disagreement: "I see your point, but..."
-            if (q3 === 'a') score += 20; // 3. Importance of politeness: To show respect
-            if (q4 === 'c') score += 20; // 4. Questioning disagreement: "Have you considered...?"
-            if (q5 === 'a') score += 20; // 5. "I'm not sure I agree" is Polite
+            if (q1 === 'b') score += 20;
+            if (q2 === 'b') score += 20;
+            if (q3 === 'a') score += 20;
+            if (q4 === 'c') score += 20;
+            if (q5 === 'a') score += 20;
             
             const answers = { q1, q2, q3, q4, q5 };
 
@@ -172,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 lesson22QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson22QuizResult.className = 'quiz-result error';
+                if (submitButton) submitButton.disabled = false; // Re-enable on error
             }
             lesson22QuizResult.style.display = 'block';
         });

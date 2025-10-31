@@ -18,7 +18,6 @@ async function loadDashboardData() {
 
   try {
     // 1. Get all documents from the 'users' collection
-    // This requires the admin-only 'list' permission from firestore.rules
     const usersCollectionRef = collection(db, 'users');
     const usersQuery = query(usersCollectionRef);
     const usersSnapshot = await getDocs(usersQuery);
@@ -28,11 +27,9 @@ async function loadDashboardData() {
     // 2. Loop through each user doc in the 'users' collection
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
-      // Get the email from the parent user doc (if it exists)
       const parentUserEmail = userData?.email; 
 
       // 3. Get the 'quizAttempts' sub-collection for this user
-      // This also requires the admin-only 'list' permission
       const quizAttemptsRef = collection(db, 'users', userDoc.id, 'quizAttempts');
       const quizAttemptsQuery = query(quizAttemptsRef);
       const quizAttemptsSnapshot = await getDocs(quizAttemptsQuery);
@@ -40,15 +37,10 @@ async function loadDashboardData() {
       // 4. Loop through each quiz attempt for that user
       quizAttemptsSnapshot.forEach(quizDoc => {
         const quizData = quizDoc.data();
-        
-        // --- THIS IS THE CRITICAL FIX ---
-        // Use the email saved IN THE QUIZ DOC first.
-        // Fall back to the parent user doc's email.
-        // Fall back to the user's ID if no email is found anywhere.
         const displayEmail = quizData.userEmail || parentUserEmail || userDoc.id;
 
         allQuizAttempts.push({
-          email: displayEmail, // Use the correct email
+          email: displayEmail, 
           ...quizData
         });
       });
@@ -58,7 +50,6 @@ async function loadDashboardData() {
     const emailsToExclude = [
       'dan@myteacherdan.com', // Admin account
       'test@kohsel.com',      // Test account
-      // --- FIX: Removed 'patcharee.mango@gmail.com' as requested ---
     ];
 
     // 6. Filter the list to remove test/admin accounts
@@ -93,10 +84,13 @@ async function loadDashboardData() {
     filteredAttempts.forEach(attempt => {
       const row = document.createElement('tr');
       
-      const scoreClass = (attempt.score || 0) >= 80 ? 'pass' : 'pass'; // Defaulting to 'pass' for now, adjust as needed
-      if (attempt.score < 80) {
+      // --- THIS IS THE FIX ---
+      // Changed 'const' to 'let' so the variable can be reassigned.
+      let scoreClass = 'pass';
+      if ((attempt.score || 0) < 80) {
           scoreClass = 'fail';
       }
+      // --- END FIX ---
       
       const date = attempt.timestamp ? new Date(attempt.timestamp.seconds * 1000).toLocaleString() : 'N/A';
       
@@ -123,3 +117,4 @@ async function loadDashboardData() {
 // Call the function directly.
 // protect.js has already confirmed this user is an admin.
 loadDashboardData();
+

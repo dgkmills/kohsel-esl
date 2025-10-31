@@ -32,6 +32,38 @@ async function saveQuizToFirestore(user, quizId, quizName, score, answers, colle
     }
 }
 
+// --- NEW HELPER: Function to create and manage the "Retry Quiz" button ---
+function addRetryButton(formElement, resultElement, submitButton) {
+    const parentSection = formElement.parentElement;
+    if (!parentSection) return;
+
+    // Check if a retry button already exists for this form
+    const existingRetryBtn = parentSection.querySelector('.quiz-retry-btn');
+    if (existingRetryBtn) {
+        existingRetryBtn.remove(); // Remove old one if it exists
+    }
+
+    // Create the new retry button
+    const retryButton = document.createElement('button');
+    retryButton.type = 'button'; // Ensure it's not a submit button
+    retryButton.textContent = 'Retry Quiz';
+    retryButton.className = 'quiz-retry-btn'; // For styling
+
+    // Add click event listener to the retry button
+    retryButton.addEventListener('click', () => {
+        formElement.reset(); // Reset the form fields
+        resultElement.style.display = 'none'; // Hide the result message
+        resultElement.textContent = ''; // Clear the message
+        if (submitButton) {
+            submitButton.disabled = false; // Re-enable the submit button
+        }
+        retryButton.remove(); // Remove the retry button itself
+    });
+
+    // Insert the retry button right after the result message
+    resultElement.insertAdjacentElement('afterend', retryButton);
+}
+
 
 // Ensure this script runs only when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,7 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 powtoonQuizResult.textContent = "Error: You must be logged in to submit a quiz.";
                 powtoonQuizResult.className = 'quiz-result error';
                 powtoonQuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false;
+                // Don't re-enable submit button here, let retry button handle it
+                // --- NEW: Add retry button even on login error ---
+                addRetryButton(powtoonQuizForm, powtoonQuizResult, submitButton);
                 return;
             }
 
@@ -91,9 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 powtoonQuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 powtoonQuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false;
+                // Don't re-enable submit button here
             }
             powtoonQuizResult.style.display = 'block';
+            // --- NEW: Add the retry button after submission ---
+            addRetryButton(powtoonQuizForm, powtoonQuizResult, submitButton);
         });
     }
 
@@ -113,7 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 lesson20QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson20QuizResult.className = 'quiz-result error';
                 lesson20QuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false;
+                // --- NEW: Add retry button even on login error ---
+                addRetryButton(lesson20QuizForm, lesson20QuizResult, submitButton);
                 return;
             }
 
@@ -151,9 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 lesson20QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson20QuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false;
             }
             lesson20QuizResult.style.display = 'block';
+            // --- NEW: Add the retry button after submission ---
+            addRetryButton(lesson20QuizForm, lesson20QuizResult, submitButton);
         });
     }
 
@@ -173,7 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 lesson21QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson21QuizResult.className = 'quiz-result error';
                 lesson21QuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false;
+                // --- NEW: Add retry button even on login error ---
+                addRetryButton(lesson21QuizForm, lesson21QuizResult, submitButton);
                 return;
             }
 
@@ -208,12 +247,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 await saveQuizToFirestore(user, 'lesson_21_small_talk', 'Quiz: Small Talk Scenario Practice', score, answers, 'quizAttempts');
                 lesson21QuizResult.textContent = resultMessage; // Show new message
                 lesson21QuizResult.className = 'quiz-result success';
-            } catch (error) { // *** SYNTAX FIX: Added { ***
+            } catch (error) { 
                 lesson21QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson21QuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false;
-            } // *** SYNTAX FIX: Added } ***
+            } 
             lesson21QuizResult.style.display = 'block';
+            // --- NEW: Add the retry button after submission ---
+            addRetryButton(lesson21QuizForm, lesson21QuizResult, submitButton);
         });
     }
 
@@ -233,7 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 lesson22QuizResult.textContent = "Error: You must be logged in to submit this quiz.";
                 lesson22QuizResult.className = 'quiz-result error';
                 lesson22QuizResult.style.display = 'block';
-                if (submitButton) submitButton.disabled = false;
+                // --- NEW: Add retry button even on login error ---
+                addRetryButton(lesson22QuizForm, lesson22QuizResult, submitButton);
                 return;
             }
 
@@ -271,9 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 lesson22QuizResult.textContent = `Score: ${score}%. (Error saving to database.)`;
                 lesson22QuizResult.className = 'quiz-result error';
-                if (submitButton) submitButton.disabled = false;
             }
             lesson22QuizResult.style.display = 'block';
+            // --- NEW: Add the retry button after submission ---
+            addRetryButton(lesson22QuizForm, lesson22QuizResult, submitButton);
         });
     }
 

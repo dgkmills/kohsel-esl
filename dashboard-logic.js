@@ -46,6 +46,24 @@ async function loadDashboardData() {
       });
     }
 
+    // --- NEW LOGIC: Filter for Highest Score ---
+    // This reduces the list to only the BEST attempt for each user + quiz combo.
+    const highestScores = new Map();
+    
+    allQuizAttempts.forEach(attempt => {
+      // Create a unique key for each "user-quiz" pair
+      const key = `${attempt.email}|${attempt.quizId}`;
+      
+      // If we haven't seen this combo, or if the new score is higher, save it.
+      if (!highestScores.has(key) || (attempt.score || 0) > (highestScores.get(key).score || 0)) {
+        highestScores.set(key, attempt);
+      }
+    });
+    
+    // Convert the Map of highest scores back into an array
+    const highestAttemptsList = Array.from(highestScores.values());
+    // --- END NEW LOGIC ---
+
     // 5. Define emails to filter OUT of the dashboard
     const emailsToExclude = [
       'dan@myteacherdan.com', // Admin account
@@ -53,22 +71,22 @@ async function loadDashboardData() {
     ];
 
     // 6. Filter the list to remove test/admin accounts
-    console.log("All attempts found:", allQuizAttempts);
+    console.log("All highest attempts found:", highestAttemptsList);
     
     // --- NOTE: The filter is still commented out for testing ---
-    // This lets you see ALL scores (including your admin scores)
+    // This lets you see ALL highest scores (including your admin scores)
     // to confirm the fix is working.
-    const filteredAttempts = allQuizAttempts; 
+    const filteredAttempts = highestAttemptsList; // Use the new 'highest' list
     
     /* // --- UNCOMMENT THIS BLOCK LATER to hide admin/test scores ---
-    const filteredAttempts = allQuizAttempts.filter(attempt => {
+    const filteredAttempts = highestAttemptsList.filter(attempt => {
       // 'attempt.email' is now the correct 'displayEmail'
       return !emailsToExclude.includes(attempt.email);
     });
     // --- END BLOCK TO UNCOMMENT ---
     */
     
-    console.log("Filtered attempts (currently showing all):", filteredAttempts);
+    console.log("Filtered attempts (currently showing all highest scores):", filteredAttempts);
 
     // 7. Sort all *filtered* attempts by timestamp, newest first
     filteredAttempts.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
@@ -84,13 +102,10 @@ async function loadDashboardData() {
     filteredAttempts.forEach(attempt => {
       const row = document.createElement('tr');
       
-      // --- THIS IS THE FIX ---
-      // Changed 'const' to 'let' so the variable can be reassigned.
       let scoreClass = 'pass';
       if ((attempt.score || 0) < 80) {
           scoreClass = 'fail';
       }
-      // --- END FIX ---
       
       const date = attempt.timestamp ? new Date(attempt.timestamp.seconds * 1000).toLocaleString() : 'N/A';
       
